@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CryptoMoon</string>
+    <string name="market">Market</string>
+    <string name="last_price">Last price</string>
+    <string name="change_24h">Change 24h</string>
+    <string name="coins">Coins</string>
+    <string name="ico">ICO</string>
+    <string name="news">News</string>
+</resources>
