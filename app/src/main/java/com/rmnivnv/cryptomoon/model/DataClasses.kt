@@ -51,7 +51,9 @@ data class PriceBodyRAW(val TYPE: String,
                         val SUPPLY: Float,
                         val MKTCAP: Float)
 
-data class PriceBodyDisplay(val FROMSYMBOL: String?,
+data class PriceBodyDisplay(var from: String?,
+                            var to: String?,
+                            val FROMSYMBOL: String?,
                             val TOSYMBOL: String?,
                             val MARKET: String?,
                             val PRICE: String?,

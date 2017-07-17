@@ -22,15 +22,28 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onViewCreated() {
-        disposable.add(networkManager.getPrice(ETH, USD, object : GetPriceCallback {
-            override fun onSuccess(price: PriceBodyDisplay) {
-                Log.d("onSuccess", price.toString())
+        getPrices()
+    }
+
+    private fun getPrices() {
+        val queryMap: HashMap<String, ArrayList<String>> = HashMap()
+        val fromList: ArrayList<String> = ArrayList()
+        fromList.add(BTC)
+        fromList.add(ETH)
+        fromList.add(SNT)
+        val toList: ArrayList<String> = ArrayList()
+        toList.add(USD)
+        queryMap.put(FSYMS, fromList)
+        queryMap.put(TSYMS, toList)
+        disposable.add(networkManager.getPrice(queryMap, object : GetPriceCallback {
+            override fun onSuccess(coinsInfoList: ArrayList<PriceBodyDisplay>) {
+                coinsInfoList.forEach { Log.d("onSuccess", it.toString()) }
             }
 
             override fun onError(t: Throwable) {
-                Log.d("onError", t.toString())
+                Log.d("onError", t.message)
             }
-        }) )
+        }))
     }
 
     override fun onDestroy() {

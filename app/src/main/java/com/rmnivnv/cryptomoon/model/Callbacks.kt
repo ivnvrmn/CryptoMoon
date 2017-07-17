@@ -12,6 +12,6 @@ interface GetAllCoinsCallback {
 }
 
 interface GetPriceCallback {
-    fun onSuccess(price: PriceBodyDisplay)
+    fun onSuccess(coinsInfoList: ArrayList<PriceBodyDisplay>)
     fun onError(t: Throwable)
 }

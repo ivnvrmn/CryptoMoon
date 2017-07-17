@@ -1,8 +1,6 @@
 package com.rmnivnv.cryptomoon.network
 
-import com.google.gson.Gson
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
+import android.util.Log
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.utils.getPriceDisplayBodyFromJson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,12 +19,27 @@ class NetworkManager(val api: CryptoCompareAPI) {
 //                .subscribe( { callback.onSuccess(it) }, { callback.onError(it) } )
 //    }
 
-    fun getPrice(from: String, to: String, callback: GetPriceCallback): Disposable {
-        return api.getPrice(from, to)
+    fun getPrice(map: Map<String, ArrayList<String>>, callback: GetPriceCallback): Disposable {
+        return api.getPrice(getQuery(map, FSYMS), getQuery(map, TSYMS))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map { getPriceDisplayBodyFromJson(it, from, to) }
+                .map { getPriceDisplayBodyFromJson(it, map) }
                 .subscribe( { callback.onSuccess(it) }, { callback.onError(it) } )
+    }
+
+    private fun getQuery(map: Map<String, ArrayList<String>>, type: String): String {
+        var result: String = ""
+
+        map.forEach { (key, value) ->
+            if (key == type) {
+                value.forEach {
+                    result += """$it,"""
+                }
+            }
+        }
+        if (result.isNotEmpty()) result = result.substring(0, result.length - 1)
+        Log.d("getQuery", result)
+        return result
     }
 
 }
