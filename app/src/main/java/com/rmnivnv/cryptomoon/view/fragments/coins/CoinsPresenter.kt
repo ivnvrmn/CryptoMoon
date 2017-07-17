@@ -15,14 +15,28 @@ class CoinsPresenter : ICoins.Presenter {
     @Inject lateinit var networkManager: NetworkManager
 
     private val disposable = CompositeDisposable()
-    private var coinsList: MutableList<Market> = ArrayList()
+    private var coins: ArrayList<CoinBodyDisplay>? = null
 
     override fun onCreate(component: CoinsComponent) {
         component.inject(this)
     }
 
-    override fun onViewCreated() {
+    override fun onViewCreated(coins: ArrayList<CoinBodyDisplay>) {
+        this.coins = coins
+        getAllCoinsInfo()
         getPrices()
+    }
+
+    private fun getAllCoinsInfo() {
+        disposable.add(networkManager.getAllCoins(object : GetAllCoinsCallback {
+            override fun onSuccess(allCoins: ArrayList<Coin>) {
+
+            }
+
+            override fun onError(t: Throwable) {
+
+            }
+        }))
     }
 
     private fun getPrices() {
@@ -36,8 +50,12 @@ class CoinsPresenter : ICoins.Presenter {
         queryMap.put(FSYMS, fromList)
         queryMap.put(TSYMS, toList)
         disposable.add(networkManager.getPrice(queryMap, object : GetPriceCallback {
-            override fun onSuccess(coinsInfoList: ArrayList<PriceBodyDisplay>) {
-                coinsInfoList.forEach { Log.d("onSuccess", it.toString()) }
+            override fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?) {
+                if (coinsInfoList != null) {
+                    coins?.clear()
+                    coins?.addAll(coinsInfoList)
+                    view.updateRecyclerView()
+                }
             }
 
             override fun onError(t: Throwable) {

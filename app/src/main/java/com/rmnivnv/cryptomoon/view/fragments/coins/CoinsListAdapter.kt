@@ -8,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.Market
+import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
 import kotlinx.android.synthetic.main.main_list_item.view.*
 
 /**
  * Created by rmnivnv on 02/07/2017.
  */
 
-class CoinsListAdapter(private val items: ArrayList<Market>, private val context: Context) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
+class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private val context: Context) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.main_list_item, parent, false)
@@ -28,17 +29,18 @@ class CoinsListAdapter(private val items: ArrayList<Market>, private val context
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(market: Market) {
-            itemView.main_item_market.text = """${market.from}/${market.to}"""
-            itemView.main_item_last_price.text = market.price.toString()
-            itemView.main_item_market_logo.setImageDrawable(ContextCompat.getDrawable(context, market.logo))
-            itemView.main_item_change_in_24.text = """${setPlusIfPositive(market.change)}${market.change}%"""
-            itemView.main_item_change_in_24.setTextColor(ContextCompat.getColor(context, setChangePercentColor(market.change)))
-            itemView.main_item_holding.text = market.hold.toString()
+        fun bindItems(coin: CoinBodyDisplay) {
+            itemView.main_item_market.text = """${coin.from}/${coin.to}"""
+            itemView.main_item_last_price.text = coin.PRICE
+            //itemView.main_item_market_logo.setImageDrawable(ContextCompat.getDrawable(context, market.logo))
+            itemView.main_item_change_in_24.text = """${coin.CHANGEPCT24HOUR}%"""
+            itemView.main_item_change_in_24.setTextColor(ContextCompat.getColor(context, setChangePercentColor(coin.CHANGEPCT24HOUR?.toDouble())))
+            //itemView.main_item_holding.text = market.hold.toString()
         }
     }
 
-    private fun setPlusIfPositive(change: Double) = if (change > 0) "+" else ""
-
-    private fun setChangePercentColor(change: Double) = if (change >= 0) R.color.green else R.color.red
+    private fun setChangePercentColor(change: Double?): Int {
+        if (change != null && change >= 0) R.color.green else R.color.red
+        return R.color.black
+    }
 }

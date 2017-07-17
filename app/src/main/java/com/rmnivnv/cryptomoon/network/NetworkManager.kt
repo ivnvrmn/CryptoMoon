@@ -2,7 +2,8 @@ package com.rmnivnv.cryptomoon.network
 
 import android.util.Log
 import com.rmnivnv.cryptomoon.model.*
-import com.rmnivnv.cryptomoon.utils.getPriceDisplayBodyFromJson
+import com.rmnivnv.cryptomoon.utils.getAllCoinsFromJson
+import com.rmnivnv.cryptomoon.utils.getCoinDisplayBodyFromJson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -12,18 +13,19 @@ import io.reactivex.schedulers.Schedulers
  */
 class NetworkManager(val api: CryptoCompareAPI) {
 
-//    fun getAllCoins(callback: GetAllCoinsCallback): Disposable  {
-//        return api.getCoinsList()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe( { callback.onSuccess(it) }, { callback.onError(it) } )
-//    }
+    fun getAllCoins(callback: GetAllCoinsCallback): Disposable  {
+        return api.getCoinsList(COINS_LIST_URL)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { getAllCoinsFromJson(it) }
+                .subscribe( { callback.onSuccess(it) }, { callback.onError(it) } )
+    }
 
     fun getPrice(map: Map<String, ArrayList<String>>, callback: GetPriceCallback): Disposable {
         return api.getPrice(getQuery(map, FSYMS), getQuery(map, TSYMS))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map { getPriceDisplayBodyFromJson(it, map) }
+                .map { getCoinDisplayBodyFromJson(it, map) }
                 .subscribe( { callback.onSuccess(it) }, { callback.onError(it) } )
     }
 
