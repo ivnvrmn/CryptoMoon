@@ -11,8 +11,8 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.utils.app
 import javax.inject.Inject
 import android.support.v4.app.FragmentPagerAdapter
-import com.rmnivnv.cryptomoon.view.fragments.coins.CoinsFragment
-import com.rmnivnv.cryptomoon.view.fragments.ico.IcoFragment
+import com.rmnivnv.cryptomoon.view.coins.CoinsFragment
+import com.rmnivnv.cryptomoon.view.ico.IcoFragment
 import com.rmnivnv.cryptomoon.view.fragments.news.NewsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 

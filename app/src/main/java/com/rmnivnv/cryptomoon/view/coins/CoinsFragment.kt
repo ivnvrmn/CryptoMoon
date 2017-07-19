@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.view.fragments.coins
+package com.rmnivnv.cryptomoon.view.coins
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.Market
 import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
 import com.rmnivnv.cryptomoon.utils.app
 import kotlinx.android.synthetic.main.coins_fragment.*

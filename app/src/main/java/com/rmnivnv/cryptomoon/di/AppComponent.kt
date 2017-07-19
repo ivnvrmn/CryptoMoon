@@ -3,8 +3,8 @@ package com.rmnivnv.cryptomoon.di
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.view.MainComponent
 import com.rmnivnv.cryptomoon.view.MainModule
-import com.rmnivnv.cryptomoon.view.fragments.coins.CoinsComponent
-import com.rmnivnv.cryptomoon.view.fragments.coins.CoinsModule
+import com.rmnivnv.cryptomoon.view.coins.CoinsComponent
+import com.rmnivnv.cryptomoon.view.coins.CoinsModule
 import dagger.Component
 import javax.inject.Singleton
 

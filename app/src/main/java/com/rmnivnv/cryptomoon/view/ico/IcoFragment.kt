@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.view.fragments.ico
+package com.rmnivnv.cryptomoon.view.ico
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

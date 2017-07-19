@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.view.fragments.coins
+package com.rmnivnv.cryptomoon.view.coins
 
 import android.util.Log
 import com.rmnivnv.cryptomoon.model.*
@@ -16,6 +16,7 @@ class CoinsPresenter : ICoins.Presenter {
 
     private val disposable = CompositeDisposable()
     private var coins: ArrayList<CoinBodyDisplay>? = null
+    private var allCoinsInfo: ArrayList<Coin>? = null
 
     override fun onCreate(component: CoinsComponent) {
         component.inject(this)
@@ -24,17 +25,17 @@ class CoinsPresenter : ICoins.Presenter {
     override fun onViewCreated(coins: ArrayList<CoinBodyDisplay>) {
         this.coins = coins
         getAllCoinsInfo()
-        getPrices()
     }
 
     private fun getAllCoinsInfo() {
         disposable.add(networkManager.getAllCoins(object : GetAllCoinsCallback {
             override fun onSuccess(allCoins: ArrayList<Coin>) {
-
+                allCoinsInfo = allCoins
+                getPrices()
             }
 
             override fun onError(t: Throwable) {
-
+                Log.d("onError", t.message)
             }
         }))
     }
@@ -54,6 +55,10 @@ class CoinsPresenter : ICoins.Presenter {
                 if (coinsInfoList != null) {
                     coins?.clear()
                     coins?.addAll(coinsInfoList)
+                    coins?.forEach {
+                        val name = it.from
+                        it.imgUrl = allCoinsInfo?.find { it.name == name }?.imageUrl
+                    }
                     view.updateRecyclerView()
                 }
             }

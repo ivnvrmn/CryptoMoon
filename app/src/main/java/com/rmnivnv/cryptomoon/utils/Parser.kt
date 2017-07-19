@@ -15,7 +15,6 @@ fun getCoinDisplayBodyFromJson(jsonObject: JsonObject, map: Map<String, ArrayLis
     val fromObjectsList: HashMap<String, JsonElement> = HashMap()
     if (jsonObject.has(DISPLAY)) {
         display = jsonObject[DISPLAY]
-
         for ((key, value) in map) {
             if (key == FSYMS) {
                 value.forEach {
@@ -48,8 +47,10 @@ fun getAllCoinsFromJson(response: AllCoinsResponse): ArrayList<Coin> {
     val result: ArrayList<Coin> = ArrayList()
     val jsonObject = response.data
     jsonObject.entrySet().forEach {
-        result.add(Gson().fromJson(it.value, Coin::class.java))
+        val coin = Gson().fromJson(it.value, Coin::class.java)
+        //val tempUrl = coin.imageUrl
+        coin.imageUrl = response.baseImageUrl + coin.imageUrl
+        result.add(coin)
     }
-
     return result
 }

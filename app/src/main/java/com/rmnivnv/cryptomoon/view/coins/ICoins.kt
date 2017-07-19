@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.view.fragments.coins
+package com.rmnivnv.cryptomoon.view.coins
 
 import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
 
