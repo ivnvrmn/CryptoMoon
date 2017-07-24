@@ -8,6 +8,8 @@ val BASE_CRYPTOCOMPARE_URL = "https://min-api.cryptocompare.com/data/"
 val COINS_LIST_URL = "https://www.cryptocompare.com/api/data/coinlist/"
 
 val CRYPTOMOON_PREFS = "cryptoMoonPrefs"
+val DATABASE_NAME = "cryptoMoonDb"
+val TABLE_DISPLAY_COINS = "displayCoins"
 
 val RAW = "RAW"
 val DISPLAY = "DISPLAY"

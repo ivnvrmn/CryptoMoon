@@ -2,6 +2,7 @@ package com.rmnivnv.cryptomoon.view
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.widget.Toolbar
@@ -11,6 +12,12 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.utils.app
 import javax.inject.Inject
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.rmnivnv.cryptomoon.view.coins.CoinsFragment
 import com.rmnivnv.cryptomoon.view.ico.IcoFragment
 import com.rmnivnv.cryptomoon.view.fragments.news.NewsFragment
@@ -22,17 +29,17 @@ class MainActivity : AppCompatActivity(), MainInterface.View {
     val component by lazy { app.component.plus(MainModule(this)) }
     @Inject lateinit var presenter: MainInterface.Presenter
 
+    private lateinit var coinsLoading: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         component.inject(this)
+        presenter.onCreate(component)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         setupViewPager()
-        presenter.onCreate()
     }
-
-    fun getAppComponent() = component
 
     private fun setupViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
@@ -41,6 +48,33 @@ class MainActivity : AppCompatActivity(), MainInterface.View {
         adapter.addFragment(NewsFragment(), getString(R.string.news))
         viewpager.adapter = adapter
         tabs.setupWithViewPager(viewpager)
+        setCustomTab()
+    }
+
+    private fun setCustomTab() {
+        val customTab = LayoutInflater.from(this).inflate(R.layout.tab_with_loading, null) as RelativeLayout
+        val title = customTab.findViewById(R.id.tab_title) as TextView
+        coinsLoading = customTab.findViewById(R.id.tab_loading) as ProgressBar
+        title.text = getString(R.string.coins)
+        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab?.position == 0) {
+                    title.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorAccent))
+                } else {
+                    title.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.grey_light))
+                }
+            }
+
+        })
+        tabs.getTabAt(0)?.customView = customTab
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -66,5 +100,10 @@ class MainActivity : AppCompatActivity(), MainInterface.View {
             mFragmentList.add(fragment)
             mFragmentTitleList.add(title)
         }
+    }
+
+    override fun setCoinsLoadingVisibility(isLoading: Boolean) {
+        if (isLoading) coinsLoading.visibility = View.VISIBLE
+        else coinsLoading.visibility = View.INVISIBLE
     }
 }

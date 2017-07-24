@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.main_list_item.view.*
+import kotlinx.android.synthetic.main.coins_list_item.view.*
 
 /**
  * Created by rmnivnv on 02/07/2017.
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.main_list_item.view.*
 class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private val context: Context) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent?.context).inflate(R.layout.main_list_item, parent, false)
+        val v = LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false)
         return ViewHolder(v)
     }
 

@@ -6,11 +6,11 @@ package com.rmnivnv.cryptomoon.view
 interface MainInterface {
 
     interface View {
-
+        fun setCoinsLoadingVisibility(isLoading: Boolean)
     }
 
     interface Presenter {
-        fun onCreate()
+        fun onCreate(component: MainComponent)
 
     }
 }
