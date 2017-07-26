@@ -51,7 +51,7 @@ class CoinsFragment : Fragment(), ICoins.View {
 
     fun setupSwipeRefresh() {
         swipe_refresh.setOnRefreshListener {
-            presenter.updateCoins()
+            presenter.onSwipeUpdate()
         }
     }
 
@@ -71,5 +71,13 @@ class CoinsFragment : Fragment(), ICoins.View {
 
     override fun hideRefreshing() {
         swipe_refresh.isRefreshing = false
+    }
+
+    override fun enableSwipeToRefresh() {
+        swipe_refresh.isEnabled = true
+    }
+
+    override fun disableSwipeToRefresh() {
+        swipe_refresh.isEnabled = false
     }
 }

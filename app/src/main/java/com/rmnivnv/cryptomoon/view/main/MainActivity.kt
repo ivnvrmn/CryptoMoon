@@ -1,5 +1,6 @@
-package com.rmnivnv.cryptomoon.view
+package com.rmnivnv.cryptomoon.view.main
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -24,10 +25,10 @@ import com.rmnivnv.cryptomoon.view.fragments.news.NewsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(), MainInterface.View {
+class MainActivity : AppCompatActivity(), IMain.View {
 
     val component by lazy { app.component.plus(MainModule(this)) }
-    @Inject lateinit var presenter: MainInterface.Presenter
+    @Inject lateinit var presenter: IMain.Presenter
 
     private lateinit var coinsLoading: ProgressBar
 
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), MainInterface.View {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         setupViewPager()
+        setupFab()
     }
 
     private fun setupViewPager() {
@@ -77,6 +79,12 @@ class MainActivity : AppCompatActivity(), MainInterface.View {
         tabs.getTabAt(0)?.customView = customTab
     }
 
+    private fun setupFab() {
+        fab_main.setOnClickListener {
+            presenter.onFabClick()
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -105,5 +113,14 @@ class MainActivity : AppCompatActivity(), MainInterface.View {
     override fun setCoinsLoadingVisibility(isLoading: Boolean) {
         if (isLoading) coinsLoading.visibility = View.VISIBLE
         else coinsLoading.visibility = View.INVISIBLE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+    }
+
+    override fun startActivityFromIntent(intent: Intent) {
+        startActivity(intent)
     }
 }

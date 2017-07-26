@@ -40,7 +40,11 @@ class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private va
                     getChangeArrowDrawable(coin.CHANGEPCT24HOUR?.toDouble())))
             DrawableCompat.setTint(itemView.main_item_price_arrow.drawable, ContextCompat.getColor(context,
                     getChangeColor(coin.CHANGEPCT24HOUR?.toDouble())))
-            if (coin.imgUrl != null) Picasso.with(context).load(coin.imgUrl).into(itemView.main_item_market_logo)
+            if (!coin.imgUrl.isNullOrEmpty()) {
+                Picasso.with(context)
+                        .load(coin.imgUrl)
+                        .into(itemView.main_item_market_logo)
+            }
         }
     }
 

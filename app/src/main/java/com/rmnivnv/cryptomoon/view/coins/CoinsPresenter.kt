@@ -57,13 +57,27 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onStart() {
+        updateCoins()
+    }
+
+    private fun updateCoins() {
+        view.disableSwipeToRefresh()
         RxBus.publish(CoinsLoadingEvent(true))
         val spCoinsSize = preferencesManager.getSelectedCoins()[FSYMS]?.size
-        if (spCoinsSize != null && spCoinsSize > coins.size) {
+        if (spCoinsSize != null && (spCoinsSize > coins.size || isNeedToUpdateImgUrls())) {
             getAllCoinsInfo()
         } else {
             getPrices()
         }
+    }
+
+    private fun isNeedToUpdateImgUrls(): Boolean {
+        coins.forEach {
+            if (it.imgUrl.isNullOrEmpty()) {
+                return true
+            }
+        }
+        return false
     }
 
     private fun getAllCoinsInfo() {
@@ -109,11 +123,13 @@ class CoinsPresenter : ICoins.Presenter {
                     coins.sortBy { it.from }
                     view.updateRecyclerView()
                 }
+                view.enableSwipeToRefresh()
             }
 
             override fun onError(t: Throwable) {
                 checkIsRefreshing()
                 RxBus.publish(CoinsLoadingEvent(false))
+                view.enableSwipeToRefresh()
                 Log.d("onError", t.message)
             }
         }))
@@ -146,7 +162,7 @@ class CoinsPresenter : ICoins.Presenter {
         disposable.clear()
     }
 
-    override fun updateCoins() {
+    override fun onSwipeUpdate() {
         isRefreshing = true
         RxBus.publish(CoinsLoadingEvent(true))
         getPrices()

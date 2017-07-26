@@ -10,6 +10,8 @@ interface ICoins {
     interface View {
         fun updateRecyclerView()
         fun hideRefreshing()
+        fun enableSwipeToRefresh()
+        fun disableSwipeToRefresh()
     }
 
     interface Presenter {
@@ -17,6 +19,6 @@ interface ICoins {
         fun onViewCreated(coins: ArrayList<CoinBodyDisplay>)
         fun onStart()
         fun onDestroy()
-        fun updateCoins()
+        fun onSwipeUpdate()
     }
 }

@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.view
+package com.rmnivnv.cryptomoon.view.main
 
 import dagger.Subcomponent
 import javax.inject.Singleton
