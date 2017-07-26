@@ -24,37 +24,44 @@
                 android:src="@drawable/ic_btc"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:layout_marginRight="3dp"
-                android:layout_marginEnd="3dp"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"/>
             <TextView android:id="@+id/main_item_market"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="BTC/USD"
                 android:textColor="@color/grey_light"
                 android:textSize="18sp"/>
-            <TextView android:id="@+id/main_item_last_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="2542"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:textSize="20sp"
-                android:textColor="@color/grey_light"/>
         </LinearLayout>
-        <TextView android:id="@+id/main_item_change_in_24"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="+101%"
-            android:textColor="@color/grey_light"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-        <!--<TextView android:id="@+id/main_item_holding"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--tools:text="3.1235235"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:layout_below="@id/main_item_change_in_24"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true"/>-->
+            android:layout_alignParentEnd="true"
+            android:gravity="end"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <TextView android:id="@+id/main_item_last_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="2542"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/grey_light"/>
+                <ImageView android:id="@+id/main_item_price_arrow"
+                    tools:src="@drawable/ic_arrow_drop_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView android:id="@+id/main_item_change_in_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="+101%"
+                android:textColor="@color/grey_light"/>
+        </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

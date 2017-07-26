@@ -9,11 +9,14 @@ interface ICoins {
 
     interface View {
         fun updateRecyclerView()
+        fun hideRefreshing()
     }
 
     interface Presenter {
         fun onCreate(component: CoinsComponent)
         fun onViewCreated(coins: ArrayList<CoinBodyDisplay>)
+        fun onStart()
         fun onDestroy()
+        fun updateCoins()
     }
 }

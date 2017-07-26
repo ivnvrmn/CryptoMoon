@@ -27,6 +27,7 @@ class CoinsPresenter : ICoins.Presenter {
     private val disposable = CompositeDisposable()
     private lateinit var coins: ArrayList<CoinBodyDisplay>
     private var allCoinsInfo: ArrayList<Coin>? = null
+    private var isRefreshing = false
 
     override fun onCreate(component: CoinsComponent) {
         component.inject(this)
@@ -35,7 +36,6 @@ class CoinsPresenter : ICoins.Presenter {
     override fun onViewCreated(coins: ArrayList<CoinBodyDisplay>) {
         this.coins = coins
         setCoinsFromDb()
-        getAllCoinsInfo()
     }
 
     private fun setCoinsFromDb() {
@@ -56,8 +56,17 @@ class CoinsPresenter : ICoins.Presenter {
         view.updateRecyclerView()
     }
 
-    private fun getAllCoinsInfo() {
+    override fun onStart() {
         RxBus.publish(CoinsLoadingEvent(true))
+        val spCoinsSize = preferencesManager.getSelectedCoins()[FSYMS]?.size
+        if (spCoinsSize != null && spCoinsSize > coins.size) {
+            getAllCoinsInfo()
+        } else {
+            getPrices()
+        }
+    }
+
+    private fun getAllCoinsInfo() {
         disposable.add(networkManager.getAllCoins(object : GetAllCoinsCallback {
             override fun onSuccess(allCoins: ArrayList<Coin>) {
                 allCoinsInfo = allCoins
@@ -87,6 +96,7 @@ class CoinsPresenter : ICoins.Presenter {
 
         disposable.add(networkManager.getPrice(preferencesManager.getSelectedCoins(), object : GetPriceCallback {
             override fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?) {
+                checkIsRefreshing()
                 RxBus.publish(CoinsLoadingEvent(false))
                 if (coinsInfoList != null && coinsInfoList.size > 0) {
                     coins.clear()
@@ -102,10 +112,18 @@ class CoinsPresenter : ICoins.Presenter {
             }
 
             override fun onError(t: Throwable) {
+                checkIsRefreshing()
                 RxBus.publish(CoinsLoadingEvent(false))
                 Log.d("onError", t.message)
             }
         }))
+    }
+
+    private fun checkIsRefreshing() {
+        if (isRefreshing) {
+            view.hideRefreshing()
+            isRefreshing = false
+        }
     }
 
     private fun saveUpdatedCoinsToDb() {
@@ -128,5 +146,9 @@ class CoinsPresenter : ICoins.Presenter {
         disposable.clear()
     }
 
-
+    override fun updateCoins() {
+        isRefreshing = true
+        RxBus.publish(CoinsLoadingEvent(true))
+        getPrices()
+    }
 }

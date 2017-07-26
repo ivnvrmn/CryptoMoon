@@ -39,6 +39,7 @@ class CoinsFragment : Fragment(), ICoins.View {
         super.onViewCreated(view, savedInstanceState)
         presenter.onViewCreated(coins)
         setupRecView()
+        setupSwipeRefresh()
     }
 
     fun setupRecView() {
@@ -48,6 +49,17 @@ class CoinsFragment : Fragment(), ICoins.View {
         recView.adapter = adapter
     }
 
+    fun setupSwipeRefresh() {
+        swipe_refresh.setOnRefreshListener {
+            presenter.updateCoins()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()
@@ -55,5 +67,9 @@ class CoinsFragment : Fragment(), ICoins.View {
 
     override fun updateRecyclerView() {
         adapter.notifyDataSetChanged()
+    }
+
+    override fun hideRefreshing() {
+        swipe_refresh.isRefreshing = false
     }
 }
