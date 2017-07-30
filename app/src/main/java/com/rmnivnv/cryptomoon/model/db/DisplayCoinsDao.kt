@@ -17,4 +17,7 @@ interface DisplayCoinsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(coin: CoinBodyDisplay)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertList(list: List<CoinBodyDisplay>)
 }

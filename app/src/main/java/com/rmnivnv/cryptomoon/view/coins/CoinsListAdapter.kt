@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.coins_list_item.view.*
  * Created by rmnivnv on 02/07/2017.
  */
 
-class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private val context: Context) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
+class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private val context: Context)
+    : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false)

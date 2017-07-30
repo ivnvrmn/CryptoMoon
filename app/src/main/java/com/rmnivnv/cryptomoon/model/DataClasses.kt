@@ -19,20 +19,21 @@ data class AllCoinsResponse(
         @SerializedName("Data") val data: JsonObject,
         @SerializedName("Type") val type: Int)
 
+@Entity(tableName = "all_coins")
 data class Coin(
-        @SerializedName("Id") val id: String,
-        @SerializedName("Url") val url: String,
-        @SerializedName("ImageUrl") var imageUrl: String,
-        @SerializedName("Name") val name: String,
-        @SerializedName("CoinName") val coinName: String,
-        @SerializedName("FullName") val fullName: String,
-        @SerializedName("Algorithm") val algorithm: String,
-        @SerializedName("ProofType") val proofType: String,
-        @SerializedName("FullyPremined") val fullyPremined: String,
-        @SerializedName("TotalCoinSupply") val totalCoinSupply: String,
-        @SerializedName("PreMinedValue") val preMinedValue: String,
-        @SerializedName("TotalCoinsFreeFloat") val totalCoinsFreeFloat: String,
-        @SerializedName("SortOrder") val sortOrder: String)
+        @PrimaryKey @SerializedName("Id") var coinId: String? = "",
+        @SerializedName("Url") var url: String? = "",
+        @SerializedName("ImageUrl") var imageUrl: String? = "",
+        @SerializedName("Name") var name: String? = "",
+        @SerializedName("CoinName") var coinName: String? = "",
+        @SerializedName("FullName") var fullName: String? = "",
+        @SerializedName("Algorithm") var algorithm: String? = "",
+        @SerializedName("ProofType") var proofType: String? = "",
+        @SerializedName("FullyPremined") var fullyPremined: String? = "",
+        @SerializedName("TotalCoinSupply") var totalCoinSupply: String? = "",
+        @SerializedName("PreMinedValue") var preMinedValue: String? = "",
+        @SerializedName("TotalCoinsFreeFloat") var totalCoinsFreeFloat: String? = "",
+        @SerializedName("SortOrder") var sortOrder: String? = "")
 
 data class CoinBodyRAW(
         val TYPE: String,

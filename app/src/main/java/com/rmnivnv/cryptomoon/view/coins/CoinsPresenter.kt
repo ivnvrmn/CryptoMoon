@@ -85,6 +85,7 @@ class CoinsPresenter : ICoins.Presenter {
             override fun onSuccess(allCoins: ArrayList<Coin>) {
                 allCoinsInfo = allCoins
                 getPrices()
+                saveAllCoinsToDb()
             }
 
             override fun onError(t: Throwable) {
@@ -92,6 +93,15 @@ class CoinsPresenter : ICoins.Presenter {
                 RxBus.publish(CoinsLoadingEvent(false))
             }
         }))
+    }
+
+    private fun saveAllCoinsToDb() {
+        val list = allCoinsInfo?.toList()
+        if (list != null) {
+            disposable.add(Single.fromCallable { db.allCoinsDao().insertList(list) }
+                    .subscribeOn(Schedulers.io())
+                    .subscribe())
+        }
     }
 
     private fun getPrices() {

@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView android:id="@+id/tab_title"
+
+    <TextView
+        android:id="@+id/tab_title"
         tools:text="COINS"
         android:textStyle="bold"
         android:textAllCaps="true"
@@ -12,7 +14,9 @@
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <com.github.ybq.android.spinkit.SpinKitView android:id="@+id/tab_loading"
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/tab_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/tab_title"
@@ -22,4 +26,5 @@
         android:layout_marginStart="3dp"
         style="@style/SpinKitView.Small.DoubleBounce"
         app:SpinKit_Color="@color/yellow"/>
+
 </RelativeLayout>
