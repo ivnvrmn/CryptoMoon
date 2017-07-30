@@ -17,6 +17,6 @@ interface IAddCoin {
         fun onDestroy()
         fun onFromTextChanged(text: String)
         fun onToTextChanged(text: String)
-        fun onFromItemClicked()
+        fun onFromItemClicked(coin: Coin)
     }
 }

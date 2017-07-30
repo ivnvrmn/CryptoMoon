@@ -65,4 +65,8 @@ class AddCoinPresenter : IAddCoin.Presenter {
     override fun onToTextChanged(text: String) {
 
     }
+
+    override fun onFromItemClicked(coin: Coin) {
+        println("COIN CLICKED " + coin.name)
+    }
 }

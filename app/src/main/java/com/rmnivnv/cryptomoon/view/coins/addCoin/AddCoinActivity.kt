@@ -75,14 +75,10 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
     private fun setupRecView() {
         recView = add_coin_matches_rec_view
         recView.layoutManager = LinearLayoutManager(this)
-        adapter = AddCoinMatchesAdapter(matches, this)
-        recView.adapter = adapter
-    }
-
-    private fun getOnClickListener(): View.OnClickListener {
-        return View.OnClickListener {
-
+        adapter = AddCoinMatchesAdapter(matches, this) {
+            presenter.onFromItemClicked(it)
         }
+        recView.adapter = adapter
     }
 
     override fun onDestroy() {

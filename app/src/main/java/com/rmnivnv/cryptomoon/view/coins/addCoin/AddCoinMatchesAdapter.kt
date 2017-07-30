@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.add_coin_matches_item.view.*
 /**
  * Created by rmnivnv on 30/07/2017.
  */
-class AddCoinMatchesAdapter(private val items: ArrayList<Coin>, private val context: Context)
+class AddCoinMatchesAdapter(private val items: ArrayList<Coin>, private val context: Context,
+                            val listener: (Coin) -> Unit)
     : RecyclerView.Adapter<AddCoinMatchesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): AddCoinMatchesAdapter.ViewHolder {
@@ -22,20 +23,21 @@ class AddCoinMatchesAdapter(private val items: ArrayList<Coin>, private val cont
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItems(items[position])
+        holder?.bindItems(items[position], listener)
     }
 
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(coin: Coin) {
-            itemView.add_coin_name.text = coin.coinName ?: ""
-            itemView.add_coin_short_name.text = coin.name ?: ""
+        fun bindItems(coin: Coin, listener: (Coin) -> Unit) = with(itemView) {
+            add_coin_name.text = coin.coinName ?: ""
+            add_coin_short_name.text = coin.name ?: ""
             if (!coin.imageUrl.isNullOrEmpty()) {
                 Picasso.with(context)
                         .load(coin.imageUrl)
-                        .into(itemView.add_coin_icon)
+                        .into(add_coin_icon)
             }
+            setOnClickListener { listener(coin) }
         }
     }
 }
