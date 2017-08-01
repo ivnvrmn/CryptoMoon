@@ -7,10 +7,10 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.Coin
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.app
 import kotlinx.android.synthetic.main.activity_add_coin.*
 import javax.inject.Inject
@@ -19,6 +19,7 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
 
     val component by lazy { app.component.plus(AddCoinModule(this)) }
     @Inject lateinit var presenter: IAddCoin.Presenter
+    @Inject lateinit var resProvider: ResourceProvider
 
     private lateinit var recView: RecyclerView
     private lateinit var adapter: AddCoinMatchesAdapter
@@ -37,7 +38,7 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
     private fun setupToolbar() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-        supportActionBar?.title = getString(R.string.add_coin)
+        supportActionBar?.title = resProvider.getString(R.string.add_coin)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
@@ -91,7 +92,7 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
     }
 
     override fun setMatchesResultSize(matchesCount: String) {
-        val text = matchesCount + " " + getString(R.string.matches_found)
+        val text = matchesCount + " " + resProvider.getString(R.string.matches_found)
         add_coin_matches_count.text = text
     }
 }

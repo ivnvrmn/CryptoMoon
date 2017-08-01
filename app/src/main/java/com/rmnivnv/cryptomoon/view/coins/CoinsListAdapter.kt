@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.coins_list_item.view.*
 
@@ -16,7 +17,8 @@ import kotlinx.android.synthetic.main.coins_list_item.view.*
  * Created by rmnivnv on 02/07/2017.
  */
 
-class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private val context: Context)
+class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private val context: Context,
+                       private val resProvider: ResourceProvider)
     : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
@@ -35,12 +37,9 @@ class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private va
             itemView.main_item_market.text = """${coin.from}/${coin.to}"""
             itemView.main_item_last_price.text = coin.PRICE
             itemView.main_item_change_in_24.text = """${coin.CHANGEPCT24HOUR}%"""
-            itemView.main_item_change_in_24.setTextColor(ContextCompat.getColor(context,
-                    getChangeColor(coin.CHANGEPCT24HOUR?.toDouble())))
-            itemView.main_item_price_arrow.setImageDrawable(ContextCompat.getDrawable(context,
-                    getChangeArrowDrawable(coin.CHANGEPCT24HOUR?.toDouble())))
-            DrawableCompat.setTint(itemView.main_item_price_arrow.drawable, ContextCompat.getColor(context,
-                    getChangeColor(coin.CHANGEPCT24HOUR?.toDouble())))
+            itemView.main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR?.toDouble())))
+            itemView.main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.CHANGEPCT24HOUR?.toDouble())))
+            DrawableCompat.setTint(itemView.main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR?.toDouble())))
             if (!coin.imgUrl.isNullOrEmpty()) {
                 Picasso.with(context)
                         .load(coin.imgUrl)

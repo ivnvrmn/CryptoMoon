@@ -48,7 +48,6 @@ fun getAllCoinsFromJson(response: AllCoinsResponse): ArrayList<Coin> {
     val jsonObject = response.data
     jsonObject.entrySet().forEach {
         val coin = Gson().fromJson(it.value, Coin::class.java)
-        //val tempUrl = coin.imageUrl
         coin.imageUrl = response.baseImageUrl + coin.imageUrl
         result.add(coin)
     }

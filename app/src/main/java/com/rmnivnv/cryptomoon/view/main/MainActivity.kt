@@ -19,6 +19,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.view.coins.CoinsFragment
 import com.rmnivnv.cryptomoon.view.ico.IcoFragment
 import com.rmnivnv.cryptomoon.view.fragments.news.NewsFragment
@@ -28,7 +29,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), IMain.View {
 
     val component by lazy { app.component.plus(MainModule(this)) }
+
     @Inject lateinit var presenter: IMain.Presenter
+    @Inject lateinit var resProvider: ResourceProvider
 
     private lateinit var coinsLoading: ProgressBar
 
@@ -45,9 +48,9 @@ class MainActivity : AppCompatActivity(), IMain.View {
 
     private fun setupViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(CoinsFragment(), getString(R.string.coins))
-        adapter.addFragment(IcoFragment(), getString(R.string.ico))
-        adapter.addFragment(NewsFragment(), getString(R.string.news))
+        adapter.addFragment(CoinsFragment(), resProvider.getString(R.string.coins))
+        adapter.addFragment(IcoFragment(), resProvider.getString(R.string.ico))
+        adapter.addFragment(NewsFragment(), resProvider.getString(R.string.news))
         viewpager.adapter = adapter
         tabs.setupWithViewPager(viewpager)
         setCustomTab()
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity(), IMain.View {
         val customTab = LayoutInflater.from(this).inflate(R.layout.tab_with_loading, null) as RelativeLayout
         val title = customTab.findViewById(R.id.tab_title) as TextView
         coinsLoading = customTab.findViewById(R.id.tab_loading) as ProgressBar
-        title.text = getString(R.string.coins)
+        title.text = resProvider.getString(R.string.coins)
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
 
@@ -69,9 +72,9 @@ class MainActivity : AppCompatActivity(), IMain.View {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab?.position == 0) {
-                    title.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorAccent))
+                    title.setTextColor(resProvider.getColor(R.color.colorAccent))
                 } else {
-                    title.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.grey_light))
+                    title.setTextColor(resProvider.getColor(R.color.grey_light))
                 }
             }
 

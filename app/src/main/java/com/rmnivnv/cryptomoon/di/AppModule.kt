@@ -5,6 +5,7 @@ import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.model.DATABASE_NAME
 import com.rmnivnv.cryptomoon.model.PreferencesManager
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -20,4 +21,6 @@ class AppModule(private val app: MainApp) {
     @Provides @Singleton fun providePreferencesManager() = PreferencesManager(app)
 
     @Provides @Singleton fun provideDatabase() = Room.databaseBuilder(app, CMDatabase::class.java, DATABASE_NAME).build()
+
+    @Provides @Singleton fun provideResourceProvider() = ResourceProvider(app)
 }
