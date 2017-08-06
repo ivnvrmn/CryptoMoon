@@ -10,6 +10,12 @@ interface IAddCoin {
     interface View {
         fun updateRecyclerView()
         fun setMatchesResultSize(matchesCount: String)
+        fun disableMatchesCount()
+        fun enableMatchesCount()
+        fun enableLoadingLayout()
+        fun disableLoadingLayout()
+        fun hideKeyboard()
+        fun finishActivity()
     }
 
     interface Presenter {

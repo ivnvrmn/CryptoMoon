@@ -52,6 +52,7 @@ dependencies {
     testCompile 'com.nhaarman:mockito-kotlin:1.1.0'
     testCompile 'org.amshove.kluent:kluent:1.20'
     //Dagger
+    kapt 'com.squareup:javapoet:1.9.0' //explicitly before Dagger to avoid exception noSuchMethodException
     compile "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     testApt "com.google.dagger:dagger-compiler:$dagger_version"
@@ -80,5 +81,4 @@ dependencies {
     testCompile 'org.powermock:powermock-module-junit4-rule:1.7.0RC2'
     testCompile 'org.powermock:powermock-module-junit4:1.7.0RC2'
     testCompile 'org.json:json:20140107'
-    kapt 'com.squareup:javapoet:1.9.0'
 }

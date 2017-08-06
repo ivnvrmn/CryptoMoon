@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.app
 import kotlinx.android.synthetic.main.coins_fragment.*
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class CoinsFragment : Fragment(), ICoins.View {
 
     val component by lazy { app.component.plus(CoinsModule(this)) }
     @Inject lateinit var presenter: ICoins.Presenter
+    @Inject lateinit var resProvider: ResourceProvider
 
     private lateinit var recView: RecyclerView
     private lateinit var adapter: CoinsListAdapter
@@ -37,15 +39,15 @@ class CoinsFragment : Fragment(), ICoins.View {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.onViewCreated(coins)
         setupRecView()
         setupSwipeRefresh()
+        presenter.onViewCreated(coins)
     }
 
     fun setupRecView() {
         recView = coins_fragment_rec_view
         recView.layoutManager = LinearLayoutManager(activity)
-        adapter = CoinsListAdapter(coins, activity)
+        adapter = CoinsListAdapter(coins, activity, resProvider)
         recView.adapter = adapter
     }
 

@@ -13,3 +13,13 @@ interface GetPriceCallback {
     fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?)
     fun onError(t: Throwable)
 }
+
+interface GetDisplayCoinsCallback {
+    fun onSuccess(list: List<CoinBodyDisplay>)
+    fun onError(t: Throwable)
+}
+
+interface GetAllCoinsFromDbCallback {
+    fun onSuccess(list: List<Coin>)
+    fun onError(t: Throwable)
+}

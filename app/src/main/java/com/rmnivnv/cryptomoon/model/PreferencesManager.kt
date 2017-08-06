@@ -19,7 +19,8 @@ class PreferencesManager(context: Context) {
 
     fun getSelectedCoins(): HashMap<String, ArrayList<String>> {
         val type = object : TypeToken<HashMap<String, ArrayList<String>>>() {}.type
-        return Gson().fromJson<HashMap<String, ArrayList<String>>>(prefs.getString(SELECTED_COINS_KEY, SELECTED_COINS_DEFAULT), type)
+        return Gson().fromJson<HashMap<String, ArrayList<String>>>(prefs.getString(SELECTED_COINS_KEY,
+                SELECTED_COINS_DEFAULT), type)
     }
 
     fun setSelectedCoins(coins: HashMap<String, ArrayList<String>>) {

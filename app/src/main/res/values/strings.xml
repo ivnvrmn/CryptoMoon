@@ -13,4 +13,8 @@
     <string name="from">From:</string>
     <string name="to">To:</string>
     <string name="matches_found">matches found</string>
+    <string name="searching_info">Searching for coin info, please wait</string>
+    <string name="coin_not_found">Coin not found</string>
+    <string name="coin_added">Coin added</string>
+    <string name="coin_already_added">Coin already added</string>
 </resources>

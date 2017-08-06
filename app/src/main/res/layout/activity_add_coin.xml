@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,73 +9,113 @@
     android:focusableInTouchMode="true"
     tools:context="com.rmnivnv.cryptomoon.view.coins.addCoin.AddCoinActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ToolbarColoredBackArrow"
-            app:titleTextColor="@color/grey_light"
-            android:background="@color/colorPrimary"/>
-
-    </android.support.design.widget.AppBarLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColorHint="@color/grey_light">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/add_coin_from_edt"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/add_coin_from_hint"
-                android:maxLines="1"
-                android:textColor="@color/grey_light"
-                android:textColorHint="@color/grey_light"/>
+                android:theme="@style/ToolbarColoredBackArrow"
+                app:titleTextColor="@color/grey_light"
+                android:background="@color/colorPrimary"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.AppBarLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColorHint="@color/grey_light">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/add_coin_to_edt"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:hint="@string/add_coin_to_hint"
-                android:textColor="@color/grey_light"
-                android:textColorHint="@color/grey_light"/>
+                android:layout_weight="1"
+                android:textColorHint="@color/grey_light">
 
-        </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/add_coin_from_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_coin_from_hint"
+                    android:maxLines="1"
+                    android:textColor="@color/grey_light"
+                    android:textColorHint="@color/grey_light"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColorHint="@color/grey_light">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/add_coin_to_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:hint="@string/add_coin_to_hint"
+                    android:textColor="@color/grey_light"
+                    android:textColorHint="@color/grey_light"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/add_coin_matches_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/grey_light"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            tools:text="11 matches found"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/add_coin_matches_rec_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/add_coin_matches_count"
+    <FrameLayout
+        android:id="@+id/loading_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/grey_light"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        tools:text="11 matches found"/>
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="#000000"
+        android:visibility="gone"
+        tools:visibility="visible">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/add_coin_matches_rec_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/searching_info"
+                android:textColor="@color/grey_light"/>
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                style="@style/SpinKitView.Wave"
+                app:SpinKit_Color="@color/yellow"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>
