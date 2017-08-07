@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by rmnivnv on 05/08/2017.
  */
-class DBManager(val db: CMDatabase) {
+class DBController(val db: CMDatabase) {
 
     fun saveDisplayCoin(coin: CoinBodyDisplay) {
         Single.fromCallable { db.displayCoinsDao().insert(coin) }

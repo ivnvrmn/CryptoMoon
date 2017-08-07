@@ -3,10 +3,10 @@ package com.rmnivnv.cryptomoon.view.coins
 import android.util.Log
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.model.*
-import com.rmnivnv.cryptomoon.model.db.DBManager
+import com.rmnivnv.cryptomoon.model.db.DBController
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
-import com.rmnivnv.cryptomoon.network.NetworkManager
+import com.rmnivnv.cryptomoon.network.NetworkRequests
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -17,9 +17,10 @@ class CoinsPresenter : ICoins.Presenter {
 
     @Inject lateinit var app: MainApp
     @Inject lateinit var view: ICoins.View
-    @Inject lateinit var networkManager: NetworkManager
-    @Inject lateinit var preferencesManager: PreferencesManager
-    @Inject lateinit var dbManager: DBManager
+    @Inject lateinit var networkRequests: NetworkRequests
+    @Inject lateinit var preferencesProvider: PreferencesProvider
+    @Inject lateinit var dbController: DBController
+    @Inject lateinit var coinsController: CoinsController
 
     private val disposable = CompositeDisposable()
     private lateinit var coins: ArrayList<CoinBodyDisplay>
@@ -32,11 +33,11 @@ class CoinsPresenter : ICoins.Presenter {
 
     override fun onViewCreated(coins: ArrayList<CoinBodyDisplay>) {
         this.coins = coins
-        showCoinsFromDb()
+        displayCoins()
     }
 
-    private fun showCoinsFromDb() {
-        dbManager.getDisplayCoins(object : GetDisplayCoinsCallback {
+    private fun displayCoins() {
+        coinsController.getCoinsToDisplay(object : GetDisplayCoinsCallback {
             override fun onSuccess(list: List<CoinBodyDisplay>) {
                 coins.clear()
                 coins.addAll(list)
@@ -57,7 +58,7 @@ class CoinsPresenter : ICoins.Presenter {
     private fun updateCoins() {
         view.disableSwipeToRefresh()
         RxBus.publish(CoinsLoadingEvent(true))
-        val spCoinsSize = preferencesManager.getSelectedCoins()[FSYMS]?.size
+        val spCoinsSize = preferencesProvider.getSelectedCoins()[FSYMS]?.size
         if (spCoinsSize != null && (spCoinsSize > coins.size || isNeedToUpdateImgUrls())) {
             getAllCoinsInfo()
         } else {
@@ -75,7 +76,7 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     private fun getAllCoinsInfo() {
-        disposable.add(networkManager.getAllCoins(object : GetAllCoinsCallback {
+        disposable.add(networkRequests.getAllCoins(object : GetAllCoinsCallback {
             override fun onSuccess(allCoins: ArrayList<Coin>) {
                 allCoinsInfo = allCoins
                 getPrices()
@@ -92,12 +93,12 @@ class CoinsPresenter : ICoins.Presenter {
     private fun saveAllCoinsToDb() {
         val list = allCoinsInfo.toList()
         if (list.isNotEmpty()) {
-            dbManager.saveAllCoins(list)
+            dbController.saveAllCoins(list)
         }
     }
 
     private fun getPrices() {
-        disposable.add(networkManager.getPrice(preferencesManager.getSelectedCoins(), object : GetPriceCallback {
+        disposable.add(networkRequests.getPrice(preferencesProvider.getSelectedCoins(), object : GetPriceCallback {
             override fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?) {
                 checkIsRefreshing()
                 RxBus.publish(CoinsLoadingEvent(false))
@@ -135,7 +136,7 @@ class CoinsPresenter : ICoins.Presenter {
         var id = 0L
         coins.forEach {
             it.id = id
-            dbManager.saveDisplayCoin(it)
+            dbController.saveDisplayCoin(it)
             id++
         }
     }

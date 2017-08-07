@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken
 /**
  * Created by rmnivnv on 22/07/2017.
  */
-class PreferencesManager(context: Context) {
+class PreferencesProvider(context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(CRYPTOMOON_PREFS, Context.MODE_PRIVATE)
 

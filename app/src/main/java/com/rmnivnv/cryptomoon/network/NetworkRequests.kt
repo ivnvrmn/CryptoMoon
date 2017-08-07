@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by rmnivnv on 12/07/2017.
  */
-class NetworkManager(val api: CryptoCompareAPI) {
+class NetworkRequests(val api: CryptoCompareAPI) {
 
     fun getAllCoins(callback: GetAllCoinsCallback): Disposable  {
         return api.getCoinsList(COINS_LIST_URL)

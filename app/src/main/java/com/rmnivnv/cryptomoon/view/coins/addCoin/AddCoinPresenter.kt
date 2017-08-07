@@ -4,8 +4,8 @@ import android.util.Log
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
-import com.rmnivnv.cryptomoon.model.db.DBManager
-import com.rmnivnv.cryptomoon.network.NetworkManager
+import com.rmnivnv.cryptomoon.model.db.DBController
+import com.rmnivnv.cryptomoon.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.disposables.CompositeDisposable
@@ -17,9 +17,9 @@ import javax.inject.Inject
 class AddCoinPresenter : IAddCoin.Presenter {
 
     @Inject lateinit var view: IAddCoin.View
-    @Inject lateinit var dbManager: DBManager
-    @Inject lateinit var networkManager: NetworkManager
-    @Inject lateinit var prefManager: PreferencesManager
+    @Inject lateinit var dbController: DBController
+    @Inject lateinit var networkRequests: NetworkRequests
+    @Inject lateinit var prefProvider: PreferencesProvider
     @Inject lateinit var app: MainApp
     @Inject lateinit var resProvider: ResourceProvider
 
@@ -35,7 +35,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
     }
 
     private fun checkAllCoins() {
-        dbManager.getAllCoins(object : GetAllCoinsFromDbCallback {
+        dbController.getAllCoins(object : GetAllCoinsFromDbCallback {
             override fun onSuccess(list: List<Coin>) {
                 if (list.isNotEmpty()) {
                     println("checkAllCoins COINS SIZE = " + list.size)
@@ -92,7 +92,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
 
     private fun requestCoinInfo() {
         view.enableLoadingLayout()
-        disposable.add(networkManager.getPrice(createQueryMap(), object : GetPriceCallback {
+        disposable.add(networkRequests.getPrice(createQueryMap(), object : GetPriceCallback {
             override fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?) {
                 view.disableLoadingLayout()
                 if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
@@ -126,7 +126,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
     }
 
     private fun saveCoinToPreferences(coin: CoinBodyDisplay) {
-        val map = prefManager.getSelectedCoins()
+        val map = prefProvider.getSelectedCoins()
         val fsymsArray = map[FSYMS]
         fsymsArray!!.forEach {
             if (it == coin.FROMSYMBOL) {
@@ -136,7 +136,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
         }
         fsymsArray.add(coin.FROMSYMBOL)
         map.put(FSYMS, fsymsArray)
-        prefManager.setSelectedCoins(map)
+        prefProvider.setSelectedCoins(map)
         app.toastShort(resProvider.getString(R.string.coin_added))
         view.finishActivity()
     }
