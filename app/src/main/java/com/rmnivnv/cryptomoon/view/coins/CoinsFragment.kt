@@ -3,6 +3,7 @@ package com.rmnivnv.cryptomoon.view.coins
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -44,14 +45,15 @@ class CoinsFragment : Fragment(), ICoins.View {
         presenter.onViewCreated(coins)
     }
 
-    fun setupRecView() {
+    private fun setupRecView() {
         recView = coins_fragment_rec_view
         recView.layoutManager = LinearLayoutManager(activity)
-        adapter = CoinsListAdapter(coins, activity, resProvider)
+        adapter = CoinsListAdapter(coins, resProvider,
+                clickListener = { presenter.onCoinClicked(it) }, longClickListener = { presenter.onCoinLongClicked(it) })
         recView.adapter = adapter
     }
 
-    fun setupSwipeRefresh() {
+    private fun setupSwipeRefresh() {
         swipe_refresh.setOnRefreshListener {
             presenter.onSwipeUpdate()
         }
@@ -81,5 +83,20 @@ class CoinsFragment : Fragment(), ICoins.View {
 
     override fun disableSwipeToRefresh() {
         swipe_refresh.isEnabled = false
+    }
+
+    override fun showCoinPopMenu(coin: CoinBodyDisplay) {
+        val popMenu = PopupMenu(activity, adapter.popMenuAnchor)
+        popMenu.inflate(R.menu.coins_pop_menu)
+        popMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.coins_pop_remove -> {
+                    presenter.onRemoveCoinClicked(coin)
+                    false
+                }
+                else -> false
+            }
+        }
+        popMenu.show()
     }
 }

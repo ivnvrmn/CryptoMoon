@@ -2,7 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/main_menu_add_coin"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_add"
+        android:title="@string/add_coin" />
+    <item
+        android:id="@+id/main_menu_settings"
         app:showAsAction="never"
-        android:title="test" />
-
+        android:title="@string/settings" />
 </menu>

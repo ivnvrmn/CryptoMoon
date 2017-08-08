@@ -20,4 +20,7 @@ interface DisplayCoinsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: List<CoinBodyDisplay>)
+
+    @Delete
+    fun deleteCoin(coin: CoinBodyDisplay)
 }

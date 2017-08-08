@@ -1,7 +1,5 @@
 package com.rmnivnv.cryptomoon.view.coins
 
-import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -17,9 +15,13 @@ import kotlinx.android.synthetic.main.coins_list_item.view.*
  * Created by rmnivnv on 02/07/2017.
  */
 
-class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private val context: Context,
-                       private val resProvider: ResourceProvider)
-    : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
+class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>,
+                       private val resProvider: ResourceProvider,
+                       val clickListener: (CoinBodyDisplay) -> Unit,
+                       val longClickListener: (CoinBodyDisplay) -> Boolean) :
+        RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
+{
+    lateinit var popMenuAnchor: View
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false)
@@ -27,23 +29,30 @@ class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>, private va
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItems(items[position])
+        holder?.bindItems(items[position], clickListener, longClickListener)
     }
 
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(coin: CoinBodyDisplay) {
-            itemView.main_item_market.text = """${coin.from}/${coin.to}"""
-            itemView.main_item_last_price.text = coin.PRICE
-            itemView.main_item_change_in_24.text = """${coin.CHANGEPCT24HOUR}%"""
-            itemView.main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR?.toDouble())))
-            itemView.main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.CHANGEPCT24HOUR?.toDouble())))
-            DrawableCompat.setTint(itemView.main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR?.toDouble())))
+        fun bindItems(coin: CoinBodyDisplay, listener: (CoinBodyDisplay) -> Unit,
+                      longClickListener: (CoinBodyDisplay) -> Boolean) = with(itemView) {
+
+            setOnClickListener { listener(coin) }
+            setOnLongClickListener {
+                popMenuAnchor = main_item_market_logo
+                longClickListener(coin)
+            }
+            main_item_market.text = """${coin.from}/${coin.to}"""
+            main_item_last_price.text = coin.PRICE
+            main_item_change_in_24.text = """${coin.CHANGEPCT24HOUR}%"""
+            main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.toDouble())))
+            main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.CHANGEPCT24HOUR.toDouble())))
+            DrawableCompat.setTint(main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.toDouble())))
             if (!coin.imgUrl.isNullOrEmpty()) {
                 Picasso.with(context)
                         .load(coin.imgUrl)
-                        .into(itemView.main_item_market_logo)
+                        .into(main_item_market_logo)
             }
         }
     }

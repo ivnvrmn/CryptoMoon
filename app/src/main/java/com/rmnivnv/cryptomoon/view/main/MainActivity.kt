@@ -13,7 +13,6 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.utils.app
 import javax.inject.Inject
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity(), IMain.View {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         setupViewPager()
-        setupFab()
     }
 
     private fun setupViewPager() {
@@ -82,18 +80,16 @@ class MainActivity : AppCompatActivity(), IMain.View {
         tabs.getTabAt(0)?.customView = customTab
     }
 
-    private fun setupFab() {
-        fab_main.setOnClickListener {
-            presenter.onFabClick()
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.main_menu_add_coin -> presenter.onAddCoinClicked()
+            R.id.main_menu_settings -> presenter.onSettingsClicked()
+        }
         return super.onOptionsItemSelected(item)
     }
 

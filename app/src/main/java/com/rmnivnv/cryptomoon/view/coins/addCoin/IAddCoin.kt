@@ -22,7 +22,6 @@ interface IAddCoin {
         fun onCreate(component: AddCoinComponent, matches: ArrayList<Coin>)
         fun onDestroy()
         fun onFromTextChanged(text: String)
-        fun onToTextChanged(text: String)
         fun onFromItemClicked(coin: Coin)
     }
 }

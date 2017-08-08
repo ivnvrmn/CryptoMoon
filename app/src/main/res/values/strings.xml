@@ -8,13 +8,15 @@
     <string name="news">News</string>
     <string name="add_coin">Add coin</string>
     <string name="enter_coin_name">Enter coin name</string>
-    <string name="add_coin_from_hint">Enter from here</string>
+    <string name="add_coin_from_hint">Enter coin name</string>
     <string name="add_coin_to_hint">To here</string>
     <string name="from">From:</string>
     <string name="to">To:</string>
     <string name="matches_found">matches found</string>
     <string name="searching_info">Searching for coin info, please wait</string>
     <string name="coin_not_found">Coin not found</string>
-    <string name="coin_added">Coin added</string>
+    <string name="coin_added">Coin added, updating coin list</string>
     <string name="coin_already_added">Coin already added</string>
+    <string name="settings">Settings</string>
+    <string name="remove_coin">Remove coin</string>
 </resources>

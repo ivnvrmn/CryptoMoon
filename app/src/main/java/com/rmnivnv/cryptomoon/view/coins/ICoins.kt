@@ -12,6 +12,7 @@ interface ICoins {
         fun hideRefreshing()
         fun enableSwipeToRefresh()
         fun disableSwipeToRefresh()
+        fun showCoinPopMenu(coin: CoinBodyDisplay)
     }
 
     interface Presenter {
@@ -20,5 +21,8 @@ interface ICoins {
         fun onStart()
         fun onDestroy()
         fun onSwipeUpdate()
+        fun onCoinClicked(coin: CoinBodyDisplay)
+        fun onCoinLongClicked(coin: CoinBodyDisplay): Boolean
+        fun onRemoveCoinClicked(coin: CoinBodyDisplay)
     }
 }

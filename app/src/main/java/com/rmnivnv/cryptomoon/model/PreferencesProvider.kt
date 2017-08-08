@@ -13,19 +13,25 @@ class PreferencesProvider(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(CRYPTOMOON_PREFS, Context.MODE_PRIVATE)
 
     companion object {
-        val SELECTED_COINS_KEY = "selected_coins"
-        val SELECTED_COINS_DEFAULT = """{"tsyms":["USD"],"fsyms":["BTC","ETH","XRP","LTC","XMR","ETC","DASH","BNT","SNT"]}"""
+        val DISPLAY_COINS_KEY = "selected_coins"
+        val DISPLAY_COINS_DEFAULT = """{"tsyms":["USD"],"fsyms":["BTC","ETH","XRP","LTC","XMR","ETC","DASH","BNT","SNT"]}"""
     }
 
-    fun getSelectedCoins(): HashMap<String, ArrayList<String>> {
+    fun getDisplayCoins(): HashMap<String, ArrayList<String>> {
         val type = object : TypeToken<HashMap<String, ArrayList<String>>>() {}.type
-        return Gson().fromJson<HashMap<String, ArrayList<String>>>(prefs.getString(SELECTED_COINS_KEY,
-                SELECTED_COINS_DEFAULT), type)
+        return Gson().fromJson<HashMap<String, ArrayList<String>>>(prefs.getString(DISPLAY_COINS_KEY,
+                DISPLAY_COINS_DEFAULT), type)
     }
 
-    fun setSelectedCoins(coins: HashMap<String, ArrayList<String>>) {
+    fun setDisplayCoins(coins: HashMap<String, ArrayList<String>>) {
         val editor = prefs.edit()
-        editor.putString(SELECTED_COINS_KEY, Gson().toJson(coins))
+        editor.putString(DISPLAY_COINS_KEY, Gson().toJson(coins))
         editor.apply()
+    }
+
+    fun deleteDisplayCoin(coin: CoinBodyDisplay) {
+        val currentMap = getDisplayCoins()
+        currentMap[FSYMS]?.remove(coin.FROMSYMBOL)
+        setDisplayCoins(currentMap)
     }
 }

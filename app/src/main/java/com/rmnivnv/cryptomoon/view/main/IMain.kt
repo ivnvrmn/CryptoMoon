@@ -15,6 +15,7 @@ interface IMain {
     interface Presenter {
         fun onCreate(component: MainComponent)
         fun onDestroy()
-        fun onFabClick()
+        fun onAddCoinClicked()
+        fun onSettingsClicked()
     }
 }

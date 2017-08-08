@@ -4,9 +4,9 @@ import android.util.Log
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
-import com.rmnivnv.cryptomoon.model.db.DBController
 import com.rmnivnv.cryptomoon.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.toastLong
 import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -16,11 +16,10 @@ import javax.inject.Inject
  */
 class AddCoinPresenter : IAddCoin.Presenter {
 
-    @Inject lateinit var view: IAddCoin.View
-    @Inject lateinit var dbController: DBController
-    @Inject lateinit var networkRequests: NetworkRequests
-    @Inject lateinit var prefProvider: PreferencesProvider
     @Inject lateinit var app: MainApp
+    @Inject lateinit var view: IAddCoin.View
+    @Inject lateinit var coinsController: CoinsController
+    @Inject lateinit var networkRequests: NetworkRequests
     @Inject lateinit var resProvider: ResourceProvider
 
     private val disposable = CompositeDisposable()
@@ -35,7 +34,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
     }
 
     private fun checkAllCoins() {
-        dbController.getAllCoins(object : GetAllCoinsFromDbCallback {
+        coinsController.getAllCoinsInfo(object : GetAllCoinsFromDbCallback {
             override fun onSuccess(list: List<Coin>) {
                 if (list.isNotEmpty()) {
                     println("checkAllCoins COINS SIZE = " + list.size)
@@ -58,26 +57,26 @@ class AddCoinPresenter : IAddCoin.Presenter {
     override fun onFromTextChanged(text: String) {
         view.enableMatchesCount()
         if (text.isNotEmpty()) {
-            val matchesList = allCoins?.filter {
-                (it.coinName.contains(text, true)) || (it.name.contains(text, true))
-            }?.reversed()
+            val matchesList = allCoins?.filter { (it.coinName.contains(text, true)) || (it.name.contains(text, true)) }?.reversed()
             if (matchesList != null && matchesList.isNotEmpty()) {
                 view.setMatchesResultSize(matchesList.size.toString())
-                matches.clear()
-                matches.addAll(matchesList)
-                view.updateRecyclerView()
+                updateCoinsList(matchesList)
             } else {
-                view.setMatchesResultSize("0")
+                updateCoinsList(null)
             }
         } else {
-            matches.clear()
-            view.updateRecyclerView()
-            view.setMatchesResultSize("0")
+            updateCoinsList(null)
         }
     }
 
-    override fun onToTextChanged(text: String) {
-
+    private fun updateCoinsList(list: List<Coin>?) {
+        matches.clear()
+        if (list != null) {
+            matches.addAll(list)
+        } else {
+            view.setMatchesResultSize("0")
+        }
+        view.updateRecyclerView()
     }
 
     override fun onFromItemClicked(coin: Coin) {
@@ -94,13 +93,12 @@ class AddCoinPresenter : IAddCoin.Presenter {
         view.enableLoadingLayout()
         disposable.add(networkRequests.getPrice(createQueryMap(), object : GetPriceCallback {
             override fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?) {
-                view.disableLoadingLayout()
                 if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
                     coinsInfoList.forEach {
-                        println(it.toString())
                         saveCoinToPreferences(it)
                     }
                 } else {
+                    view.disableLoadingLayout()
                     app.toastShort(resProvider.getString(R.string.coin_not_found))
                 }
             }
@@ -126,18 +124,23 @@ class AddCoinPresenter : IAddCoin.Presenter {
     }
 
     private fun saveCoinToPreferences(coin: CoinBodyDisplay) {
-        val map = prefProvider.getSelectedCoins()
+        val map = coinsController.getDisplayCoinsMap()
         val fsymsArray = map[FSYMS]
         fsymsArray!!.forEach {
             if (it == coin.FROMSYMBOL) {
+                view.disableLoadingLayout()
                 app.toastShort(resProvider.getString(R.string.coin_already_added))
                 return
             }
         }
         fsymsArray.add(coin.FROMSYMBOL)
         map.put(FSYMS, fsymsArray)
-        prefProvider.setSelectedCoins(map)
-        app.toastShort(resProvider.getString(R.string.coin_added))
+        coinsController.setDisplayCoins(map)
+        coinSuccessfullyAdded()
+    }
+
+    private fun coinSuccessfullyAdded() {
+        app.toastLong(resProvider.getString(R.string.coin_added))
         view.finishActivity()
     }
 }

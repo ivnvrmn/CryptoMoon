@@ -37,7 +37,11 @@ class MainPresenter : IMain.Presenter {
         disposable.clear()
     }
 
-    override fun onFabClick() {
+    override fun onAddCoinClicked() {
         view.startActivityFromIntent(Intent(app, AddCoinActivity::class.java))
+    }
+
+    override fun onSettingsClicked() {
+        //TODO implement on settings clicked
     }
 }

@@ -61,19 +61,6 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
                 presenter.onFromTextChanged(p0.toString())
             }
         })
-        add_coin_to_edt.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                presenter.onToTextChanged(p0.toString())
-            }
-        })
     }
 
     private fun setupRecView() {
@@ -110,13 +97,11 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
     override fun enableLoadingLayout() {
         loading_layout.visibility = View.VISIBLE
         add_coin_from_edt.isEnabled = false
-        add_coin_to_edt.isEnabled = false
     }
 
     override fun disableLoadingLayout() {
         loading_layout.visibility = View.GONE
         add_coin_from_edt.isEnabled = true
-        add_coin_to_edt.isEnabled = true
     }
 
     override fun hideKeyboard() {

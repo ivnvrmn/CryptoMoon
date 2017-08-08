@@ -3,7 +3,6 @@ package com.rmnivnv.cryptomoon.view.coins
 import android.util.Log
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.model.*
-import com.rmnivnv.cryptomoon.model.db.DBController
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.network.NetworkRequests
@@ -18,8 +17,6 @@ class CoinsPresenter : ICoins.Presenter {
     @Inject lateinit var app: MainApp
     @Inject lateinit var view: ICoins.View
     @Inject lateinit var networkRequests: NetworkRequests
-    @Inject lateinit var preferencesProvider: PreferencesProvider
-    @Inject lateinit var dbController: DBController
     @Inject lateinit var coinsController: CoinsController
 
     private val disposable = CompositeDisposable()
@@ -58,7 +55,7 @@ class CoinsPresenter : ICoins.Presenter {
     private fun updateCoins() {
         view.disableSwipeToRefresh()
         RxBus.publish(CoinsLoadingEvent(true))
-        val spCoinsSize = preferencesProvider.getSelectedCoins()[FSYMS]?.size
+        val spCoinsSize = coinsController.getDisplayCoinsMap()[FSYMS]?.size
         if (spCoinsSize != null && (spCoinsSize > coins.size || isNeedToUpdateImgUrls())) {
             getAllCoinsInfo()
         } else {
@@ -93,12 +90,12 @@ class CoinsPresenter : ICoins.Presenter {
     private fun saveAllCoinsToDb() {
         val list = allCoinsInfo.toList()
         if (list.isNotEmpty()) {
-            dbController.saveAllCoins(list)
+            coinsController.saveAllCoinsInfo(list)
         }
     }
 
     private fun getPrices() {
-        disposable.add(networkRequests.getPrice(preferencesProvider.getSelectedCoins(), object : GetPriceCallback {
+        disposable.add(networkRequests.getPrice(coinsController.getDisplayCoinsMap(), object : GetPriceCallback {
             override fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?) {
                 checkIsRefreshing()
                 RxBus.publish(CoinsLoadingEvent(false))
@@ -135,8 +132,9 @@ class CoinsPresenter : ICoins.Presenter {
     private fun saveUpdatedCoinsToDb() {
         var id = 0L
         coins.forEach {
+            //TODO how to automate REPLACE
             it.id = id
-            dbController.saveDisplayCoin(it)
+            coinsController.saveDisplayCoin(it)
             id++
         }
     }
@@ -149,5 +147,21 @@ class CoinsPresenter : ICoins.Presenter {
         isRefreshing = true
         RxBus.publish(CoinsLoadingEvent(true))
         getPrices()
+    }
+
+    override fun onCoinClicked(coin: CoinBodyDisplay) {
+
+    }
+
+    override fun onCoinLongClicked(coin: CoinBodyDisplay): Boolean {
+        view.showCoinPopMenu(coin)
+        return true
+    }
+
+    override fun onRemoveCoinClicked(coin: CoinBodyDisplay) {
+        //TODO remove coin
+//        coinsController.deleteDisplayCoin(coin)
+//        coins.remove(coin)
+//        view.updateRecyclerView()
     }
 }

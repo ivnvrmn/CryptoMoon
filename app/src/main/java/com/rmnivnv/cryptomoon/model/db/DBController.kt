@@ -26,13 +26,19 @@ class DBController(val db: CMDatabase) {
                 .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
-    fun saveAllCoins(allCoins: List<Coin>) {
+    fun deleteDisplayCoin(coin: CoinBodyDisplay) {
+        Single.fromCallable { db.displayCoinsDao().deleteCoin(coin) }
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+    }
+
+    fun saveAllCoinsInfo(allCoins: List<Coin>) {
         Single.fromCallable { db.allCoinsDao().insertList(allCoins) }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
     }
 
-    fun getAllCoins(callback: GetAllCoinsFromDbCallback) {
+    fun getAllCoinsInfo(callback: GetAllCoinsFromDbCallback) {
         db.allCoinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
