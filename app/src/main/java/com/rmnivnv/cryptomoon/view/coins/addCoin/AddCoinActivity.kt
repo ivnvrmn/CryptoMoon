@@ -12,7 +12,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.Coin
+import com.rmnivnv.cryptomoon.model.InfoCoin
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.app
 import kotlinx.android.synthetic.main.activity_add_coin.*
@@ -26,7 +26,7 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
 
     private lateinit var recView: RecyclerView
     private lateinit var adapter: AddCoinMatchesAdapter
-    private var matches: ArrayList<Coin> = ArrayList()
+    private var matches: ArrayList<InfoCoin> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

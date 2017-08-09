@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
+import com.rmnivnv.cryptomoon.model.DisplayCoin
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.app
 import kotlinx.android.synthetic.main.coins_fragment.*
@@ -26,7 +26,7 @@ class CoinsFragment : Fragment(), ICoins.View {
 
     private lateinit var recView: RecyclerView
     private lateinit var adapter: CoinsListAdapter
-    private var coins: ArrayList<CoinBodyDisplay> = ArrayList()
+    private var coins: ArrayList<DisplayCoin> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +85,7 @@ class CoinsFragment : Fragment(), ICoins.View {
         swipe_refresh.isEnabled = false
     }
 
-    override fun showCoinPopMenu(coin: CoinBodyDisplay) {
+    override fun showCoinPopMenu(coin: DisplayCoin) {
         val popMenu = PopupMenu(activity, adapter.popMenuAnchor)
         popMenu.inflate(R.menu.coins_pop_menu)
         popMenu.setOnMenuItemClickListener {

@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.Coin
+import com.rmnivnv.cryptomoon.model.InfoCoin
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.add_coin_matches_item.view.*
 
 /**
  * Created by rmnivnv on 30/07/2017.
  */
-class AddCoinMatchesAdapter(private val items: ArrayList<Coin>, private val context: Context,
-                            val listener: (Coin) -> Unit) : RecyclerView.Adapter<AddCoinMatchesAdapter.ViewHolder>() {
+class AddCoinMatchesAdapter(private val items: ArrayList<InfoCoin>, private val context: Context,
+                            val listener: (InfoCoin) -> Unit) : RecyclerView.Adapter<AddCoinMatchesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): AddCoinMatchesAdapter.ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.add_coin_matches_item, parent, false)
@@ -28,7 +28,7 @@ class AddCoinMatchesAdapter(private val items: ArrayList<Coin>, private val cont
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(coin: Coin, listener: (Coin) -> Unit) = with(itemView) {
+        fun bindItems(coin: InfoCoin, listener: (InfoCoin) -> Unit) = with(itemView) {
             add_coin_name.text = coin.coinName
             add_coin_short_name.text = coin.name
             if (!coin.imageUrl.isNullOrEmpty()) {

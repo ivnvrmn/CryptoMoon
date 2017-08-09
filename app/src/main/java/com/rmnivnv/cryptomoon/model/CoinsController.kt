@@ -9,7 +9,7 @@ class CoinsController(val dbController: DBController, val prefsProvider: Prefere
 
     fun getCoinsToDisplay(callback: GetDisplayCoinsCallback) {
         dbController.getDisplayCoins(object : GetDisplayCoinsCallback {
-            override fun onSuccess(list: List<CoinBodyDisplay>) {
+            override fun onSuccess(list: List<DisplayCoin>) {
                 callback.onSuccess(list)
             }
 
@@ -19,22 +19,26 @@ class CoinsController(val dbController: DBController, val prefsProvider: Prefere
         })
     }
 
-    fun saveDisplayCoin(coin: CoinBodyDisplay) {
+    fun saveDisplayCoin(coin: DisplayCoin) {
         dbController.saveDisplayCoin(coin)
+    }
+
+    fun saveDisplayCoinList(list: List<DisplayCoin>) {
+        dbController.saveDisplayCoinsList(list)
     }
 
     fun getDisplayCoinsMap() = prefsProvider.getDisplayCoins()
 
     fun setDisplayCoins(coins: HashMap<String, ArrayList<String>>) = prefsProvider.setDisplayCoins(coins)
 
-    fun deleteDisplayCoin(coin: CoinBodyDisplay) {
+    fun deleteDisplayCoin(coin: DisplayCoin) {
         dbController.deleteDisplayCoin(coin)
         prefsProvider.deleteDisplayCoin(coin)
     }
 
     fun getAllCoinsInfo(callback: GetAllCoinsFromDbCallback) {
         dbController.getAllCoinsInfo(object : GetAllCoinsFromDbCallback {
-            override fun onSuccess(list: List<Coin>) {
+            override fun onSuccess(list: List<InfoCoin>) {
                 callback.onSuccess(list)
             }
 
@@ -44,7 +48,7 @@ class CoinsController(val dbController: DBController, val prefsProvider: Prefere
         })
     }
 
-    fun saveAllCoinsInfo(allCoins: List<Coin>) {
+    fun saveAllCoinsInfo(allCoins: List<InfoCoin>) {
         dbController.saveAllCoinsInfo(allCoins)
     }
 }

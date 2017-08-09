@@ -23,11 +23,11 @@ class AddCoinPresenter : IAddCoin.Presenter {
     @Inject lateinit var resProvider: ResourceProvider
 
     private val disposable = CompositeDisposable()
-    private var allCoins: List<Coin>? = null
-    private lateinit var matches: ArrayList<Coin>
-    private var fromCoin: Coin = Coin()
+    private var allCoins: List<InfoCoin>? = null
+    private lateinit var matches: ArrayList<InfoCoin>
+    private var fromCoin: InfoCoin = InfoCoin()
 
-    override fun onCreate(component: AddCoinComponent, matches: ArrayList<Coin>) {
+    override fun onCreate(component: AddCoinComponent, matches: ArrayList<InfoCoin>) {
         component.inject(this)
         this.matches = matches
         checkAllCoins()
@@ -35,7 +35,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
 
     private fun checkAllCoins() {
         coinsController.getAllCoinsInfo(object : GetAllCoinsFromDbCallback {
-            override fun onSuccess(list: List<Coin>) {
+            override fun onSuccess(list: List<InfoCoin>) {
                 if (list.isNotEmpty()) {
                     println("checkAllCoins COINS SIZE = " + list.size)
                     allCoins = list
@@ -69,7 +69,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
         }
     }
 
-    private fun updateCoinsList(list: List<Coin>?) {
+    private fun updateCoinsList(list: List<InfoCoin>?) {
         matches.clear()
         if (list != null) {
             matches.addAll(list)
@@ -79,7 +79,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
         view.updateRecyclerView()
     }
 
-    override fun onFromItemClicked(coin: Coin) {
+    override fun onFromItemClicked(coin: InfoCoin) {
         view.disableMatchesCount()
         fromCoin = coin
         matches.clear()
@@ -92,7 +92,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
     private fun requestCoinInfo() {
         view.enableLoadingLayout()
         disposable.add(networkRequests.getPrice(createQueryMap(), object : GetPriceCallback {
-            override fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?) {
+            override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
                 if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
                     coinsInfoList.forEach {
                         saveCoinToPreferences(it)
@@ -123,7 +123,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
         return queryMap
     }
 
-    private fun saveCoinToPreferences(coin: CoinBodyDisplay) {
+    private fun saveCoinToPreferences(coin: DisplayCoin) {
         val map = coinsController.getDisplayCoinsMap()
         val fsymsArray = map[FSYMS]
         fsymsArray!!.forEach {

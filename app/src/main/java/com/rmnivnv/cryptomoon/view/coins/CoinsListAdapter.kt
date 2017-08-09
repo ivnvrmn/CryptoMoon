@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
+import com.rmnivnv.cryptomoon.model.DisplayCoin
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.coins_list_item.view.*
@@ -15,10 +15,10 @@ import kotlinx.android.synthetic.main.coins_list_item.view.*
  * Created by rmnivnv on 02/07/2017.
  */
 
-class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>,
+class CoinsListAdapter(private val items: ArrayList<DisplayCoin>,
                        private val resProvider: ResourceProvider,
-                       val clickListener: (CoinBodyDisplay) -> Unit,
-                       val longClickListener: (CoinBodyDisplay) -> Boolean) :
+                       val clickListener: (DisplayCoin) -> Unit,
+                       val longClickListener: (DisplayCoin) -> Boolean) :
         RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
 {
     lateinit var popMenuAnchor: View
@@ -35,8 +35,8 @@ class CoinsListAdapter(private val items: ArrayList<CoinBodyDisplay>,
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(coin: CoinBodyDisplay, listener: (CoinBodyDisplay) -> Unit,
-                      longClickListener: (CoinBodyDisplay) -> Boolean) = with(itemView) {
+        fun bindItems(coin: DisplayCoin, listener: (DisplayCoin) -> Unit,
+                      longClickListener: (DisplayCoin) -> Boolean) = with(itemView) {
 
             setOnClickListener { listener(coin) }
             setOnLongClickListener {

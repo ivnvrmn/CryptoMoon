@@ -20,7 +20,7 @@ data class AllCoinsResponse(
         @SerializedName("Type") val type: Int)
 
 @Entity(tableName = "all_coins")
-data class Coin(
+data class InfoCoin(
         @PrimaryKey @SerializedName("Id") var coinId: String = "",
         @SerializedName("Url") var url: String = "",
         @SerializedName("ImageUrl") var imageUrl: String = "",
@@ -35,7 +35,7 @@ data class Coin(
         @SerializedName("TotalCoinsFreeFloat") var totalCoinsFreeFloat: String = "",
         @SerializedName("SortOrder") var sortOrder: String = "")
 
-data class CoinBodyRAW(
+data class RawCoin(
         val TYPE: String,
         val MARKET: String,
         val FROMSYMBOL: String,
@@ -57,9 +57,9 @@ data class CoinBodyRAW(
         val SUPPLY: Float,
         val MKTCAP: Float)
 
-@Entity(tableName = "coins_display")
-data class CoinBodyDisplay(
-        var from: String = "",
+@Entity(tableName = "display_coins")
+data class DisplayCoin(
+        @PrimaryKey(autoGenerate = false) var from: String = "",
         var to: String = "",
         var imgUrl: String = "",
         var FROMSYMBOL: String = "",
@@ -80,7 +80,3 @@ data class CoinBodyDisplay(
         var CHANGEPCT24HOUR: String = "",
         var SUPPLY: String = "",
         var MKTCAP: String = "")
-{
-    @PrimaryKey(autoGenerate = false)
-    var id: Long = 0
-}

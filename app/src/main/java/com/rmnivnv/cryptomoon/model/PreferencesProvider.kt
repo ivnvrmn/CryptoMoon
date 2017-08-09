@@ -29,7 +29,7 @@ class PreferencesProvider(context: Context) {
         editor.apply()
     }
 
-    fun deleteDisplayCoin(coin: CoinBodyDisplay) {
+    fun deleteDisplayCoin(coin: DisplayCoin) {
         val currentMap = getDisplayCoins()
         currentMap[FSYMS]?.remove(coin.FROMSYMBOL)
         setDisplayCoins(currentMap)

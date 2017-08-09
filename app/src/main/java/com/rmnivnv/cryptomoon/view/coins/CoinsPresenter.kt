@@ -20,22 +20,22 @@ class CoinsPresenter : ICoins.Presenter {
     @Inject lateinit var coinsController: CoinsController
 
     private val disposable = CompositeDisposable()
-    private lateinit var coins: ArrayList<CoinBodyDisplay>
-    private var allCoinsInfo: ArrayList<Coin> = ArrayList()
+    private lateinit var coins: ArrayList<DisplayCoin>
+    private var allCoinsInfo: ArrayList<InfoCoin> = ArrayList()
     private var isRefreshing = false
 
     override fun onCreate(component: CoinsComponent) {
         component.inject(this)
     }
 
-    override fun onViewCreated(coins: ArrayList<CoinBodyDisplay>) {
+    override fun onViewCreated(coins: ArrayList<DisplayCoin>) {
         this.coins = coins
         displayCoins()
     }
 
     private fun displayCoins() {
         coinsController.getCoinsToDisplay(object : GetDisplayCoinsCallback {
-            override fun onSuccess(list: List<CoinBodyDisplay>) {
+            override fun onSuccess(list: List<DisplayCoin>) {
                 coins.clear()
                 coins.addAll(list)
                 coins.sortBy { it.from }
@@ -74,7 +74,7 @@ class CoinsPresenter : ICoins.Presenter {
 
     private fun getAllCoinsInfo() {
         disposable.add(networkRequests.getAllCoins(object : GetAllCoinsCallback {
-            override fun onSuccess(allCoins: ArrayList<Coin>) {
+            override fun onSuccess(allCoins: ArrayList<InfoCoin>) {
                 allCoinsInfo = allCoins
                 getPrices()
                 saveAllCoinsToDb()
@@ -96,7 +96,7 @@ class CoinsPresenter : ICoins.Presenter {
 
     private fun getPrices() {
         disposable.add(networkRequests.getPrice(coinsController.getDisplayCoinsMap(), object : GetPriceCallback {
-            override fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?) {
+            override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
                 checkIsRefreshing()
                 RxBus.publish(CoinsLoadingEvent(false))
                 if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
@@ -106,7 +106,7 @@ class CoinsPresenter : ICoins.Presenter {
                         val name = it.from
                         it.imgUrl = allCoinsInfo.find { it.name == name }?.imageUrl ?: ""
                     }
-                    saveUpdatedCoinsToDb()
+                    coinsController.saveDisplayCoinList(coins)
                     coins.sortBy { it.from }
                     view.updateRecyclerView()
                 }
@@ -129,16 +129,6 @@ class CoinsPresenter : ICoins.Presenter {
         }
     }
 
-    private fun saveUpdatedCoinsToDb() {
-        var id = 0L
-        coins.forEach {
-            //TODO how to automate REPLACE
-            it.id = id
-            coinsController.saveDisplayCoin(it)
-            id++
-        }
-    }
-
     override fun onDestroy() {
         disposable.clear()
     }
@@ -149,16 +139,16 @@ class CoinsPresenter : ICoins.Presenter {
         getPrices()
     }
 
-    override fun onCoinClicked(coin: CoinBodyDisplay) {
+    override fun onCoinClicked(coin: DisplayCoin) {
 
     }
 
-    override fun onCoinLongClicked(coin: CoinBodyDisplay): Boolean {
+    override fun onCoinLongClicked(coin: DisplayCoin): Boolean {
         view.showCoinPopMenu(coin)
         return true
     }
 
-    override fun onRemoveCoinClicked(coin: CoinBodyDisplay) {
+    override fun onRemoveCoinClicked(coin: DisplayCoin) {
         //TODO remove coin
 //        coinsController.deleteDisplayCoin(coin)
 //        coins.remove(coin)

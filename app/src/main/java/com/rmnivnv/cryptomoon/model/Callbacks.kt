@@ -5,21 +5,21 @@ package com.rmnivnv.cryptomoon.model
  */
 
 interface GetAllCoinsCallback {
-    fun onSuccess(allCoins: ArrayList<Coin>)
+    fun onSuccess(allCoins: ArrayList<InfoCoin>)
     fun onError(t: Throwable)
 }
 
 interface GetPriceCallback {
-    fun onSuccess(coinsInfoList: ArrayList<CoinBodyDisplay>?)
+    fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?)
     fun onError(t: Throwable)
 }
 
 interface GetDisplayCoinsCallback {
-    fun onSuccess(list: List<CoinBodyDisplay>)
+    fun onSuccess(list: List<DisplayCoin>)
     fun onError(t: Throwable)
 }
 
 interface GetAllCoinsFromDbCallback {
-    fun onSuccess(list: List<Coin>)
+    fun onSuccess(list: List<InfoCoin>)
     fun onError(t: Throwable)
 }

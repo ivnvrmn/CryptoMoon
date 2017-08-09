@@ -1,6 +1,6 @@
 package com.rmnivnv.cryptomoon.view.coins.addCoin
 
-import com.rmnivnv.cryptomoon.model.Coin
+import com.rmnivnv.cryptomoon.model.InfoCoin
 
 /**
  * Created by rmnivnv on 27/07/2017.
@@ -19,9 +19,9 @@ interface IAddCoin {
     }
 
     interface Presenter {
-        fun onCreate(component: AddCoinComponent, matches: ArrayList<Coin>)
+        fun onCreate(component: AddCoinComponent, matches: ArrayList<InfoCoin>)
         fun onDestroy()
         fun onFromTextChanged(text: String)
-        fun onFromItemClicked(coin: Coin)
+        fun onFromItemClicked(coin: InfoCoin)
     }
 }

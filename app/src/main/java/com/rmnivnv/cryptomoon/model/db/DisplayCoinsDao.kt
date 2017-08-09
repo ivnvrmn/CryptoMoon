@@ -1,8 +1,7 @@
 package com.rmnivnv.cryptomoon.model.db
 
 import android.arch.persistence.room.*
-import com.rmnivnv.cryptomoon.model.Coin
-import com.rmnivnv.cryptomoon.model.CoinBodyDisplay
+import com.rmnivnv.cryptomoon.model.DisplayCoin
 import io.reactivex.Flowable
 
 /**
@@ -12,15 +11,15 @@ import io.reactivex.Flowable
 @Dao
 interface DisplayCoinsDao {
 
-    @Query("SELECT * FROM coins_display")
-    fun getAllCoins(): Flowable<List<CoinBodyDisplay>>
+    @Query("SELECT * FROM display_coins")
+    fun getAllCoins(): Flowable<List<DisplayCoin>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(coin: CoinBodyDisplay)
+    fun insert(coin: DisplayCoin)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertList(list: List<CoinBodyDisplay>)
+    fun insertList(list: List<DisplayCoin>)
 
     @Delete
-    fun deleteCoin(coin: CoinBodyDisplay)
+    fun deleteCoin(coin: DisplayCoin)
 }
