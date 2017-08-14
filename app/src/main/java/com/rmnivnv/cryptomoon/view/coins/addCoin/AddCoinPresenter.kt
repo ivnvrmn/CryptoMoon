@@ -23,7 +23,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
     @Inject lateinit var resProvider: ResourceProvider
 
     private val disposable = CompositeDisposable()
-    private var allCoins: List<InfoCoin>? = null
+    private var allCoins: List<InfoCoin> = mutableListOf()
     private lateinit var matches: ArrayList<InfoCoin>
     private var fromCoin: InfoCoin = InfoCoin()
 
@@ -57,8 +57,8 @@ class AddCoinPresenter : IAddCoin.Presenter {
     override fun onFromTextChanged(text: String) {
         view.enableMatchesCount()
         if (text.isNotEmpty()) {
-            val matchesList = allCoins?.filter { (it.coinName.contains(text, true)) || (it.name.contains(text, true)) }?.reversed()
-            if (matchesList != null && matchesList.isNotEmpty()) {
+            val matchesList = allCoins.filter { (it.coinName.contains(text, true)) || (it.name.contains(text, true)) }.reversed()
+            if (matchesList.isNotEmpty()) {
                 view.setMatchesResultSize(matchesList.size.toString())
                 updateCoinsList(matchesList)
             } else {
@@ -95,7 +95,9 @@ class AddCoinPresenter : IAddCoin.Presenter {
             override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
                 if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
                     coinsInfoList.forEach {
-                        saveCoinToPreferences(it)
+                        saveDisplayCoinToDb(it)
+                        coinSuccessfullyAdded()
+//                        saveCoinToPreferences(it)
                     }
                 } else {
                     view.disableLoadingLayout()
@@ -105,11 +107,10 @@ class AddCoinPresenter : IAddCoin.Presenter {
 
             override fun onError(t: Throwable) {
                 view.disableLoadingLayout()
+                app.toastShort(resProvider.getString(R.string.coin_not_found))
                 Log.d("onError", t.message)
             }
         }))
-
-
     }
 
     private fun createQueryMap(): HashMap<String, ArrayList<String>> {
@@ -121,6 +122,17 @@ class AddCoinPresenter : IAddCoin.Presenter {
         queryMap.put(FSYMS, fromList)
         queryMap.put(TSYMS, toList)
         return queryMap
+    }
+
+    private fun saveDisplayCoinToDb(coin: DisplayCoin) {
+        addImageUrlToCoin(coin)
+        coinsController.saveDisplayCoin(coin)
+    }
+
+    private fun addImageUrlToCoin(coin: DisplayCoin) {
+        if (allCoins.isNotEmpty()) {
+            coin.imgUrl = allCoins.find { it.name == coin.from }?.imageUrl ?: ""
+        }
     }
 
     private fun saveCoinToPreferences(coin: DisplayCoin) {

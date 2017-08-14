@@ -26,11 +26,11 @@ class CoinsPresenter : ICoins.Presenter {
 
     override fun onCreate(component: CoinsComponent) {
         component.inject(this)
+        getAllCoinsInfo()
     }
 
     override fun onViewCreated(coins: ArrayList<DisplayCoin>) {
         this.coins = coins
-        displayCoins()
     }
 
     private fun displayCoins() {
@@ -49,7 +49,8 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onStart() {
-        updateCoins()
+        displayCoins()
+//        updateCoins()
     }
 
     private fun updateCoins() {
@@ -75,14 +76,20 @@ class CoinsPresenter : ICoins.Presenter {
     private fun getAllCoinsInfo() {
         disposable.add(networkRequests.getAllCoins(object : GetAllCoinsCallback {
             override fun onSuccess(allCoins: ArrayList<InfoCoin>) {
-                allCoinsInfo = allCoins
-                getPrices()
-                saveAllCoinsToDb()
+                if (allCoins.isNotEmpty()) {
+                    allCoinsInfo = allCoins
+                    coinsController.saveAllCoinsInfo(allCoins)
+                }
+
+
+//                allCoinsInfo = allCoins
+//                getPrices()
+//                saveAllCoinsToDb()
             }
 
             override fun onError(t: Throwable) {
                 Log.d("onError", t.message)
-                RxBus.publish(CoinsLoadingEvent(false))
+//                RxBus.publish(CoinsLoadingEvent(false))
             }
         }))
     }
@@ -134,9 +141,11 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onSwipeUpdate() {
-        isRefreshing = true
-        RxBus.publish(CoinsLoadingEvent(true))
-        getPrices()
+        //TODO on Refresh
+
+//        isRefreshing = true
+//        RxBus.publish(CoinsLoadingEvent(true))
+//        getPrices()
     }
 
     override fun onCoinClicked(coin: DisplayCoin) {
