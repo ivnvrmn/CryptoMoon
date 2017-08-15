@@ -4,11 +4,11 @@ import android.util.Log
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
+import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.network.NetworkRequests
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import com.rmnivnv.cryptomoon.utils.toastLong
-import com.rmnivnv.cryptomoon.utils.toastShort
+import com.rmnivnv.cryptomoon.utils.*
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -21,11 +21,11 @@ class AddCoinPresenter : IAddCoin.Presenter {
     @Inject lateinit var coinsController: CoinsController
     @Inject lateinit var networkRequests: NetworkRequests
     @Inject lateinit var resProvider: ResourceProvider
+    @Inject lateinit var db: CMDatabase
 
     private val disposable = CompositeDisposable()
     private var allCoins: List<InfoCoin> = mutableListOf()
     private lateinit var matches: ArrayList<InfoCoin>
-    private var fromCoin: InfoCoin = InfoCoin()
 
     override fun onCreate(component: AddCoinComponent, matches: ArrayList<InfoCoin>) {
         component.inject(this)
@@ -34,20 +34,16 @@ class AddCoinPresenter : IAddCoin.Presenter {
     }
 
     private fun checkAllCoins() {
-        coinsController.getAllCoinsInfo(object : GetAllCoinsFromDbCallback {
-            override fun onSuccess(list: List<InfoCoin>) {
-                if (list.isNotEmpty()) {
-                    println("checkAllCoins COINS SIZE = " + list.size)
-                    allCoins = list
-                } else {
-                    //todo request all coins info
-                }
-            }
+        disposable.add(db.allCoinsDao().getAllCoins()
+                .subscribeOn(Schedulers.io())
+                .subscribe({ onAllCoinsUpdates(it) }))
+    }
 
-            override fun onError(t: Throwable) {
-                //todo request all coins info
-            }
-        })
+    private fun onAllCoinsUpdates(coinsList: List<InfoCoin>) {
+        Log.d("All coins size ", coinsList.size.toString())
+        if (coinsList.isNotEmpty()) {
+            allCoins = coinsList
+        }
     }
 
     override fun onDestroy() {
@@ -56,8 +52,9 @@ class AddCoinPresenter : IAddCoin.Presenter {
 
     override fun onFromTextChanged(text: String) {
         view.enableMatchesCount()
-        if (text.isNotEmpty()) {
-            val matchesList = allCoins.filter { (it.coinName.contains(text, true)) || (it.name.contains(text, true)) }.reversed()
+        if (text.isNotEmpty() && allCoins.isNotEmpty()) {
+            val matchesList = allCoins.filter { (it.coinName.contains(text, true)) ||
+                    (it.name.contains(text, true)) }.reversed()
             if (matchesList.isNotEmpty()) {
                 view.setMatchesResultSize(matchesList.size.toString())
                 updateCoinsList(matchesList)
@@ -81,62 +78,38 @@ class AddCoinPresenter : IAddCoin.Presenter {
 
     override fun onFromItemClicked(coin: InfoCoin) {
         view.disableMatchesCount()
-        fromCoin = coin
         matches.clear()
         matches.add(coin)
         view.updateRecyclerView()
         view.hideKeyboard()
-        requestCoinInfo()
+        requestCoinInfo(coin)
     }
 
-    private fun requestCoinInfo() {
-        view.enableLoadingLayout()
-        disposable.add(networkRequests.getPrice(createQueryMap(), object : GetPriceCallback {
-            override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
-                if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
-                    coinsInfoList.forEach {
-                        saveDisplayCoinToDb(it)
+    private fun requestCoinInfo(coin: InfoCoin) {
+        if (!coin.name.isEmpty()) {
+            view.enableLoadingLayout()
+            disposable.add(networkRequests.getPrice(createCoinsMapFromString(coin.name), object : GetPriceCallback {
+                override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
+                    if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
+                        coinsController.saveDisplayCoinList(coinsInfoList)
                         coinSuccessfullyAdded()
-//                        saveCoinToPreferences(it)
+                    } else {
+                        view.disableLoadingLayout()
+                        app.toastShort(resProvider.getString(R.string.coin_not_found))
                     }
-                } else {
+                }
+
+                override fun onError(t: Throwable) {
                     view.disableLoadingLayout()
                     app.toastShort(resProvider.getString(R.string.coin_not_found))
+                    Log.d("onError", t.message)
                 }
-            }
-
-            override fun onError(t: Throwable) {
-                view.disableLoadingLayout()
-                app.toastShort(resProvider.getString(R.string.coin_not_found))
-                Log.d("onError", t.message)
-            }
-        }))
-    }
-
-    private fun createQueryMap(): HashMap<String, ArrayList<String>> {
-        val queryMap: HashMap<String, ArrayList<String>> = HashMap()
-        val fromList: ArrayList<String> = ArrayList()
-        fromList.add(fromCoin.name)
-        val toList: ArrayList<String> = ArrayList()
-        toList.add(USD)
-        queryMap.put(FSYMS, fromList)
-        queryMap.put(TSYMS, toList)
-        return queryMap
-    }
-
-    private fun saveDisplayCoinToDb(coin: DisplayCoin) {
-        addImageUrlToCoin(coin)
-        coinsController.saveDisplayCoin(coin)
-    }
-
-    private fun addImageUrlToCoin(coin: DisplayCoin) {
-        if (allCoins.isNotEmpty()) {
-            coin.imgUrl = allCoins.find { it.name == coin.from }?.imageUrl ?: ""
+            }))
         }
     }
 
     private fun coinSuccessfullyAdded() {
-        app.toastLong(resProvider.getString(R.string.coin_added))
+        app.toastShort(resProvider.getString(R.string.coin_added))
         view.finishActivity()
     }
 }

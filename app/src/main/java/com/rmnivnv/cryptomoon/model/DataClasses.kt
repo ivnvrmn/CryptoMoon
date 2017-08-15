@@ -62,6 +62,7 @@ data class DisplayCoin(
         @PrimaryKey(autoGenerate = false) var from: String = "",
         var to: String = "",
         var imgUrl: String = "",
+        var fullName: String = "",
         var FROMSYMBOL: String = "",
         var TOSYMBOL: String = "",
         var MARKET: String = "",

@@ -43,7 +43,8 @@ class CoinsListAdapter(private val items: ArrayList<DisplayCoin>,
                 popMenuAnchor = main_item_market_logo
                 longClickListener(coin)
             }
-            main_item_market.text = """${coin.from}/${coin.to}"""
+            main_item_market.text = coin.from
+            main_item_full_name.text = coin.fullName
             main_item_last_price.text = coin.PRICE
             main_item_change_in_24.text = """${coin.CHANGEPCT24HOUR}%"""
             main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.toDouble())))

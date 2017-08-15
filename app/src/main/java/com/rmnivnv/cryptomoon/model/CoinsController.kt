@@ -7,66 +7,40 @@ import com.rmnivnv.cryptomoon.model.db.DBController
  */
 class CoinsController(private val dbController: DBController) {
 
-    fun getCoinsToDisplay(callback: GetDisplayCoinsCallback) {
-        dbController.getDisplayCoins(object : GetDisplayCoinsCallback {
-            override fun onSuccess(list: List<DisplayCoin>) {
-                callback.onSuccess(list)
-            }
-
-            override fun onError(t: Throwable) {
-                callback.onError(t)
-            }
-        })
-    }
+    private var allCoins: List<InfoCoin> = mutableListOf()
 
     fun saveDisplayCoin(coin: DisplayCoin) {
+        if (allCoins.isNotEmpty()) {
+            addImageUrlToCoin(coin)
+            addFullNameToCoin(coin)
+        }
         dbController.saveDisplayCoin(coin)
     }
 
-    fun saveDisplayCoinList(list: List<DisplayCoin>) {
-        dbController.saveDisplayCoinsList(list)
+    private fun addImageUrlToCoin(coin: DisplayCoin) {
+        coin.imgUrl = allCoins.find { it.name == coin.from }?.imageUrl ?: ""
     }
 
-    fun getDisplayCoinsMap(callback: GetDisplayCoinsMapFromDbCallback) {
-        val map: HashMap<String, ArrayList<String>> = HashMap()
-        val toList: ArrayList<String> = ArrayList()
-        toList.add(USD)
-        val fromList: ArrayList<String> = ArrayList()
-        dbController.getDisplayCoins(object : GetDisplayCoinsCallback {
-            override fun onSuccess(list: List<DisplayCoin>) {
-                if (list.isNotEmpty()) {
-                    list.forEach {
-                        fromList.add(it.from)
-                    }
-                    map.put(FSYMS, fromList)
-                    map.put(TSYMS, toList)
-                }
-                callback.onSuccess(map)
-            }
+    private fun addFullNameToCoin(coin: DisplayCoin) {
+        coin.fullName = allCoins.find { it.name == coin.from }?.coinName ?: ""
+    }
 
-            override fun onError(t: Throwable) {
-                callback.onError(t)
+    fun saveDisplayCoinList(list: List<DisplayCoin>) {
+        if (list.isNotEmpty() && allCoins.isNotEmpty()) {
+            list.forEach {
+                addImageUrlToCoin(it)
+                addFullNameToCoin(it)
             }
-        })
+        }
+        dbController.saveDisplayCoinsList(list)
     }
 
     fun deleteDisplayCoin(coin: DisplayCoin) {
         dbController.deleteDisplayCoin(coin)
     }
 
-    fun getAllCoinsInfo(callback: GetAllCoinsFromDbCallback) {
-        dbController.getAllCoinsInfo(object : GetAllCoinsFromDbCallback {
-            override fun onSuccess(list: List<InfoCoin>) {
-                callback.onSuccess(list)
-            }
-
-            override fun onError(t: Throwable) {
-                callback.onError(t)
-            }
-        })
-    }
-
     fun saveAllCoinsInfo(allCoins: List<InfoCoin>) {
+        this.allCoins = allCoins
         dbController.saveAllCoinsInfo(allCoins)
     }
 }

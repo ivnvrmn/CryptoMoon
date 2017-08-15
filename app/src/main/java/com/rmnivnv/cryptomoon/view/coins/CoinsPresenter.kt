@@ -3,10 +3,14 @@ package com.rmnivnv.cryptomoon.view.coins
 import android.util.Log
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.model.*
+import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.network.NetworkRequests
+import com.rmnivnv.cryptomoon.utils.createCoinsMapFromList
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -18,22 +22,38 @@ class CoinsPresenter : ICoins.Presenter {
     @Inject lateinit var view: ICoins.View
     @Inject lateinit var networkRequests: NetworkRequests
     @Inject lateinit var coinsController: CoinsController
+    @Inject lateinit var db: CMDatabase
 
     private val disposable = CompositeDisposable()
     private lateinit var coins: ArrayList<DisplayCoin>
-    private var allCoinsInfo: ArrayList<InfoCoin> = ArrayList()
     private var isRefreshing = false
 
     override fun onCreate(component: CoinsComponent) {
         component.inject(this)
+        addCoinsChangesObservable()
         getAllCoinsInfo()
+    }
+
+    private fun addCoinsChangesObservable() {
+        disposable.add(db.displayCoinsDao().getAllCoins()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe( { onCoinsFromDbUpdates(it) }))
+    }
+
+    private fun onCoinsFromDbUpdates(list: List<DisplayCoin>) {
+        if (list.isNotEmpty()) {
+            coins.clear()
+            coins.addAll(list)
+            coins.sortBy { it.from }
+            view.updateRecyclerView()
+        }
     }
 
     private fun getAllCoinsInfo() {
         disposable.add(networkRequests.getAllCoins(object : GetAllCoinsCallback {
             override fun onSuccess(allCoins: ArrayList<InfoCoin>) {
                 if (allCoins.isNotEmpty()) {
-                    allCoinsInfo = allCoins
                     coinsController.saveAllCoinsInfo(allCoins)
                 }
             }
@@ -49,66 +69,26 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onStart() {
-        displayCoins()
+        updatePrices()
     }
 
-    private fun displayCoins() {
-        coinsController.getCoinsToDisplay(object : GetDisplayCoinsCallback {
-            override fun onSuccess(list: List<DisplayCoin>) {
-                if (list.isNotEmpty()) {
-                    coins.clear()
-                    coins.addAll(list)
-                    coins.sortBy { it.from }
-                    view.updateRecyclerView()
-                    //getPrices()
-                }
-            }
-
-            override fun onError(t: Throwable) {
-                Log.d("onError", t.message)
-            }
-        })
-    }
-
-    private fun getPrices() {
-        //TODO разобраться с этим методом
-        coinsController.getDisplayCoinsMap(object : GetDisplayCoinsMapFromDbCallback {
-            override fun onSuccess(map: HashMap<String, ArrayList<String>>) {
-                if (map.isNotEmpty()) {
-                    val fromCoinsListSize = map[FSYMS]?.size
-                    if (fromCoinsListSize != null && fromCoinsListSize > 0) {
-                        requestPrices(map)
-                    } else {
-                        afterRefreshing()
+    private fun updatePrices() {
+        val queryMap = createCoinsMapFromList(coins)
+        if (queryMap.isNotEmpty()) {
+            RxBus.publish(CoinsLoadingEvent(true))
+            disposable.add(networkRequests.getPrice(queryMap, object : GetPriceCallback {
+                override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
+                    if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
+                        coinsController.saveDisplayCoinList(coinsInfoList)
                     }
-                } else {
                     afterRefreshing()
                 }
-            }
 
-            override fun onError(t: Throwable) {
-                afterRefreshing()
-            }
-        })
-    }
-
-    private fun requestPrices(map: HashMap<String, ArrayList<String>>) {
-        disposable.add(networkRequests.getPrice(map, object : GetPriceCallback {
-            override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
-                if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
-                    coins.clear()
-                    coins.addAll(coinsInfoList)
-                    coins.sortBy { it.from }
-                    coinsController.saveDisplayCoinList(coins)
-                    view.updateRecyclerView()
+                override fun onError(t: Throwable) {
+                    afterRefreshing()
                 }
-                afterRefreshing()
-            }
-
-            override fun onError(t: Throwable) {
-                afterRefreshing()
-            }
-        }))
+            }))
+        }
     }
 
     private fun afterRefreshing() {
@@ -126,8 +106,7 @@ class CoinsPresenter : ICoins.Presenter {
 
     override fun onSwipeUpdate() {
         isRefreshing = true
-        RxBus.publish(CoinsLoadingEvent(true))
-        getPrices()
+        updatePrices()
     }
 
     override fun onCoinClicked(coin: DisplayCoin) {

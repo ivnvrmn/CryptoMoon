@@ -53,3 +53,30 @@ fun getAllCoinsFromJson(response: AllCoinsResponse): ArrayList<InfoCoin> {
     }
     return result
 }
+
+fun createCoinsMapFromList(coinsList: List<DisplayCoin>): HashMap<String, ArrayList<String>> {
+    val list: ArrayList<String> = ArrayList()
+    if (coinsList.isNotEmpty()) {
+        coinsList.forEach { list.add(it.from) }
+    }
+    return mapFromList(list)
+}
+
+private fun mapFromList(list: List<String>): HashMap<String, ArrayList<String>> {
+    val map: HashMap<String, ArrayList<String>> = HashMap()
+    if (list.isNotEmpty()) {
+        val toList: ArrayList<String> = ArrayList()
+        toList.add(USD)
+        val fromList: ArrayList<String> = ArrayList()
+        list.forEach { fromList.add(it) }
+        map.put(FSYMS, fromList)
+        map.put(TSYMS, toList)
+    }
+    return map
+}
+
+fun createCoinsMapFromString(coinName: String): HashMap<String, ArrayList<String>> {
+    val list: ArrayList<String> = ArrayList()
+    list.add(coinName)
+    return mapFromList(list)
+}
