@@ -11,10 +11,14 @@ class CoinsController(private val dbController: DBController) {
 
     fun saveDisplayCoin(coin: DisplayCoin) {
         if (allCoins.isNotEmpty()) {
-            addImageUrlToCoin(coin)
-            addFullNameToCoin(coin)
+            addAdditionalInfo(coin)
         }
         dbController.saveDisplayCoin(coin)
+    }
+
+    private fun addAdditionalInfo(coin: DisplayCoin) {
+        addImageUrlToCoin(coin)
+        addFullNameToCoin(coin)
     }
 
     private fun addImageUrlToCoin(coin: DisplayCoin) {
@@ -28,8 +32,7 @@ class CoinsController(private val dbController: DBController) {
     fun saveDisplayCoinList(list: List<DisplayCoin>) {
         if (list.isNotEmpty() && allCoins.isNotEmpty()) {
             list.forEach {
-                addImageUrlToCoin(it)
-                addFullNameToCoin(it)
+                addAdditionalInfo(it)
             }
         }
         dbController.saveDisplayCoinsList(list)

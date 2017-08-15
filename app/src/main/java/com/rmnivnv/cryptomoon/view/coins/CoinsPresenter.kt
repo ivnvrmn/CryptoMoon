@@ -119,9 +119,6 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onRemoveCoinClicked(coin: DisplayCoin) {
-        //TODO remove coin
-//        coinsController.deleteDisplayCoin(coin)
-//        coins.remove(coin)
-//        view.updateRecyclerView()
+        coinsController.deleteDisplayCoin(coin)
     }
 }
