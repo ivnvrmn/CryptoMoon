@@ -29,17 +29,39 @@ class CoinsPresenter : ICoins.Presenter {
         getAllCoinsInfo()
     }
 
+    private fun getAllCoinsInfo() {
+        disposable.add(networkRequests.getAllCoins(object : GetAllCoinsCallback {
+            override fun onSuccess(allCoins: ArrayList<InfoCoin>) {
+                if (allCoins.isNotEmpty()) {
+                    allCoinsInfo = allCoins
+                    coinsController.saveAllCoinsInfo(allCoins)
+                }
+            }
+
+            override fun onError(t: Throwable) {
+                Log.d("onError", t.message)
+            }
+        }))
+    }
+
     override fun onViewCreated(coins: ArrayList<DisplayCoin>) {
         this.coins = coins
+    }
+
+    override fun onStart() {
+        displayCoins()
     }
 
     private fun displayCoins() {
         coinsController.getCoinsToDisplay(object : GetDisplayCoinsCallback {
             override fun onSuccess(list: List<DisplayCoin>) {
-                coins.clear()
-                coins.addAll(list)
-                coins.sortBy { it.from }
-                view.updateRecyclerView()
+                if (list.isNotEmpty()) {
+                    coins.clear()
+                    coins.addAll(list)
+                    coins.sortBy { it.from }
+                    view.updateRecyclerView()
+                    //getPrices()
+                }
             }
 
             override fun onError(t: Throwable) {
@@ -48,91 +70,53 @@ class CoinsPresenter : ICoins.Presenter {
         })
     }
 
-    override fun onStart() {
-        displayCoins()
-//        updateCoins()
-    }
-
-    private fun updateCoins() {
-        view.disableSwipeToRefresh()
-        RxBus.publish(CoinsLoadingEvent(true))
-        val spCoinsSize = coinsController.getDisplayCoinsMap()[FSYMS]?.size
-        if (spCoinsSize != null && (spCoinsSize > coins.size || isNeedToUpdateImgUrls())) {
-            getAllCoinsInfo()
-        } else {
-            getPrices()
-        }
-    }
-
-    private fun isNeedToUpdateImgUrls(): Boolean {
-        coins.forEach {
-            if (it.imgUrl.isNullOrEmpty()) {
-                return true
-            }
-        }
-        return false
-    }
-
-    private fun getAllCoinsInfo() {
-        disposable.add(networkRequests.getAllCoins(object : GetAllCoinsCallback {
-            override fun onSuccess(allCoins: ArrayList<InfoCoin>) {
-                if (allCoins.isNotEmpty()) {
-                    allCoinsInfo = allCoins
-                    coinsController.saveAllCoinsInfo(allCoins)
+    private fun getPrices() {
+        //TODO разобраться с этим методом
+        coinsController.getDisplayCoinsMap(object : GetDisplayCoinsMapFromDbCallback {
+            override fun onSuccess(map: HashMap<String, ArrayList<String>>) {
+                if (map.isNotEmpty()) {
+                    val fromCoinsListSize = map[FSYMS]?.size
+                    if (fromCoinsListSize != null && fromCoinsListSize > 0) {
+                        requestPrices(map)
+                    } else {
+                        afterRefreshing()
+                    }
+                } else {
+                    afterRefreshing()
                 }
-
-
-//                allCoinsInfo = allCoins
-//                getPrices()
-//                saveAllCoinsToDb()
             }
 
             override fun onError(t: Throwable) {
-                Log.d("onError", t.message)
-//                RxBus.publish(CoinsLoadingEvent(false))
+                afterRefreshing()
             }
-        }))
+        })
     }
 
-    private fun saveAllCoinsToDb() {
-        val list = allCoinsInfo.toList()
-        if (list.isNotEmpty()) {
-            coinsController.saveAllCoinsInfo(list)
-        }
-    }
-
-    private fun getPrices() {
-        disposable.add(networkRequests.getPrice(coinsController.getDisplayCoinsMap(), object : GetPriceCallback {
+    private fun requestPrices(map: HashMap<String, ArrayList<String>>) {
+        disposable.add(networkRequests.getPrice(map, object : GetPriceCallback {
             override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
-                checkIsRefreshing()
-                RxBus.publish(CoinsLoadingEvent(false))
                 if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
                     coins.clear()
                     coins.addAll(coinsInfoList)
-                    coins.forEach {
-                        val name = it.from
-                        it.imgUrl = allCoinsInfo.find { it.name == name }?.imageUrl ?: ""
-                    }
-                    coinsController.saveDisplayCoinList(coins)
                     coins.sortBy { it.from }
+                    coinsController.saveDisplayCoinList(coins)
                     view.updateRecyclerView()
                 }
-                view.enableSwipeToRefresh()
+                afterRefreshing()
             }
 
             override fun onError(t: Throwable) {
-                checkIsRefreshing()
-                RxBus.publish(CoinsLoadingEvent(false))
-                view.enableSwipeToRefresh()
-                Log.d("onError", t.message)
+                afterRefreshing()
             }
         }))
     }
 
-    private fun checkIsRefreshing() {
+    private fun afterRefreshing() {
+        RxBus.publish(CoinsLoadingEvent(false))
         if (isRefreshing) {
             view.hideRefreshing()
             isRefreshing = false
+            view.enableSwipeToRefresh()
         }
     }
 
@@ -141,11 +125,9 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onSwipeUpdate() {
-        //TODO on Refresh
-
-//        isRefreshing = true
-//        RxBus.publish(CoinsLoadingEvent(true))
-//        getPrices()
+        isRefreshing = true
+        RxBus.publish(CoinsLoadingEvent(true))
+        getPrices()
     }
 
     override fun onCoinClicked(coin: DisplayCoin) {

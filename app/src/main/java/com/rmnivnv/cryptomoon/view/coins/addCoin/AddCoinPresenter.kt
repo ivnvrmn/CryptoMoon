@@ -135,22 +135,6 @@ class AddCoinPresenter : IAddCoin.Presenter {
         }
     }
 
-    private fun saveCoinToPreferences(coin: DisplayCoin) {
-        val map = coinsController.getDisplayCoinsMap()
-        val fsymsArray = map[FSYMS]
-        fsymsArray!!.forEach {
-            if (it == coin.FROMSYMBOL) {
-                view.disableLoadingLayout()
-                app.toastShort(resProvider.getString(R.string.coin_already_added))
-                return
-            }
-        }
-        fsymsArray.add(coin.FROMSYMBOL)
-        map.put(FSYMS, fsymsArray)
-        coinsController.setDisplayCoins(map)
-        coinSuccessfullyAdded()
-    }
-
     private fun coinSuccessfullyAdded() {
         app.toastLong(resProvider.getString(R.string.coin_added))
         view.finishActivity()

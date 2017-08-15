@@ -23,3 +23,8 @@ interface GetAllCoinsFromDbCallback {
     fun onSuccess(list: List<InfoCoin>)
     fun onError(t: Throwable)
 }
+
+interface GetDisplayCoinsMapFromDbCallback {
+    fun onSuccess(map: HashMap<String, ArrayList<String>>)
+    fun onError(t: Throwable)
+}

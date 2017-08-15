@@ -5,7 +5,7 @@ import com.rmnivnv.cryptomoon.model.db.DBController
 /**
  * Created by rmnivnv on 06/08/2017.
  */
-class CoinsController(val dbController: DBController, val prefsProvider: PreferencesProvider) {
+class CoinsController(private val dbController: DBController) {
 
     fun getCoinsToDisplay(callback: GetDisplayCoinsCallback) {
         dbController.getDisplayCoins(object : GetDisplayCoinsCallback {
@@ -27,13 +27,31 @@ class CoinsController(val dbController: DBController, val prefsProvider: Prefere
         dbController.saveDisplayCoinsList(list)
     }
 
-    fun getDisplayCoinsMap() = prefsProvider.getDisplayCoins()
+    fun getDisplayCoinsMap(callback: GetDisplayCoinsMapFromDbCallback) {
+        val map: HashMap<String, ArrayList<String>> = HashMap()
+        val toList: ArrayList<String> = ArrayList()
+        toList.add(USD)
+        val fromList: ArrayList<String> = ArrayList()
+        dbController.getDisplayCoins(object : GetDisplayCoinsCallback {
+            override fun onSuccess(list: List<DisplayCoin>) {
+                if (list.isNotEmpty()) {
+                    list.forEach {
+                        fromList.add(it.from)
+                    }
+                    map.put(FSYMS, fromList)
+                    map.put(TSYMS, toList)
+                }
+                callback.onSuccess(map)
+            }
 
-    fun setDisplayCoins(coins: HashMap<String, ArrayList<String>>) = prefsProvider.setDisplayCoins(coins)
+            override fun onError(t: Throwable) {
+                callback.onError(t)
+            }
+        })
+    }
 
     fun deleteDisplayCoin(coin: DisplayCoin) {
         dbController.deleteDisplayCoin(coin)
-        prefsProvider.deleteDisplayCoin(coin)
     }
 
     fun getAllCoinsInfo(callback: GetAllCoinsFromDbCallback) {
