@@ -37,7 +37,7 @@ class MainPresenter : IMain.Presenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    view.setDeleteIconVisibility(it.isSelected)
+                    view.setMenuIconsVisibility(it.isSelected)
                 })
     }
 
@@ -54,7 +54,7 @@ class MainPresenter : IMain.Presenter {
     }
 
     override fun onDeleteClicked() {
-        view.setDeleteIconVisibility(false)
+        view.setMenuIconsVisibility(false)
         RxBus.publish(OnDeleteCoinsMenuItemClickedEvent())
     }
 }

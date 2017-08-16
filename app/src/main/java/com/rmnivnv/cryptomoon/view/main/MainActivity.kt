@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity(), IMain.View {
 
     private lateinit var coinsLoading: ProgressBar
     private var deleteMenuItem: MenuItem? = null
+    private var addMenuItem: MenuItem? = null
+    private var settingsMenuItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +86,8 @@ class MainActivity : AppCompatActivity(), IMain.View {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         deleteMenuItem = menu?.findItem(R.id.main_menu_delete)
+        addMenuItem = menu?.findItem(R.id.main_menu_add_coin)
+        settingsMenuItem = menu?.findItem(R.id.main_menu_settings)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -96,8 +100,10 @@ class MainActivity : AppCompatActivity(), IMain.View {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun setDeleteIconVisibility(isVisible: Boolean) {
-        deleteMenuItem?.isVisible = isVisible
+    override fun setMenuIconsVisibility(isSelected: Boolean) {
+        deleteMenuItem?.isVisible = isSelected
+        addMenuItem?.isVisible = !isSelected
+        settingsMenuItem?.isVisible = !isSelected
     }
 
     internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {

@@ -10,7 +10,7 @@ interface IMain {
     interface View {
         fun setCoinsLoadingVisibility(isLoading: Boolean)
         fun startActivityFromIntent(intent: Intent)
-        fun setDeleteIconVisibility(isVisible: Boolean)
+        fun setMenuIconsVisibility(isSelected: Boolean)
     }
 
     interface Presenter {
