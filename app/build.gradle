@@ -69,10 +69,11 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:$room_version"
     compile "android.arch.persistence.room:runtime:$room_version"
     compile "android.arch.persistence.room:rxjava2:$room_version"
-
+    //Other
     compile 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
+    compile 'com.bignerdranch.android:recyclerview-multiselect:0.2'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.22'
     testCompile 'org.robolectric:robolectric:3.2.2'

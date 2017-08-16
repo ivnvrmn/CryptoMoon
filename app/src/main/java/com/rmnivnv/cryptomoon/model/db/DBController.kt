@@ -28,6 +28,12 @@ class DBController(val db: CMDatabase) {
                 .subscribe()
     }
 
+    fun deleteDisplayCoins(coins: List<DisplayCoin>) {
+        Single.fromCallable { db.displayCoinsDao().deleteCoins(coins) }
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+    }
+
     fun saveAllCoinsInfo(allCoins: List<InfoCoin>) {
         Single.fromCallable { db.allCoinsDao().insertList(allCoins) }
                 .subscribeOn(Schedulers.io())

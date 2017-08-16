@@ -63,6 +63,7 @@ data class DisplayCoin(
         var to: String = "",
         var imgUrl: String = "",
         var fullName: String = "",
+        var selected: Boolean = false,
         var FROMSYMBOL: String = "",
         var TOSYMBOL: String = "",
         var MARKET: String = "",

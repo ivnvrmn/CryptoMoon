@@ -3,7 +3,6 @@ package com.rmnivnv.cryptomoon.view.coins
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,9 +33,8 @@ class CoinsFragment : Fragment(), ICoins.View {
         presenter.onCreate(component)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.coins_fragment, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflater?.inflate(R.layout.coins_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,7 +47,8 @@ class CoinsFragment : Fragment(), ICoins.View {
         recView = coins_fragment_rec_view
         recView.layoutManager = LinearLayoutManager(activity)
         adapter = CoinsListAdapter(coins, resProvider,
-                clickListener = { presenter.onCoinClicked(it) }, longClickListener = { presenter.onCoinLongClicked(it) })
+                clickListener = { presenter.onCoinClicked(it) },
+                longClickListener = { presenter.onCoinLongClicked(it) })
         recView.adapter = adapter
     }
 
@@ -83,20 +82,5 @@ class CoinsFragment : Fragment(), ICoins.View {
 
     override fun disableSwipeToRefresh() {
         swipe_refresh.isEnabled = false
-    }
-
-    override fun showCoinPopMenu(coin: DisplayCoin) {
-        val popMenu = PopupMenu(activity, adapter.popMenuAnchor)
-        popMenu.inflate(R.menu.coins_pop_menu)
-        popMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.coins_pop_remove -> {
-                    presenter.onRemoveCoinClicked(coin)
-                    false
-                }
-                else -> false
-            }
-        }
-        popMenu.show()
     }
 }

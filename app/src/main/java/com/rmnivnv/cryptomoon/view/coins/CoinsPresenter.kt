@@ -2,12 +2,17 @@ package com.rmnivnv.cryptomoon.view.coins
 
 import android.util.Log
 import com.rmnivnv.cryptomoon.MainApp
+import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
+import com.rmnivnv.cryptomoon.model.rxbus.CoinsSelectedEvent
+import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.network.NetworkRequests
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.createCoinsMapFromList
+import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -23,6 +28,7 @@ class CoinsPresenter : ICoins.Presenter {
     @Inject lateinit var networkRequests: NetworkRequests
     @Inject lateinit var coinsController: CoinsController
     @Inject lateinit var db: CMDatabase
+    @Inject lateinit var resProvider: ResourceProvider
 
     private val disposable = CompositeDisposable()
     private lateinit var coins: ArrayList<DisplayCoin>
@@ -32,13 +38,14 @@ class CoinsPresenter : ICoins.Presenter {
         component.inject(this)
         addCoinsChangesObservable()
         getAllCoinsInfo()
+        setupRxBusEventsListeners()
     }
 
     private fun addCoinsChangesObservable() {
         disposable.add(db.displayCoinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( { onCoinsFromDbUpdates(it) }))
+                .subscribe({ onCoinsFromDbUpdates(it) }))
     }
 
     private fun onCoinsFromDbUpdates(list: List<DisplayCoin>) {
@@ -62,6 +69,23 @@ class CoinsPresenter : ICoins.Presenter {
                 Log.d("onError", t.message)
             }
         }))
+    }
+
+    private fun setupRxBusEventsListeners() {
+        disposable.add(RxBus.listen(OnDeleteCoinsMenuItemClickedEvent::class.java)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    onDeleteClicked()
+                })
+    }
+
+    private fun onDeleteClicked() {
+        val coinsToDelete = coins.filter { it.selected }
+        val toast = if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)
+            else resProvider.getString(R.string.coin_deleted)
+        coinsController.deleteDisplayCoins(coinsToDelete)
+        app.toastShort(toast)
     }
 
     override fun onViewCreated(coins: ArrayList<DisplayCoin>) {
@@ -114,11 +138,13 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onCoinLongClicked(coin: DisplayCoin): Boolean {
-        view.showCoinPopMenu(coin)
+        coins.forEach {
+            if (it.selected) {
+                RxBus.publish(CoinsSelectedEvent(true))
+                return true
+            }
+        }
+        RxBus.publish(CoinsSelectedEvent(false))
         return true
-    }
-
-    override fun onRemoveCoinClicked(coin: DisplayCoin) {
-        coinsController.deleteDisplayCoin(coin)
     }
 }

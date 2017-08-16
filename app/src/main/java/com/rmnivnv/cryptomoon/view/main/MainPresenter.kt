@@ -3,6 +3,8 @@ package com.rmnivnv.cryptomoon.view.main
 import android.content.Intent
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
+import com.rmnivnv.cryptomoon.model.rxbus.CoinsSelectedEvent
+import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.view.coins.addCoin.AddCoinActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,6 +33,12 @@ class MainPresenter : IMain.Presenter {
                 .subscribe {
                     view.setCoinsLoadingVisibility(it.isLoading)
                 })
+        disposable.add(RxBus.listen(CoinsSelectedEvent::class.java)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    view.setDeleteIconVisibility(it.isSelected)
+                })
     }
 
     override fun onDestroy() {
@@ -43,5 +51,10 @@ class MainPresenter : IMain.Presenter {
 
     override fun onSettingsClicked() {
         //TODO implement on settings clicked
+    }
+
+    override fun onDeleteClicked() {
+        view.setDeleteIconVisibility(false)
+        RxBus.publish(OnDeleteCoinsMenuItemClickedEvent())
     }
 }

@@ -22,4 +22,7 @@ interface DisplayCoinsDao {
 
     @Delete
     fun deleteCoin(coin: DisplayCoin)
+
+    @Delete
+    fun deleteCoins(coins: List<DisplayCoin>)
 }

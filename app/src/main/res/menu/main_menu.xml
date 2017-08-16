@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/main_menu_delete"
+        android:title="@string/remove_coin"
+        android:icon="@drawable/ic_delete"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/main_menu_add_coin"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_add"

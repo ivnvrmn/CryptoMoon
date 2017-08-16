@@ -10,6 +10,7 @@ interface IMain {
     interface View {
         fun setCoinsLoadingVisibility(isLoading: Boolean)
         fun startActivityFromIntent(intent: Intent)
+        fun setDeleteIconVisibility(isVisible: Boolean)
     }
 
     interface Presenter {
@@ -17,5 +18,6 @@ interface IMain {
         fun onDestroy()
         fun onAddCoinClicked()
         fun onSettingsClicked()
+        fun onDeleteClicked()
     }
 }

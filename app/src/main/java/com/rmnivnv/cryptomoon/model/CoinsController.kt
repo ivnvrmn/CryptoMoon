@@ -38,9 +38,9 @@ class CoinsController(private val dbController: DBController) {
         dbController.saveDisplayCoinsList(list)
     }
 
-    fun deleteDisplayCoin(coin: DisplayCoin) {
-        dbController.deleteDisplayCoin(coin)
-    }
+    fun deleteDisplayCoin(coin: DisplayCoin) = dbController.deleteDisplayCoin(coin)
+
+    fun deleteDisplayCoins(coins: List<DisplayCoin>) = dbController.deleteDisplayCoins(coins)
 
     fun saveAllCoinsInfo(allCoins: List<InfoCoin>) {
         this.allCoins = allCoins

@@ -19,4 +19,6 @@
     <string name="coin_already_added">Coin already added</string>
     <string name="settings">Settings</string>
     <string name="remove_coin">Remove coin</string>
+    <string name="coins_deleted">Coins deleted</string>
+    <string name="coin_deleted">Coin deleted</string>
 </resources>

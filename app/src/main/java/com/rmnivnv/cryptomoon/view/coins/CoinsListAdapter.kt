@@ -18,8 +18,7 @@ import kotlinx.android.synthetic.main.coins_list_item.view.*
 class CoinsListAdapter(private val items: ArrayList<DisplayCoin>,
                        private val resProvider: ResourceProvider,
                        val clickListener: (DisplayCoin) -> Unit,
-                       val longClickListener: (DisplayCoin) -> Boolean) :
-        RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
+                       val longClickListener: (DisplayCoin) -> Boolean) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
 {
     lateinit var popMenuAnchor: View
 
@@ -37,12 +36,20 @@ class CoinsListAdapter(private val items: ArrayList<DisplayCoin>,
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(coin: DisplayCoin, listener: (DisplayCoin) -> Unit,
                       longClickListener: (DisplayCoin) -> Boolean) = with(itemView) {
-
             setOnClickListener { listener(coin) }
             setOnLongClickListener {
                 popMenuAnchor = main_item_market_logo
+                coin.selected = if (coin.selected) {
+                    main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorPrimaryDark))
+                    false
+                } else {
+                    main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
+                    true
+                }
                 longClickListener(coin)
             }
+            if (coin.selected) main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
+            else main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorPrimaryDark))
             main_item_market.text = coin.from
             main_item_full_name.text = coin.fullName
             main_item_last_price.text = coin.PRICE
@@ -50,7 +57,7 @@ class CoinsListAdapter(private val items: ArrayList<DisplayCoin>,
             main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.toDouble())))
             main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.CHANGEPCT24HOUR.toDouble())))
             DrawableCompat.setTint(main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.toDouble())))
-            if (!coin.imgUrl.isNullOrEmpty()) {
+            if (coin.imgUrl.isNotEmpty()) {
                 Picasso.with(context)
                         .load(coin.imgUrl)
                         .into(main_item_market_logo)
@@ -58,23 +65,15 @@ class CoinsListAdapter(private val items: ArrayList<DisplayCoin>,
         }
     }
 
-    private fun getChangeColor(change: Double?): Int {
-        if (change != null && change > 0) {
-            return R.color.green
-        } else if (change != null && change == 0.0) {
-            return R.color.orange_dark
-        } else {
-            return R.color.red
-        }
+    private fun getChangeColor(change: Double) = when {
+        change > 0 -> R.color.green
+        change == 0.0 -> R.color.orange_dark
+        else -> R.color.red
     }
 
-    private fun getChangeArrowDrawable(change: Double?): Int {
-        if (change != null && change > 0) {
-            return R.drawable.ic_arrow_drop_up
-        } else if (change != null && change == 0.0) {
-            return R.drawable.ic_remove
-        } else {
-            return R.drawable.ic_arrow_drop_down
-        }
+    private fun getChangeArrowDrawable(change: Double) = when {
+        change > 0 -> R.drawable.ic_arrow_drop_up
+        change == 0.0 -> R.drawable.ic_remove
+        else -> R.drawable.ic_arrow_drop_down
     }
 }
