@@ -11,4 +11,5 @@ import javax.inject.Singleton
 interface CoinsComponent {
     fun inject(fragment: CoinsFragment)
     fun inject(presenter: CoinsPresenter)
+    fun inject(adapter: CoinsListAdapter)
 }

@@ -7,20 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.DisplayCoin
+import com.rmnivnv.cryptomoon.utils.MultiSelector
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.coins_list_item.view.*
+import javax.inject.Inject
 
 /**
  * Created by rmnivnv on 02/07/2017.
  */
 
-class CoinsListAdapter(private val items: ArrayList<DisplayCoin>,
-                       private val resProvider: ResourceProvider,
-                       val clickListener: (DisplayCoin) -> Unit,
-                       val longClickListener: (DisplayCoin) -> Boolean) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
+class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
+                       component: CoinsComponent,
+                       val clickListener: (DisplayCoin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
 {
-    lateinit var popMenuAnchor: View
+    init {
+        component.inject(this)
+    }
+
+    @Inject lateinit var resProvider: ResourceProvider
+    @Inject lateinit var multiSelector: MultiSelector
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false)
@@ -28,25 +34,22 @@ class CoinsListAdapter(private val items: ArrayList<DisplayCoin>,
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItems(items[position], clickListener, longClickListener)
+        holder?.bindItems(coins[position], clickListener)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = coins.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(coin: DisplayCoin, listener: (DisplayCoin) -> Unit,
-                      longClickListener: (DisplayCoin) -> Boolean) = with(itemView) {
-            setOnClickListener { listener(coin) }
-            setOnLongClickListener {
-                popMenuAnchor = main_item_market_logo
-                coin.selected = if (coin.selected) {
-                    main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorPrimaryDark))
-                    false
+        fun bindItems(coin: DisplayCoin, listener: (DisplayCoin) -> Unit) = with(itemView) {
+            setOnClickListener {
+                if (multiSelector.atLeastOneIsSelected) {
+                    multiSelector.onClick(coin, main_item_card, coins)
                 } else {
-                    main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
-                    true
+                    listener(coin)
                 }
-                longClickListener(coin)
+            }
+            setOnLongClickListener {
+                multiSelector.onClick(coin, main_item_card, coins)
             }
             if (coin.selected) main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
             else main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorPrimaryDark))

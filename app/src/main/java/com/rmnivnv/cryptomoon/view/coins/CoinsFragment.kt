@@ -46,9 +46,8 @@ class CoinsFragment : Fragment(), ICoins.View {
     private fun setupRecView() {
         recView = coins_fragment_rec_view
         recView.layoutManager = LinearLayoutManager(activity)
-        adapter = CoinsListAdapter(coins, resProvider,
-                clickListener = { presenter.onCoinClicked(it) },
-                longClickListener = { presenter.onCoinLongClicked(it) })
+        adapter = CoinsListAdapter(coins, component,
+                clickListener = { presenter.onCoinClicked(it) })
         recView.adapter = adapter
     }
 

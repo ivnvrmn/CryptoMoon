@@ -6,7 +6,6 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
-import com.rmnivnv.cryptomoon.model.rxbus.CoinsSelectedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.network.NetworkRequests
@@ -135,16 +134,5 @@ class CoinsPresenter : ICoins.Presenter {
 
     override fun onCoinClicked(coin: DisplayCoin) {
 
-    }
-
-    override fun onCoinLongClicked(coin: DisplayCoin): Boolean {
-        coins.forEach {
-            if (it.selected) {
-                RxBus.publish(CoinsSelectedEvent(true))
-                return true
-            }
-        }
-        RxBus.publish(CoinsSelectedEvent(false))
-        return true
     }
 }

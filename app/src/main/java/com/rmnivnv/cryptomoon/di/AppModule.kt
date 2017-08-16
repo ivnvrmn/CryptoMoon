@@ -6,6 +6,7 @@ import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.DATABASE_NAME
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.db.DBController
+import com.rmnivnv.cryptomoon.utils.MultiSelector
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
@@ -27,4 +28,7 @@ class AppModule(private val app: MainApp) {
 
     @Provides @Singleton fun provideCoinsController(dbController: DBController) =
             CoinsController(dbController)
+
+    @Provides @Singleton fun provideMultiSelector(resourceProvider: ResourceProvider) =
+            MultiSelector(resourceProvider)
 }

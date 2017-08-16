@@ -21,6 +21,5 @@ interface ICoins {
         fun onDestroy()
         fun onSwipeUpdate()
         fun onCoinClicked(coin: DisplayCoin)
-        fun onCoinLongClicked(coin: DisplayCoin): Boolean
     }
 }
