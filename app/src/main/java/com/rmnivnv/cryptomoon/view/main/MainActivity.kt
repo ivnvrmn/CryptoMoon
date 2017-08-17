@@ -13,6 +13,7 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.utils.app
 import javax.inject.Inject
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
@@ -55,6 +56,14 @@ class MainActivity : AppCompatActivity(), IMain.View {
         viewpager.adapter = adapter
         tabs.setupWithViewPager(viewpager)
         setCustomTab()
+        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) {
+                presenter.onPageSelected(position)
+            }
+        })
     }
 
     private fun setCustomTab() {

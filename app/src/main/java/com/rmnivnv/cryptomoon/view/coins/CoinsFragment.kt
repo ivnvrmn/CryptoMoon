@@ -62,6 +62,11 @@ class CoinsFragment : Fragment(), ICoins.View {
         presenter.onStart()
     }
 
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()

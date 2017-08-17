@@ -7,6 +7,7 @@ import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -25,15 +26,17 @@ class AddCoinPresenter : IAddCoin.Presenter {
 
     private val disposable = CompositeDisposable()
     private var allCoins: List<InfoCoin> = mutableListOf()
+    private var coins: ArrayList<DisplayCoin> = ArrayList()
     private lateinit var matches: ArrayList<InfoCoin>
 
     override fun onCreate(component: AddCoinComponent, matches: ArrayList<InfoCoin>) {
         component.inject(this)
         this.matches = matches
-        checkAllCoins()
+        addAllInfoCoinsChangesObservable()
+        addCoinsChangesObservable()
     }
 
-    private fun checkAllCoins() {
+    private fun addAllInfoCoinsChangesObservable() {
         disposable.add(db.allCoinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
                 .subscribe({ onAllCoinsUpdates(it) }))
@@ -43,6 +46,20 @@ class AddCoinPresenter : IAddCoin.Presenter {
         Log.d("All coins size ", coinsList.size.toString())
         if (coinsList.isNotEmpty()) {
             allCoins = coinsList
+        }
+    }
+
+    private fun addCoinsChangesObservable() {
+        disposable.add(db.displayCoinsDao().getAllCoins()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onCoinsFromDbUpdates(it) }))
+    }
+
+    private fun onCoinsFromDbUpdates(list: List<DisplayCoin>) {
+        if (list.isNotEmpty()) {
+            coins.clear()
+            coins.addAll(list)
         }
     }
 
@@ -77,12 +94,16 @@ class AddCoinPresenter : IAddCoin.Presenter {
     }
 
     override fun onFromItemClicked(coin: InfoCoin) {
-        view.disableMatchesCount()
-        matches.clear()
-        matches.add(coin)
-        view.updateRecyclerView()
-        view.hideKeyboard()
-        requestCoinInfo(coin)
+        if (coins.isNotEmpty() && coins.find { it.from == coin.name } != null) {
+            app.toastShort(resProvider.getString(R.string.coin_already_added))
+        } else {
+            view.disableMatchesCount()
+            matches.clear()
+            matches.add(coin)
+            view.updateRecyclerView()
+            view.hideKeyboard()
+            requestCoinInfo(coin)
+        }
     }
 
     private fun requestCoinInfo(coin: InfoCoin) {

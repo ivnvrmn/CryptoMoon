@@ -6,6 +6,4 @@ package com.rmnivnv.cryptomoon.model.rxbus
 
 data class CoinsLoadingEvent(val isLoading: Boolean)
 
-data class CoinsSelectedEvent(val isSelected: Boolean)
-
-class OnDeleteCoinsMenuItemClickedEvent()
+class OnDeleteCoinsMenuItemClickedEvent

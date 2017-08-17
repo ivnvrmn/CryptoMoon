@@ -19,3 +19,5 @@ val USD = "USD"
 val BTC = "BTC"
 val ETH = "ETH"
 val SNT = "SNT"
+
+val COINS_FRAGMENT_PAGE_POSITION = 0

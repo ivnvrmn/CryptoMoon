@@ -18,6 +18,7 @@ interface ICoins {
         fun onCreate(component: CoinsComponent)
         fun onViewCreated(coins: ArrayList<DisplayCoin>)
         fun onStart()
+        fun onStop()
         fun onDestroy()
         fun onSwipeUpdate()
         fun onCoinClicked(coin: DisplayCoin)

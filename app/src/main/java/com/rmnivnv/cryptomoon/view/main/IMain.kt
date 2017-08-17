@@ -19,5 +19,6 @@ interface IMain {
         fun onAddCoinClicked()
         fun onSettingsClicked()
         fun onDeleteClicked()
+        fun onPageSelected(position: Int)
     }
 }

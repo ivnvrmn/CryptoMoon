@@ -28,16 +28,23 @@ class CoinsPresenter : ICoins.Presenter {
     @Inject lateinit var coinsController: CoinsController
     @Inject lateinit var db: CMDatabase
     @Inject lateinit var resProvider: ResourceProvider
+    @Inject lateinit var pageController: PageController
+    @Inject lateinit var multiSelector: MultiSelector
 
     private val disposable = CompositeDisposable()
-    private lateinit var coins: ArrayList<DisplayCoin>
+    private var coins: ArrayList<DisplayCoin> = ArrayList()
     private var isRefreshing = false
 
     override fun onCreate(component: CoinsComponent) {
         component.inject(this)
-        addCoinsChangesObservable()
+        subscribeToObservables()
         getAllCoinsInfo()
+    }
+
+    private fun subscribeToObservables() {
+        addCoinsChangesObservable()
         setupRxBusEventsListeners()
+        addOnPageChangedObservable()
     }
 
     private fun addCoinsChangesObservable() {
@@ -56,6 +63,44 @@ class CoinsPresenter : ICoins.Presenter {
         }
     }
 
+    private fun setupRxBusEventsListeners() {
+        disposable.add(RxBus.listen(OnDeleteCoinsMenuItemClickedEvent::class.java)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { onDeleteClicked() })
+    }
+
+    private fun onDeleteClicked() {
+        val coinsToDelete = coins.filter { it.selected }
+        if (coinsToDelete.isNotEmpty()) {
+            val toast = if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)
+            else resProvider.getString(R.string.coin_deleted)
+            coinsController.deleteDisplayCoins(coinsToDelete)
+            app.toastShort(toast)
+        }
+    }
+
+    private fun addOnPageChangedObservable() {
+        disposable.add(pageController.getPageObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { onPageChanged(it) })
+    }
+
+    private fun onPageChanged(position: Int) {
+        if (position != COINS_FRAGMENT_PAGE_POSITION) {
+            disableSelected()
+        }
+    }
+
+    private fun disableSelected() {
+        if (multiSelector.atLeastOneIsSelected) {
+            coins.forEach { if (it.selected) it.selected = false }
+            view.updateRecyclerView()
+            multiSelector.atLeastOneIsSelected = false
+        }
+    }
+
     private fun getAllCoinsInfo() {
         disposable.add(networkRequests.getAllCoins(object : GetAllCoinsCallback {
             override fun onSuccess(allCoins: ArrayList<InfoCoin>) {
@@ -68,23 +113,6 @@ class CoinsPresenter : ICoins.Presenter {
                 Log.d("onError", t.message)
             }
         }))
-    }
-
-    private fun setupRxBusEventsListeners() {
-        disposable.add(RxBus.listen(OnDeleteCoinsMenuItemClickedEvent::class.java)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    onDeleteClicked()
-                })
-    }
-
-    private fun onDeleteClicked() {
-        val coinsToDelete = coins.filter { it.selected }
-        val toast = if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)
-            else resProvider.getString(R.string.coin_deleted)
-        coinsController.deleteDisplayCoins(coinsToDelete)
-        app.toastShort(toast)
     }
 
     override fun onViewCreated(coins: ArrayList<DisplayCoin>) {
@@ -127,7 +155,12 @@ class CoinsPresenter : ICoins.Presenter {
         disposable.clear()
     }
 
+    override fun onStop() {
+        disableSelected()
+    }
+
     override fun onSwipeUpdate() {
+        disableSelected()
         isRefreshing = true
         updatePrices()
     }
