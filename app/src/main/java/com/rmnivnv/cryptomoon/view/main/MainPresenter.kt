@@ -27,10 +27,10 @@ class MainPresenter : IMain.Presenter {
 
     override fun onCreate(component: MainComponent) {
         component.inject(this)
-        setRxBusListen()
+        setObservers()
     }
 
-    private fun setRxBusListen() {
+    private fun setObservers() {
         disposable.add(RxBus.listen(CoinsLoadingEvent::class.java)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

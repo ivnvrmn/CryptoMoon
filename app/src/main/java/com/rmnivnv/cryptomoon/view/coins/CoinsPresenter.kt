@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.view.coins
 
+import android.content.Intent
 import android.util.Log
 import com.rmnivnv.cryptomoon.MainApp
 import com.rmnivnv.cryptomoon.R
@@ -12,6 +13,7 @@ import com.rmnivnv.cryptomoon.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.createCoinsMapFromList
 import com.rmnivnv.cryptomoon.utils.toastShort
+import com.rmnivnv.cryptomoon.view.coins.coinInfo.CoinInfoActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -166,6 +168,8 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     override fun onCoinClicked(coin: DisplayCoin) {
-
+        val intent = Intent(app, CoinInfoActivity::class.java)
+        intent.putExtra("name", coin.from)
+        view.startActivityByIntent(intent)
     }
 }

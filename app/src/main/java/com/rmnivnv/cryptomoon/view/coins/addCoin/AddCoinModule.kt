@@ -11,6 +11,6 @@ class AddCoinModule(private val view: IAddCoin.View) {
 
     @Provides fun provideView() = view
 
-    @Provides fun providePresenter() : IAddCoin.Presenter = AddCoinPresenter()
+    @Provides fun providePresenter(): IAddCoin.Presenter = AddCoinPresenter()
 
 }
