@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), IMain.View {
         setContentView(R.layout.activity_main)
         component.inject(this)
         presenter.onCreate(component)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         setupViewPager()
     }
@@ -68,8 +68,8 @@ class MainActivity : AppCompatActivity(), IMain.View {
 
     private fun setCustomTab() {
         val customTab = LayoutInflater.from(this).inflate(R.layout.tab_with_loading, null) as RelativeLayout
-        val title = customTab.findViewById(R.id.tab_title) as TextView
-        coinsLoading = customTab.findViewById(R.id.tab_loading) as ProgressBar
+        val title: TextView = customTab.findViewById(R.id.tab_title)
+        coinsLoading = customTab.findViewById(R.id.tab_loading)
         title.text = resProvider.getString(R.string.coins)
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {

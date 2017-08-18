@@ -9,6 +9,7 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.DisplayCoin
 import com.rmnivnv.cryptomoon.model.MultiSelector
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.doubleFromString
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.coins_list_item.view.*
 import javax.inject.Inject
@@ -57,9 +58,9 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
             main_item_full_name.text = coin.fullName
             main_item_last_price.text = coin.PRICE
             main_item_change_in_24.text = """${coin.CHANGEPCT24HOUR}%"""
-            main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.toDouble())))
-            main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.CHANGEPCT24HOUR.toDouble())))
-            DrawableCompat.setTint(main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.toDouble())))
+            main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(doubleFromString(coin.CHANGEPCT24HOUR))))
+            main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(doubleFromString(coin.CHANGEPCT24HOUR))))
+            DrawableCompat.setTint(main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(doubleFromString(coin.CHANGEPCT24HOUR))))
             if (coin.imgUrl.isNotEmpty()) {
                 Picasso.with(context)
                         .load(coin.imgUrl)

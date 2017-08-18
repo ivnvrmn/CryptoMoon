@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.rmnivnv.cryptomoon.model.*
+import java.text.NumberFormat
 
 /**
  * Created by rmnivnv on 12/07/2017.
@@ -80,3 +81,5 @@ fun createCoinsMapFromString(coinName: String): HashMap<String, ArrayList<String
     list.add(coinName)
     return mapFromList(list)
 }
+
+fun doubleFromString(number: String) = NumberFormat.getInstance().parse(number).toDouble()

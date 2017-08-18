@@ -39,7 +39,7 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
     }
 
     private fun setupToolbar() {
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = resProvider.getString(R.string.add_coin)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
