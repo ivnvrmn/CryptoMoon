@@ -36,9 +36,11 @@ class CoinsPresenter : ICoins.Presenter {
     private val disposable = CompositeDisposable()
     private var coins: ArrayList<DisplayCoin> = ArrayList()
     private var isRefreshing = false
+    private var isFirstStart = true
 
-    override fun onCreate(component: CoinsComponent) {
+    override fun onCreate(component: CoinsComponent, coins: ArrayList<DisplayCoin>) {
         component.inject(this)
+        this.coins = coins
         subscribeToObservables()
         getAllCoinsInfo()
     }
@@ -62,6 +64,10 @@ class CoinsPresenter : ICoins.Presenter {
             coins.addAll(list)
             coins.sortBy { it.from }
             view.updateRecyclerView()
+            if (isFirstStart) {
+                isFirstStart = false
+                updatePrices()
+            }
         }
     }
 
@@ -117,12 +123,12 @@ class CoinsPresenter : ICoins.Presenter {
         }))
     }
 
-    override fun onViewCreated(coins: ArrayList<DisplayCoin>) {
-        this.coins = coins
+    override fun onViewCreated() {
+
     }
 
     override fun onStart() {
-        updatePrices()
+        if (coins.isNotEmpty()) updatePrices()
     }
 
     private fun updatePrices() {
@@ -169,7 +175,7 @@ class CoinsPresenter : ICoins.Presenter {
 
     override fun onCoinClicked(coin: DisplayCoin) {
         val intent = Intent(app, CoinInfoActivity::class.java)
-        intent.putExtra("name", coin.from)
+        intent.putExtra(NAME, coin.from)
         view.startActivityByIntent(intent)
     }
 }

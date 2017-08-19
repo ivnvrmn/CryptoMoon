@@ -1,11 +1,19 @@
 package com.rmnivnv.cryptomoon.model
 
+import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.db.DBController
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by rmnivnv on 06/08/2017.
  */
-class CoinsController(private val dbController: DBController) {
+class CoinsController(private val dbController: DBController, private val db: CMDatabase) {
+
+    init {
+        db.allCoinsDao().getAllCoins()
+                .subscribeOn(Schedulers.io())
+                .subscribe({ allCoins = it })
+    }
 
     private var allCoins: List<InfoCoin> = mutableListOf()
 
@@ -43,7 +51,8 @@ class CoinsController(private val dbController: DBController) {
     fun deleteDisplayCoins(coins: List<DisplayCoin>) = dbController.deleteDisplayCoins(coins)
 
     fun saveAllCoinsInfo(allCoins: List<InfoCoin>) {
-        this.allCoins = allCoins
         dbController.saveAllCoinsInfo(allCoins)
     }
+
+    fun getDisplayCoin(name: String) = dbController.getDisplayCoin(name)
 }

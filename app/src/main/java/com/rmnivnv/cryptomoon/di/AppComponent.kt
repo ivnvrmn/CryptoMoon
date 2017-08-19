@@ -7,6 +7,8 @@ import com.rmnivnv.cryptomoon.view.coins.CoinsComponent
 import com.rmnivnv.cryptomoon.view.coins.CoinsModule
 import com.rmnivnv.cryptomoon.view.coins.addCoin.AddCoinComponent
 import com.rmnivnv.cryptomoon.view.coins.addCoin.AddCoinModule
+import com.rmnivnv.cryptomoon.view.coins.coinInfo.CoinInfoComponent
+import com.rmnivnv.cryptomoon.view.coins.coinInfo.CoinInfoModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -21,4 +23,5 @@ interface AppComponent {
     fun plus(mainModule: MainModule): MainComponent
     fun plus(coinsModule: CoinsModule): CoinsComponent
     fun plus(addCoinModule: AddCoinModule): AddCoinComponent
+    fun plus(coinInfoModule: CoinInfoModule): CoinInfoComponent
 }

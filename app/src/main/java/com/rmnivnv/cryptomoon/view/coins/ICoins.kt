@@ -17,8 +17,8 @@ interface ICoins {
     }
 
     interface Presenter {
-        fun onCreate(component: CoinsComponent)
-        fun onViewCreated(coins: ArrayList<DisplayCoin>)
+        fun onCreate(component: CoinsComponent, coins: ArrayList<DisplayCoin>)
+        fun onViewCreated()
         fun onStart()
         fun onStop()
         fun onDestroy()

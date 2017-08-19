@@ -27,8 +27,8 @@ class AppModule(private val app: MainApp) {
 
     @Provides @Singleton fun provideResourceProvider() = ResourceProvider(app)
 
-    @Provides @Singleton fun provideCoinsController(dbController: DBController) =
-            CoinsController(dbController)
+    @Provides @Singleton fun provideCoinsController(dbController: DBController, db: CMDatabase) =
+            CoinsController(dbController, db)
 
     @Provides @Singleton fun provideMultiSelector(resourceProvider: ResourceProvider) =
             MultiSelector(resourceProvider)

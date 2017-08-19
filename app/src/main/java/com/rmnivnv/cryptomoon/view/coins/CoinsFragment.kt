@@ -2,6 +2,7 @@ package com.rmnivnv.cryptomoon.view.coins
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -31,7 +32,7 @@ class CoinsFragment : Fragment(), ICoins.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component.inject(this)
-        presenter.onCreate(component)
+        presenter.onCreate(component, coins)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) =
@@ -41,7 +42,7 @@ class CoinsFragment : Fragment(), ICoins.View {
         super.onViewCreated(view, savedInstanceState)
         setupRecView()
         setupSwipeRefresh()
-        presenter.onViewCreated(coins)
+        presenter.onViewCreated()
     }
 
     private fun setupRecView() {

@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.model
 
+import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.JsonObject
@@ -59,7 +60,9 @@ data class RawCoin(
 
 @Entity(tableName = "display_coins")
 data class DisplayCoin(
-        @PrimaryKey(autoGenerate = false) var from: String = "",
+        @PrimaryKey(autoGenerate = false)
+        @ColumnInfo(name = "from_name")
+        var from: String = "",
         var to: String = "",
         var imgUrl: String = "",
         var fullName: String = "",

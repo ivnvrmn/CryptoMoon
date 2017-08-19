@@ -22,6 +22,8 @@ class DBController(val db: CMDatabase) {
                 .subscribe()
     }
 
+    fun getDisplayCoin(from: String) = db.displayCoinsDao().getDisplayCoin(from)
+
     fun deleteDisplayCoin(coin: DisplayCoin) {
         Single.fromCallable { db.displayCoinsDao().deleteCoin(coin) }
                 .subscribeOn(Schedulers.io())
