@@ -1,11 +1,10 @@
 package com.rmnivnv.cryptomoon.view.coins.coinInfo
 
 import android.os.Bundle
-import com.rmnivnv.cryptomoon.model.CoinsController
-import com.rmnivnv.cryptomoon.model.DisplayCoin
-import com.rmnivnv.cryptomoon.model.NAME
+import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
-import io.reactivex.Observable
+import com.rmnivnv.cryptomoon.network.NetworkRequests
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -19,6 +18,8 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
     @Inject lateinit var view: ICoinInfo.View
     @Inject lateinit var db: CMDatabase
     @Inject lateinit var coinsController: CoinsController
+    @Inject lateinit var networkRequests: NetworkRequests
+    @Inject lateinit var graphMaker: GraphMaker
 
     private val disposable = CompositeDisposable()
     private lateinit var coin: DisplayCoin
@@ -30,10 +31,10 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
 
     private fun getCoinByName(extras: Bundle) {
         if (extras[NAME] != null) {
-            disposable.add(Observable.fromCallable { coinsController.getDisplayCoin(extras.getString(NAME)) }
+            disposable.add(Single.fromCallable { coinsController.getDisplayCoin(extras.getString(NAME)) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ onCoinArrived(it) }))
+                    .subscribe({ onCoinArrived(it) }, {  }))
         }
     }
 
@@ -42,6 +43,25 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
         view.setTitle(coin.fullName)
         view.setLogo(coin.imgUrl)
         view.setMainPrice(coin.PRICE)
+        requestHisto()
+    }
+
+    private fun requestHisto() {
+        disposable.add(networkRequests.getHistoPeriod(HISTO_DAY, coin.from, USD, 30, 1,
+                object : GetHistoCallback {
+                    override fun onSuccess(histoList: ArrayList<HistoData>) {
+                        println("histo size = " + histoList.size)
+                        view.drawChart(graphMaker.makeChart(histoList))
+                    }
+
+                    override fun onError(t: Throwable) {
+
+                    }
+                }))
+    }
+
+    private fun drawGraph() {
+
     }
 
     override fun onDestroy() {

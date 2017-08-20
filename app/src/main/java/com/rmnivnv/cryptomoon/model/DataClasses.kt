@@ -10,7 +10,12 @@ import com.google.gson.annotations.SerializedName
  * Created by rmnivnv on 02/07/2017.
  */
 
-data class Market(val from: String, val to: String, val price: Int, val change: Double, val hold: Double, val logo: Int)
+data class Market(val from: String,
+                  val to: String,
+                  val price: Int,
+                  val change: Double,
+                  val hold: Double,
+                  val logo: Int)
 
 data class AllCoinsResponse(
         @SerializedName("Response") val response: String,
@@ -85,3 +90,13 @@ data class DisplayCoin(
         var CHANGEPCT24HOUR: String = "",
         var SUPPLY: String = "",
         var MKTCAP: String = "")
+
+data class HistoData(
+        val time: Long,
+        val close: Float,
+        val high: Float,
+        val low: Float,
+        val open: Float,
+        @SerializedName("volumefrom") val volumeFrom: Float,
+        @SerializedName("volumeto") val volumeTo: Float
+)

@@ -3,12 +3,17 @@ package com.rmnivnv.cryptomoon.view.coins.coinInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.CandleData
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
 
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.app
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_coin_info.*
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class CoinInfoActivity : AppCompatActivity(), ICoinInfo.View {
@@ -50,5 +55,16 @@ class CoinInfoActivity : AppCompatActivity(), ICoinInfo.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()
+    }
+
+    override fun drawChart(line: CandleData) {
+        val xAxis = coin_info_graph.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+//        val format = SimpleDateFormat("dd MMM", Locale.getDefault())
+//        xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
+//            format.format(Date(value.toLong() * 1000))
+//        }
+        coin_info_graph.data = line
+        coin_info_graph.invalidate()
     }
 }

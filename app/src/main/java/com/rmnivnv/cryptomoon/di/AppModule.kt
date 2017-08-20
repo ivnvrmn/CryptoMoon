@@ -2,12 +2,9 @@ package com.rmnivnv.cryptomoon.di
 
 import android.arch.persistence.room.Room
 import com.rmnivnv.cryptomoon.MainApp
-import com.rmnivnv.cryptomoon.model.CoinsController
-import com.rmnivnv.cryptomoon.model.DATABASE_NAME
+import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.db.DBController
-import com.rmnivnv.cryptomoon.model.MultiSelector
-import com.rmnivnv.cryptomoon.model.PageController
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
@@ -34,4 +31,7 @@ class AppModule(private val app: MainApp) {
             MultiSelector(resourceProvider)
 
     @Provides @Singleton fun providePageController() = PageController()
+
+    @Provides @Singleton fun provideGraphMaker(resourceProvider: ResourceProvider) =
+            GraphMaker(resourceProvider)
 }

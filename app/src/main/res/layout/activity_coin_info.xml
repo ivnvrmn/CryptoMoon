@@ -47,11 +47,12 @@
 
     </LinearLayout>
 
-    <com.jjoe64.graphview.GraphView
+    <com.github.mikephil.charting.charts.CandleStickChart
         android:id="@+id/coin_info_graph"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:background="@color/grey_light"/>
 
     <TextView
         android:id="@+id/coin_info_graph_period"

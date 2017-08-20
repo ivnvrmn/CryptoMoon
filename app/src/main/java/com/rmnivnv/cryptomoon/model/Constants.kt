@@ -22,3 +22,7 @@ val SNT = "SNT"
 
 val COINS_FRAGMENT_PAGE_POSITION = 0
 val NAME = "name"
+
+val HISTO_MINUTE = "histominute"
+val HISTO_HOUR = "histohour"
+val HISTO_DAY = "histoday"

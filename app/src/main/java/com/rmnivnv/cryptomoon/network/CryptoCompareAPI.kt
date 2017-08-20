@@ -2,8 +2,9 @@ package com.rmnivnv.cryptomoon.network
 
 import com.google.gson.JsonObject
 import com.rmnivnv.cryptomoon.model.AllCoinsResponse
-import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
 
@@ -13,8 +14,15 @@ import retrofit2.http.Url
 interface CryptoCompareAPI {
 
     @GET
-    fun getCoinsList(@Url url: String): Observable<AllCoinsResponse>
+    fun getCoinsList(@Url url: String): Single<AllCoinsResponse>
 
     @GET("pricemultifull")
-    fun getPrice(@Query("fsyms") from: String, @Query("tsyms") to: String): Observable<JsonObject>
+    fun getPrice(@Query("fsyms") from: String, @Query("tsyms") to: String): Single<JsonObject>
+
+    @GET("{period}")
+    fun getHistoPeriod(@Path("period") period: String,
+                       @Query("fsym") from: String,
+                       @Query("tsym") to: String,
+                       @Query("limit") limit: Int,
+                       @Query("aggregate") aggregate: Int): Single<JsonObject>
 }

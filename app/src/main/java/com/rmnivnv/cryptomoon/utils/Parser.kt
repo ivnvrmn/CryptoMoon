@@ -1,6 +1,7 @@
 package com.rmnivnv.cryptomoon.utils
 
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.rmnivnv.cryptomoon.model.*
@@ -51,6 +52,18 @@ fun getAllCoinsFromJson(response: AllCoinsResponse): ArrayList<InfoCoin> {
         val coin = Gson().fromJson(it.value, InfoCoin::class.java)
         coin.imageUrl = response.baseImageUrl + coin.imageUrl
         result.add(coin)
+    }
+    return result
+}
+
+fun getHistoListFromJson(jsonObject: JsonObject): ArrayList<HistoData> {
+    val data = "Data"
+    val result: ArrayList<HistoData> = ArrayList()
+    if (jsonObject.has(data)) {
+        val jsonArray: JsonArray = jsonObject.getAsJsonArray(data)
+        jsonArray.forEach {
+            result.add(Gson().fromJson(it, HistoData::class.java))
+        }
     }
     return result
 }

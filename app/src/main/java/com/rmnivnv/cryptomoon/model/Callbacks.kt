@@ -14,6 +14,11 @@ interface GetPriceCallback {
     fun onError(t: Throwable)
 }
 
+interface GetHistoCallback {
+    fun onSuccess(histoList: ArrayList<HistoData>)
+    fun onError(t: Throwable)
+}
+
 interface GetDisplayCoinsCallback {
     fun onSuccess(list: List<DisplayCoin>)
     fun onError(t: Throwable)
