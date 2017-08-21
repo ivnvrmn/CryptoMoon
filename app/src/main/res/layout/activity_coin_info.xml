@@ -54,13 +54,13 @@
         android:layout_margin="8dp"
         android:background="@color/grey_light"/>
 
-    <TextView
-        android:id="@+id/coin_info_graph_period"
+    <Spinner
+        android:id="@+id/coin_info_graph_periods"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/grey_light"
         android:textSize="18sp"
-        tools:text="1 month"/>
+        android:entries="@array/histo_periods"/>
 
 </LinearLayout>

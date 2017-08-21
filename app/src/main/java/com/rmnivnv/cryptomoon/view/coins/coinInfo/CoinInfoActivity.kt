@@ -3,6 +3,7 @@ package com.rmnivnv.cryptomoon.view.coins.coinInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import android.widget.ArrayAdapter
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
@@ -27,7 +28,9 @@ class CoinInfoActivity : AppCompatActivity(), ICoinInfo.View {
         setContentView(R.layout.activity_coin_info)
         component.inject(this)
         setupToolbar()
+        setupSpinner()
         presenter.onCreate(component, intent.extras)
+
     }
 
     private fun setupToolbar() {
@@ -36,6 +39,15 @@ class CoinInfoActivity : AppCompatActivity(), ICoinInfo.View {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
+    }
+
+    private fun setupSpinner() {
+        coin_info_graph_periods.adapter = ArrayAdapter<String>(this, R.layout.period_item, R.id.period,
+                resProvider.getStringArray(R.array.histo_periods))
+        coin_info_graph_periods.setSelection(5)
+        coin_info_graph_periods.setOnItemClickListener { adapterView, view, position, l ->
+            presenter.onSpinnerItemClicked(position)
+        }
     }
 
     override fun setTitle(title: String) {

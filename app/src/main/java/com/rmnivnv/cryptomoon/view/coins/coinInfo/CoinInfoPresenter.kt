@@ -64,6 +64,10 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
 
     }
 
+    override fun onSpinnerItemClicked(position: Int) {
+
+    }
+
     override fun onDestroy() {
         disposable.clear()
     }

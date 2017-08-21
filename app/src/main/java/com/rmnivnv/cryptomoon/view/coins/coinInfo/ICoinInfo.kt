@@ -17,5 +17,6 @@ interface ICoinInfo {
     interface Presenter {
         fun onCreate(component: CoinInfoComponent, extras: Bundle)
         fun onDestroy()
+        fun onSpinnerItemClicked(position: Int)
     }
 }

@@ -15,4 +15,6 @@ class ResourceProvider(val app: MainApp) {
 
     fun getColor(id: Int) = ContextCompat.getColor(app, id)
 
+    fun getStringArray(id: Int) = app.resources.getStringArray(id)
+
 }

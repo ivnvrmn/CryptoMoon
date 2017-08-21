@@ -22,4 +22,16 @@
     <string name="coins_deleted">Coins deleted</string>
     <string name="coin_deleted">Coin deleted</string>
     <string name="coin_logo_transition_name">coinLogo</string>
+
+    <string-array name="histo_periods">
+        <item>1 hour</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>3 days</item>
+        <item>1 week</item>
+        <item>1 month</item>
+        <item>3 months</item>
+        <item>6 months</item>
+        <item>1 year</item>
+    </string-array>
 </resources>
