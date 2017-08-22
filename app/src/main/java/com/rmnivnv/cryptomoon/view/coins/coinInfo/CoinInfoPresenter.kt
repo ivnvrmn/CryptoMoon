@@ -43,11 +43,11 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
         view.setTitle(coin.fullName)
         view.setLogo(coin.imgUrl)
         view.setMainPrice(coin.PRICE)
-        requestHisto()
+        requestHisto(MONTH)
     }
 
-    private fun requestHisto() {
-        disposable.add(networkRequests.getHistoPeriod(HISTO_DAY, coin.from, USD, 30, 1,
+    private fun requestHisto(period: String) {
+        disposable.add(networkRequests.getHistoPeriod(period, coin.from, USD,
                 object : GetHistoCallback {
                     override fun onSuccess(histoList: ArrayList<HistoData>) {
                         println("histo size = " + histoList.size)
@@ -64,8 +64,8 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
 
     }
 
-    override fun onSpinnerItemClicked(position: Int) {
-
+    override fun onSpinnerItemClicked(selectedItem: String) {
+        requestHisto(selectedItem)
     }
 
     override fun onDestroy() {

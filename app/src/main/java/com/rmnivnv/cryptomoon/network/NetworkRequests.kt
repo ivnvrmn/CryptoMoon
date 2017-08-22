@@ -28,9 +28,56 @@ class NetworkRequests(val api: CryptoCompareAPI) {
                 .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
-    fun getHistoPeriod(period: String, from: String, to: String, limit: Int, aggregate: Int,
-                       callback: GetHistoCallback): Disposable {
-        return api.getHistoPeriod(period, from, to, limit, aggregate)
+    fun getHistoPeriod(period: String, from: String, to: String, callback: GetHistoCallback): Disposable {
+        val histoPeriod: String
+        val limit: Int
+        var aggregate = 1
+        when (period) {
+            HOUR -> {
+                histoPeriod = HISTO_MINUTE
+                limit = 60
+                aggregate = 2
+            }
+            HOURS12 -> {
+                histoPeriod = HISTO_HOUR
+                limit = 12
+            }
+            HOURS24 -> {
+                histoPeriod = HISTO_HOUR
+                limit = 24
+            }
+            DAYS3 -> {
+                histoPeriod = HISTO_HOUR
+                limit = 72
+                aggregate = 2
+            }
+            WEEK -> {
+                histoPeriod = HISTO_HOUR
+                limit = 168
+                aggregate = 3
+            }
+            MONTH -> {
+                histoPeriod = HISTO_DAY
+                limit = 30
+            }
+            MONTHS3 -> {
+                histoPeriod = HISTO_DAY
+                limit = 90
+                aggregate = 2
+            }
+            MONTHS6 -> {
+                histoPeriod = HISTO_DAY
+                limit = 180
+                aggregate = 4
+            }
+            else -> {
+                histoPeriod = HISTO_DAY
+                limit = 365
+                aggregate = 10
+            }
+        }
+
+        return api.getHistoPeriod(histoPeriod, from, to, limit, aggregate)
                 .subscribeOn(Schedulers.io())
                 .map { getHistoListFromJson(it) }
                 .observeOn(AndroidSchedulers.mainThread())
