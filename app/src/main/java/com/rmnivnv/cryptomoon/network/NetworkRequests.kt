@@ -30,7 +30,7 @@ class NetworkRequests(val api: CryptoCompareAPI) {
 
     fun getHistoPeriod(period: String, from: String, to: String, callback: GetHistoCallback): Disposable {
         val histoPeriod: String
-        val limit: Int
+        var limit = 30
         var aggregate = 1
         when (period) {
             HOUR -> {
@@ -48,32 +48,26 @@ class NetworkRequests(val api: CryptoCompareAPI) {
             }
             DAYS3 -> {
                 histoPeriod = HISTO_HOUR
-                limit = 72
                 aggregate = 2
             }
             WEEK -> {
                 histoPeriod = HISTO_HOUR
-                limit = 168
-                aggregate = 3
+                aggregate = 6
             }
             MONTH -> {
                 histoPeriod = HISTO_DAY
-                limit = 30
             }
             MONTHS3 -> {
                 histoPeriod = HISTO_DAY
-                limit = 90
-                aggregate = 2
+                aggregate = 3
             }
             MONTHS6 -> {
                 histoPeriod = HISTO_DAY
-                limit = 180
-                aggregate = 4
+                aggregate = 6
             }
             else -> {
                 histoPeriod = HISTO_DAY
-                limit = 365
-                aggregate = 10
+                aggregate = 12
             }
         }
 

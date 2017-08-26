@@ -81,11 +81,40 @@ class CoinInfoActivity : AppCompatActivity(), ICoinInfo.View {
     override fun drawChart(line: CandleData) {
         val xAxis = coin_info_graph.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
+        //TODO set date
 //        val format = SimpleDateFormat("dd MMM", Locale.getDefault())
 //        xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
 //            format.format(Date(value.toLong() * 1000))
 //        }
         coin_info_graph.data = line
         coin_info_graph.invalidate()
+    }
+
+    override fun setOpen(open: String) {
+        coin_info_open.text = open
+    }
+
+    override fun setHigh(high: String) {
+        coin_info_high.text = high
+    }
+
+    override fun setLow(low: String) {
+        coin_info_low.text = low
+    }
+
+    override fun setChange(change: String) {
+        coin_info_change.text = change
+    }
+
+    override fun setChangePct(pct: String) {
+        coin_info_change_pct.text = pct
+    }
+
+    override fun setSupply(supply: String) {
+        coin_info_supply.text = supply
+    }
+
+    override fun setMarketCap(cap: String) {
+        coin_info_market_cap.text = cap
     }
 }

@@ -44,6 +44,7 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
         view.setLogo(coin.imgUrl)
         view.setMainPrice(coin.PRICE)
         requestHisto(MONTH)
+        setCoinInfo()
     }
 
     private fun requestHisto(period: String) {
@@ -51,7 +52,7 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
                 object : GetHistoCallback {
                     override fun onSuccess(histoList: ArrayList<HistoData>) {
                         println("histo size = " + histoList.size)
-                        view.drawChart(graphMaker.makeChart(histoList))
+                        view.drawChart(graphMaker.makeChart(histoList, period))
                     }
 
                     override fun onError(t: Throwable) {
@@ -60,8 +61,14 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
                 }))
     }
 
-    private fun drawGraph() {
-
+    private fun setCoinInfo() {
+        view.setOpen(coin.OPEN24HOUR)
+        view.setHigh(coin.HIGH24HOUR)
+        view.setLow(coin.LOW24HOUR)
+        view.setChange(coin.CHANGE24HOUR)
+        view.setChangePct(coin.CHANGEPCT24HOUR)
+        view.setSupply(coin.SUPPLY)
+        view.setMarketCap(coin.MKTCAP)
     }
 
     override fun onSpinnerItemClicked(selectedItem: String) {

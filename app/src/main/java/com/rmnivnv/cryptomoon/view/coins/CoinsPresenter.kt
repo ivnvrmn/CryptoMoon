@@ -85,6 +85,7 @@ class CoinsPresenter : ICoins.Presenter {
             else resProvider.getString(R.string.coin_deleted)
             coinsController.deleteDisplayCoins(coinsToDelete)
             app.toastShort(toast)
+            multiSelector.atLeastOneIsSelected = false
         }
     }
 

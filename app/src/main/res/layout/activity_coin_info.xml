@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorPrimaryDark"
+    android:padding="8dp"
     tools:context="com.rmnivnv.cryptomoon.view.coins.coinInfo.CoinInfoActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -41,7 +42,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:textSize="30sp"
-            android:textStyle="bold"
             android:textColor="@color/grey_light"
             tools:text="$ 4345"/>
 
@@ -51,16 +51,184 @@
         android:id="@+id/coin_info_graph"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_margin="8dp"
-        android:background="@color/grey_light"/>
+        android:layout_marginTop="10dp"
+        android:background="@color/grey_light" />
 
     <Spinner
         android:id="@+id/coin_info_graph_periods"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="end"
         android:textColor="@color/grey_light"
         android:textSize="18sp"
         android:entries="@array/histo_periods"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/grey_light"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"/>
+
+    <TextView
+        android:id="@+id/coin_info_24_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:text="@string/twenty_four_hours"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_light"
+            android:text="@string/open"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/coin_info_open"
+            tools:text="123123313"
+            android:textColor="@color/grey_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_light"
+            android:text="@string/high"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/coin_info_high"
+            tools:text="123123313"
+            android:textColor="@color/grey_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_light"
+            android:text="@string/low"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/coin_info_low"
+            tools:text="123123313"
+            android:textColor="@color/grey_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_light"
+            android:text="@string/change"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/coin_info_change"
+            tools:text="123123313"
+            android:textColor="@color/grey_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_light"
+            android:text="@string/change_pct"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/coin_info_change_pct"
+            tools:text="123123313"
+            android:textColor="@color/grey_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/grey_light"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:text="@string/supply"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/coin_info_supply"
+            tools:text="123123313"
+            android:textColor="@color/grey_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:text="@string/cap"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/coin_info_market_cap"
+            tools:text="123123313"
+            android:textColor="@color/grey_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </LinearLayout>

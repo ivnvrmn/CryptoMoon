@@ -22,6 +22,14 @@
     <string name="coins_deleted">Coins deleted</string>
     <string name="coin_deleted">Coin deleted</string>
     <string name="coin_logo_transition_name">coinLogo</string>
+    <string name="twenty_four_hours">24H DATA</string>
+    <string name="open">OPEN</string>
+    <string name="high">HIGH</string>
+    <string name="low">LOW</string>
+    <string name="change">CHANGE</string>
+    <string name="change_pct">CHANGE PCT</string>
+    <string name="supply">Circulating supply</string>
+    <string name="cap">Market cap</string>
 
     <string-array name="histo_periods">
         <item>1 hour</item>

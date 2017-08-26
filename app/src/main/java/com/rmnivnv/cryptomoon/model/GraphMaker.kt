@@ -11,13 +11,13 @@ import kotlin.collections.ArrayList
  */
 class GraphMaker(val resProvider: ResourceProvider) {
 
-    fun makeChart(histoList: ArrayList<HistoData>): CandleData {
+    fun makeChart(histoList: ArrayList<HistoData>, period: String): CandleData {
         val candleList: ArrayList<CandleEntry> = ArrayList()
         var x = 0f
         histoList.forEach {
             candleList.add(CandleEntry(++x, it.high, it.low, it.open, it.close))
         }
-        val dataSet = CandleDataSet(candleList.toList(), "Coin chart")
+        val dataSet = CandleDataSet(candleList.toList(), period)
         setupDataSetParams(dataSet)
         return CandleData(dataSet)
     }
@@ -30,5 +30,6 @@ class GraphMaker(val resProvider: ResourceProvider) {
         dataSet.increasingColor = resProvider.getColor(R.color.green)
         dataSet.increasingPaintStyle = Paint.Style.FILL
         dataSet.neutralColor = resProvider.getColor(R.color.orange_dark)
+        dataSet.setDrawValues(false)
     }
 }

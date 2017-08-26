@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/darker_gray"
+    android:background="@color/colorPrimaryDark"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="8dp">
 
@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/grey_light"
+        android:textAllCaps="true"
         tools:text="24 hours"/>
 
 </RelativeLayout>
