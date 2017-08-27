@@ -31,10 +31,12 @@ class AddCoinMatchesAdapter(private val items: ArrayList<InfoCoin>, private val 
         fun bindItems(coin: InfoCoin, listener: (InfoCoin) -> Unit) = with(itemView) {
             add_coin_name.text = coin.coinName
             add_coin_short_name.text = coin.name
-            if (!coin.imageUrl.isNullOrEmpty()) {
+            if (!coin.imageUrl.isEmpty()) {
                 Picasso.with(context)
                         .load(coin.imageUrl)
                         .into(add_coin_icon)
+            } else {
+                add_coin_icon.visibility = View.INVISIBLE
             }
             setOnClickListener { listener(coin) }
         }

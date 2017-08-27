@@ -33,3 +33,8 @@ interface GetDisplayCoinsMapFromDbCallback {
     fun onSuccess(map: HashMap<String, ArrayList<String>>)
     fun onError(t: Throwable)
 }
+
+interface GetPairsCallback {
+    fun onSuccess(pairs: ArrayList<PairData>)
+    fun onError(t: Throwable)
+}

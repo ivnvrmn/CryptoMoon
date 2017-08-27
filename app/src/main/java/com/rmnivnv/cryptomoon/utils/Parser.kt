@@ -1,7 +1,6 @@
 package com.rmnivnv.cryptomoon.utils
 
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.rmnivnv.cryptomoon.model.*
@@ -57,42 +56,34 @@ fun getAllCoinsFromJson(response: AllCoinsResponse): ArrayList<InfoCoin> {
 }
 
 fun getHistoListFromJson(jsonObject: JsonObject): ArrayList<HistoData> {
-    val data = "Data"
     val result: ArrayList<HistoData> = ArrayList()
-    if (jsonObject.has(data)) {
-        val jsonArray: JsonArray = jsonObject.getAsJsonArray(data)
-        jsonArray.forEach {
+    if (jsonObject.has(DATA)) {
+        jsonObject.getAsJsonArray(DATA).forEach {
             result.add(Gson().fromJson(it, HistoData::class.java))
         }
     }
     return result
 }
 
-fun createCoinsMapFromList(coinsList: List<DisplayCoin>): HashMap<String, ArrayList<String>> {
-    val list: ArrayList<String> = ArrayList()
-    if (coinsList.isNotEmpty()) {
-        coinsList.forEach { list.add(it.from) }
+fun getPairsListFromJson(jsonObject: JsonObject): ArrayList<PairData> {
+    val result: ArrayList<PairData> = ArrayList()
+    if (jsonObject.has(DATA)) {
+        jsonObject.getAsJsonArray(DATA).forEach {
+            result.add(Gson().fromJson(it, PairData::class.java))
+        }
     }
-    return mapFromList(list)
+    return result
 }
 
-private fun mapFromList(list: List<String>): HashMap<String, ArrayList<String>> {
+fun createCoinsMapWithCurrencies(coinsList: List<DisplayCoin>): HashMap<String, ArrayList<String>> {
     val map: HashMap<String, ArrayList<String>> = HashMap()
-    if (list.isNotEmpty()) {
-        val toList: ArrayList<String> = ArrayList()
-        toList.add(USD)
-        val fromList: ArrayList<String> = ArrayList()
-        list.forEach { fromList.add(it) }
-        map.put(FSYMS, fromList)
-        map.put(TSYMS, toList)
-    }
+    val fromList: ArrayList<String> = ArrayList()
+    coinsList.forEach { fromList.add(it.from) }
+    map.put(FSYMS, fromList)
+    val toList: ArrayList<String> = ArrayList()
+    coinsList.forEach { toList.add(it.to) }
+    map.put(TSYMS, toList)
     return map
-}
-
-fun createCoinsMapFromString(coinName: String): HashMap<String, ArrayList<String>> {
-    val list: ArrayList<String> = ArrayList()
-    list.add(coinName)
-    return mapFromList(list)
 }
 
 fun doubleFromString(number: String) = NumberFormat.getInstance().parse(number).toDouble()

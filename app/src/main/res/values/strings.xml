@@ -30,6 +30,7 @@
     <string name="change_pct">CHANGE PCT</string>
     <string name="supply">Circulating supply</string>
     <string name="cap">Market cap</string>
+    <string name="choose_currency">Choose currency</string>
 
     <string-array name="histo_periods">
         <item>1 hour</item>

@@ -54,7 +54,8 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
             }
             if (coin.selected) main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
             else main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorPrimaryDark))
-            main_item_market.text = coin.from
+            main_item_from.text = coin.from
+            main_item_to.text = """ / ${coin.to}"""
             main_item_full_name.text = coin.fullName
             main_item_last_price.text = coin.PRICE
             main_item_change_in_24.text = """${coin.CHANGEPCT24HOUR}%"""

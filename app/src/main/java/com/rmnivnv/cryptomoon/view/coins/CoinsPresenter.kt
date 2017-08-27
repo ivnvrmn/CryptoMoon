@@ -11,7 +11,7 @@ import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import com.rmnivnv.cryptomoon.utils.createCoinsMapFromList
+import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
 import com.rmnivnv.cryptomoon.utils.toastShort
 import com.rmnivnv.cryptomoon.view.coins.coinInfo.CoinInfoActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -133,7 +133,7 @@ class CoinsPresenter : ICoins.Presenter {
     }
 
     private fun updatePrices() {
-        val queryMap = createCoinsMapFromList(coins)
+        val queryMap = createCoinsMapWithCurrencies(coins)
         if (queryMap.isNotEmpty()) {
             RxBus.publish(CoinsLoadingEvent(true))
             disposable.add(networkRequests.getPrice(queryMap, object : GetPriceCallback {
@@ -177,6 +177,7 @@ class CoinsPresenter : ICoins.Presenter {
     override fun onCoinClicked(coin: DisplayCoin) {
         val intent = Intent(app, CoinInfoActivity::class.java)
         intent.putExtra(NAME, coin.from)
+        intent.putExtra(TO, coin.to)
         view.startActivityByIntent(intent)
     }
 }

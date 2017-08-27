@@ -115,4 +115,8 @@ class AddCoinActivity : AppCompatActivity(), IAddCoin.View {
     override fun finishActivity() {
         finish()
     }
+
+    override fun clearFromEdt() {
+        add_coin_from_edt.setText("")
+    }
 }

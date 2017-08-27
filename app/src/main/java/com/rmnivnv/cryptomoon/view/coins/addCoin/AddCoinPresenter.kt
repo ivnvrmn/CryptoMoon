@@ -28,6 +28,8 @@ class AddCoinPresenter : IAddCoin.Presenter {
     private var allCoins: List<InfoCoin> = mutableListOf()
     private var coins: ArrayList<DisplayCoin> = ArrayList()
     private lateinit var matches: ArrayList<InfoCoin>
+    private var selectedCoin: DisplayCoin? = null
+    private var coinSelect = true
 
     override fun onCreate(component: AddCoinComponent, matches: ArrayList<InfoCoin>) {
         component.inject(this)
@@ -94,39 +96,79 @@ class AddCoinPresenter : IAddCoin.Presenter {
     }
 
     override fun onFromItemClicked(coin: InfoCoin) {
-        if (coins.isNotEmpty() && coins.find { it.from == coin.name } != null) {
-            app.toastShort(resProvider.getString(R.string.coin_already_added))
+        view.disableMatchesCount()
+        matches.clear()
+        matches.add(coin)
+        view.updateRecyclerView()
+        view.hideKeyboard()
+        if (coinSelect) {
+            selectedCoin = DisplayCoin(from = coin.name)
+            requestPairs(coin)
+            coinSelect = false
         } else {
-            view.disableMatchesCount()
-            matches.clear()
-            matches.add(coin)
-            view.updateRecyclerView()
-            view.hideKeyboard()
-            requestCoinInfo(coin)
+            if (selectedCoin != null) {
+                selectedCoin?.to = coin.coinName.replace("/ ", "")
+                if (coins.isNotEmpty() && coins.find { it.from == selectedCoin?.from &&
+                        it.to == selectedCoin?.to} != null) {
+                    app.toastShort(resProvider.getString(R.string.coin_already_added))
+                    matches.clear()
+                    view.updateRecyclerView()
+                    coinSelect = true
+                    view.clearFromEdt()
+                } else {
+                    requestCoinInfo(selectedCoin!!)
+                }
+            }
         }
     }
 
-    private fun requestCoinInfo(coin: InfoCoin) {
+    private fun requestPairs(coin: InfoCoin) {
         if (!coin.name.isEmpty()) {
             view.enableLoadingLayout()
-            disposable.add(networkRequests.getPrice(createCoinsMapFromString(coin.name), object : GetPriceCallback {
-                override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
-                    if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
-                        coinsController.saveDisplayCoinList(coinsInfoList)
-                        coinSuccessfullyAdded()
-                    } else {
-                        view.disableLoadingLayout()
-                        app.toastShort(resProvider.getString(R.string.coin_not_found))
-                    }
+            disposable.add(networkRequests.getPairs(coin.name, object : GetPairsCallback {
+                override fun onSuccess(pairs: ArrayList<PairData>) {
+                    view.disableLoadingLayout()
+                    onPairsReceived(pairs)
                 }
 
                 override fun onError(t: Throwable) {
                     view.disableLoadingLayout()
-                    app.toastShort(resProvider.getString(R.string.coin_not_found))
-                    Log.d("onError", t.message)
                 }
             }))
         }
+    }
+
+    private fun onPairsReceived(pairs: ArrayList<PairData>) {
+        if (pairs.isNotEmpty()) {
+            matches.clear()
+            pairs.forEach {
+                matches.add(InfoCoin(name = it.fromSymbol, coinName = """/ ${it.toSymbol}""", imageUrl = ""))
+            }
+            view.updateRecyclerView()
+            app.toastShort(resProvider.getString(R.string.choose_currency))
+        }
+    }
+
+    private fun requestCoinInfo(coin: DisplayCoin) {
+        view.enableLoadingLayout()
+        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)),
+                object : GetPriceCallback {
+            override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
+                if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
+                    coinsController.saveDisplayCoinList(coinsInfoList)
+                    coinSuccessfullyAdded()
+                } else {
+                    view.disableLoadingLayout()
+                    app.toastShort(resProvider.getString(R.string.coin_not_found))
+                }
+            }
+
+            override fun onError(t: Throwable) {
+                view.disableLoadingLayout()
+                app.toastShort(resProvider.getString(R.string.coin_not_found))
+                Log.d("onError", t.message)
+            }
+        }))
     }
 
     private fun coinSuccessfullyAdded() {

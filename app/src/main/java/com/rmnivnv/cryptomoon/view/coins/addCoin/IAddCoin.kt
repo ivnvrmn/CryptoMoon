@@ -16,6 +16,7 @@ interface IAddCoin {
         fun disableLoadingLayout()
         fun hideKeyboard()
         fun finishActivity()
+        fun clearFromEdt()
     }
 
     interface Presenter {

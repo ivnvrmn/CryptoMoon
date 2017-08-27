@@ -63,11 +63,11 @@ data class RawCoin(
         val SUPPLY: Float,
         val MKTCAP: Float)
 
-@Entity(tableName = "display_coins")
+@Entity(tableName = "display_coins", primaryKeys = arrayOf("from_name", "to_name"))
 data class DisplayCoin(
-        @PrimaryKey(autoGenerate = false)
         @ColumnInfo(name = "from_name")
         var from: String = "",
+        @ColumnInfo(name = "to_name")
         var to: String = "",
         var imgUrl: String = "",
         var fullName: String = "",
@@ -98,5 +98,11 @@ data class HistoData(
         val low: Float,
         val open: Float,
         @SerializedName("volumefrom") val volumeFrom: Float,
-        @SerializedName("volumeto") val volumeTo: Float
-)
+        @SerializedName("volumeto") val volumeTo: Float)
+
+data class PairData(
+        val exchange: String,
+        val fromSymbol: String,
+        val toSymbol: String,
+        val volume24h: Float,
+        val volume24hTo: Float)

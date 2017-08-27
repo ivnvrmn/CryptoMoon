@@ -25,4 +25,7 @@ interface CryptoCompareAPI {
                        @Query("tsym") to: String,
                        @Query("limit") limit: Int,
                        @Query("aggregate") aggregate: Int): Single<JsonObject>
+
+    @GET("top/pairs")
+    fun getPairs(@Query("fsym") from: String): Single<JsonObject>
 }

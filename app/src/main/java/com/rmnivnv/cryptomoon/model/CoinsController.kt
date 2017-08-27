@@ -54,5 +54,5 @@ class CoinsController(private val dbController: DBController, private val db: CM
         dbController.saveAllCoinsInfo(allCoins)
     }
 
-    fun getDisplayCoin(name: String) = dbController.getDisplayCoin(name)
+    fun getDisplayCoin(from: String, to: String) = dbController.getDisplayCoin(from, to)
 }

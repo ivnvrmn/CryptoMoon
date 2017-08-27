@@ -37,13 +37,27 @@
             android:layout_toRightOf="@id/main_item_market_logo"
             android:layout_toEndOf="@id/main_item_market_logo">
 
-            <TextView
-                android:id="@+id/main_item_market"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="BTC"
-                android:textColor="@color/grey_light"
-                android:textSize="18sp"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/main_item_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="BTC"
+                    android:textColor="@color/grey_light"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/main_item_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="BTC"
+                    android:textColor="@color/grey_light"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/main_item_full_name"

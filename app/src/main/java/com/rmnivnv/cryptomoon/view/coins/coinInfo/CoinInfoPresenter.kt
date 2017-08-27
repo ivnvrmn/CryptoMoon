@@ -30,8 +30,9 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
     }
 
     private fun getCoinByName(extras: Bundle) {
-        if (extras[NAME] != null) {
-            disposable.add(Single.fromCallable { coinsController.getDisplayCoin(extras.getString(NAME)) }
+        if (extras[NAME] != null && extras[TO] != null) {
+            disposable.add(Single.fromCallable { coinsController.getDisplayCoin(extras.getString(NAME),
+                    extras.getString(TO)) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ onCoinArrived(it) }, {  }))
@@ -48,7 +49,7 @@ class CoinInfoPresenter : ICoinInfo.Presenter {
     }
 
     private fun requestHisto(period: String) {
-        disposable.add(networkRequests.getHistoPeriod(period, coin.from, USD,
+        disposable.add(networkRequests.getHistoPeriod(period, coin.from, coin.to,
                 object : GetHistoCallback {
                     override fun onSuccess(histoList: ArrayList<HistoData>) {
                         println("histo size = " + histoList.size)

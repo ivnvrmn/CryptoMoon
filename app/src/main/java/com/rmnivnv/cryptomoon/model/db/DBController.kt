@@ -22,7 +22,7 @@ class DBController(val db: CMDatabase) {
                 .subscribe()
     }
 
-    fun getDisplayCoin(from: String) = db.displayCoinsDao().getDisplayCoin(from)
+    fun getDisplayCoin(from: String, to: String) = db.displayCoinsDao().getDisplayCoin(from, to)
 
     fun deleteDisplayCoin(coin: DisplayCoin) {
         Single.fromCallable { db.displayCoinsDao().deleteCoin(coin) }
