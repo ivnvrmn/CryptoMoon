@@ -139,7 +139,7 @@ class CoinsPresenter : ICoins.Presenter {
             disposable.add(networkRequests.getPrice(queryMap, object : GetPriceCallback {
                 override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
                     if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
-                        coinsController.saveDisplayCoinList(coinsInfoList)
+                        coinsController.saveDisplayCoinList(filterList(coinsInfoList))
                     }
                     afterRefreshing()
                 }
@@ -149,6 +149,16 @@ class CoinsPresenter : ICoins.Presenter {
                 }
             }))
         }
+    }
+
+    private fun filterList(coinsInfoList: ArrayList<DisplayCoin>): ArrayList<DisplayCoin> {
+        val result: ArrayList<DisplayCoin> = ArrayList()
+        coins.forEach {
+            val coin = it
+            val find = coinsInfoList.find { it.from == coin.from && it.to == coin.to }
+            if (find != null) result.add(find)
+        }
+        return result
     }
 
     private fun afterRefreshing() {
