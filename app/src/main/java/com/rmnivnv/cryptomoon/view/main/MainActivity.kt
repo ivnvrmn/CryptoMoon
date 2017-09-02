@@ -21,8 +21,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.view.coins.CoinsFragment
-import com.rmnivnv.cryptomoon.view.ico.IcoFragment
-import com.rmnivnv.cryptomoon.view.fragments.news.NewsFragment
+import com.rmnivnv.cryptomoon.view.topCoins.TopCoinsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -51,8 +50,7 @@ class MainActivity : AppCompatActivity(), IMain.View {
     private fun setupViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(CoinsFragment(), resProvider.getString(R.string.coins))
-        adapter.addFragment(IcoFragment(), resProvider.getString(R.string.ico))
-        adapter.addFragment(NewsFragment(), resProvider.getString(R.string.news))
+        adapter.addFragment(TopCoinsFragment(), resProvider.getString(R.string.top100))
         viewpager.adapter = adapter
         tabs.setupWithViewPager(viewpager)
         setCustomTab()

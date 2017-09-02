@@ -38,7 +38,7 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
         holder?.bindItems(coins[position], clickListener)
     }
 
-    override fun getItemCount(): Int = coins.size
+    override fun getItemCount() = coins.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(coin: DisplayCoin, listener: (DisplayCoin) -> Unit) = with(itemView) {

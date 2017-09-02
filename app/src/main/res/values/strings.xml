@@ -5,6 +5,7 @@
     <string name="change_24h">Change 24h</string>
     <string name="coins">Coins</string>
     <string name="ico">ICO</string>
+    <string name="top100">Top 100</string>
     <string name="news">News</string>
     <string name="add_coin">Add coin</string>
     <string name="enter_coin_name">Enter coin name</string>
@@ -27,10 +28,12 @@
     <string name="high">HIGH</string>
     <string name="low">LOW</string>
     <string name="change">CHANGE</string>
-    <string name="change_pct">CHANGE PCT</string>
+    <string name="change_pct">CHANGE %</string>
     <string name="supply">Circulating supply</string>
     <string name="cap">Market cap</string>
     <string name="choose_currency">Choose currency</string>
+    <string name="volume_24h">Volume 24h</string>
+    <string name="dollar_sign">$</string>
 
     <string-array name="histo_periods">
         <item>1 hour</item>

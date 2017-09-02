@@ -2,6 +2,7 @@ package com.rmnivnv.cryptomoon.model.db
 
 import com.rmnivnv.cryptomoon.model.InfoCoin
 import com.rmnivnv.cryptomoon.model.DisplayCoin
+import com.rmnivnv.cryptomoon.model.TopCoinData
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
@@ -38,6 +39,12 @@ class DBController(val db: CMDatabase) {
 
     fun saveAllCoinsInfo(allCoins: List<InfoCoin>) {
         Single.fromCallable { db.allCoinsDao().insertList(allCoins) }
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+    }
+
+    fun saveTopCoinsList(list: List<TopCoinData>) {
+        Single.fromCallable { db.topCoinsDao().insertTopCoinsList(list) }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
     }

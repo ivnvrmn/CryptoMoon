@@ -38,3 +38,8 @@ interface GetPairsCallback {
     fun onSuccess(pairs: ArrayList<PairData>)
     fun onError(t: Throwable)
 }
+
+interface GetTopCoinsCallback {
+    fun onSuccess(coins: List<TopCoinData>)
+    fun onError(t: Throwable)
+}

@@ -55,4 +55,12 @@ class CoinsController(private val dbController: DBController, private val db: CM
     }
 
     fun getDisplayCoin(from: String, to: String) = dbController.getDisplayCoin(from, to)
+
+    fun saveTopCoinsList(list: List<TopCoinData>) {
+        list.forEach {
+            val coin = it
+            it.imgUrl = allCoins.find { it.name == coin.symbol }?.imageUrl ?: ""
+        }
+        dbController.saveTopCoinsList(list)
+    }
 }

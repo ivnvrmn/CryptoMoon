@@ -12,17 +12,18 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by rmnivnv on 12/07/2017.
  */
-class NetworkRequests(val api: CryptoCompareAPI) {
+class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
+                      private val coinMarketCapApi: CoinMarketCapApi) {
 
     fun getAllCoins(callback: GetAllCoinsCallback): Disposable  {
-        return api.getCoinsList(COINS_LIST_URL)
+        return cryptoCompareAPI.getCoinsList(COINS_LIST_URL)
                 .subscribeOn(Schedulers.io())
                 .map { getAllCoinsFromJson(it) }
                 .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
     fun getPrice(map: Map<String, ArrayList<String>>, callback: GetPriceCallback): Disposable {
-        return api.getPrice(getQuery(map, FSYMS), getQuery(map, TSYMS))
+        return cryptoCompareAPI.getPrice(getQuery(map, FSYMS), getQuery(map, TSYMS))
                 .subscribeOn(Schedulers.io())
                 .map { getCoinDisplayBodyFromJson(it, map) }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -39,7 +40,7 @@ class NetworkRequests(val api: CryptoCompareAPI) {
     }
 
     fun getPairs(from: String, callback: GetPairsCallback): Disposable {
-        return api.getPairs(from)
+        return cryptoCompareAPI.getPairs(from)
                 .subscribeOn(Schedulers.io())
                 .map { getPairsListFromJson(it) }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,9 +90,16 @@ class NetworkRequests(val api: CryptoCompareAPI) {
             }
         }
 
-        return api.getHistoPeriod(histoPeriod, from, to, limit, aggregate)
+        return cryptoCompareAPI.getHistoPeriod(histoPeriod, from, to, limit, aggregate)
                 .subscribeOn(Schedulers.io())
                 .map { getHistoListFromJson(it) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
+    }
+
+    fun getTopCoins(callback: GetTopCoinsCallback): Disposable {
+        return coinMarketCapApi.getTopCoins(COIN_MARKET_CAP_URL_TICKER, 100)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimaryDark"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:layout_marginBottom="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/top_coin_name_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/top_coin_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                tools:text="1"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"/>
+
+            <ImageView
+                android:id="@+id/top_coin_logo"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_btc"/>
+
+            <TextView
+                android:id="@+id/top_coin_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:textSize="18sp"
+                tools:text="Bitcoin"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@id/top_coin_name_layout"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dollar_sign"
+                android:textColor="@color/grey_light"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/top_coin_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:textSize="18sp"
+                tools:text="4639" />
+
+            <TextView
+                android:id="@+id/top_coin_24h_pct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                tools:text="+2.73%"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:text="@string/cap"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"/>
+
+            <TextView
+                android:id="@+id/top_coin_market_cap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                tools:text="23112312"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:text="@string/supply"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"/>
+
+            <TextView
+                android:id="@+id/top_coin_supply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                tools:text="23112312"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:text="@string/volume_24h"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"/>
+
+            <TextView
+                android:id="@+id/top_coin_volume_24h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                tools:text="23112312"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

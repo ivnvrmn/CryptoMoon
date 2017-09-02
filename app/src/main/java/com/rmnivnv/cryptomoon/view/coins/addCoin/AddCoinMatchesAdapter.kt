@@ -25,7 +25,7 @@ class AddCoinMatchesAdapter(private val items: ArrayList<InfoCoin>, private val 
         holder?.bindItems(items[position], listener)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount() = items.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(coin: InfoCoin, listener: (InfoCoin) -> Unit) = with(itemView) {

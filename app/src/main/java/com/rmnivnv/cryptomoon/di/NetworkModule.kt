@@ -1,6 +1,7 @@
 package com.rmnivnv.cryptomoon.di
 
 import com.rmnivnv.cryptomoon.model.BASE_CRYPTOCOMPARE_URL
+import com.rmnivnv.cryptomoon.network.CoinMarketCapApi
 import com.rmnivnv.cryptomoon.network.CryptoCompareAPI
 import com.rmnivnv.cryptomoon.network.NetworkRequests
 import dagger.Module
@@ -28,6 +29,10 @@ class NetworkModule {
     fun provideCrComApi(retrofit: Retrofit) = retrofit.create(CryptoCompareAPI::class.java)
 
     @Provides @Singleton
-    fun provideNetworkRequests(api: CryptoCompareAPI) = NetworkRequests(api)
+    fun provideCoinMarketCapApi(retrofit: Retrofit) = retrofit.create(CoinMarketCapApi::class.java)
+
+    @Provides @Singleton
+    fun provideNetworkRequests(cryptoCompareAPI: CryptoCompareAPI, coinMarketCapApi: CoinMarketCapApi) =
+            NetworkRequests(cryptoCompareAPI, coinMarketCapApi)
 
 }

@@ -65,7 +65,6 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxkotlin:2.1.0'
     //Room
-    apt "android.arch.persistence.room:compiler:$room_version"
     kapt "android.arch.persistence.room:compiler:$room_version"
     compile "android.arch.persistence.room:runtime:$room_version"
     compile "android.arch.persistence.room:rxjava2:$room_version"
