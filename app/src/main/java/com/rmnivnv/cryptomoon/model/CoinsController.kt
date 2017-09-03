@@ -13,9 +13,13 @@ class CoinsController(private val dbController: DBController, private val db: CM
         db.allCoinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
                 .subscribe({ allCoins = it })
+        db.displayCoinsDao().getAllCoins()
+                .subscribeOn(Schedulers.io())
+                .subscribe({ allDisplayCoins = it })
     }
 
     private var allCoins: List<InfoCoin> = mutableListOf()
+    private var allDisplayCoins: List<DisplayCoin> = mutableListOf()
 
     fun saveDisplayCoin(coin: DisplayCoin) {
         if (allCoins.isNotEmpty()) {
@@ -24,7 +28,7 @@ class CoinsController(private val dbController: DBController, private val db: CM
         dbController.saveDisplayCoin(coin)
     }
 
-    private fun addAdditionalInfo(coin: DisplayCoin) {
+    fun addAdditionalInfo(coin: DisplayCoin) {
         addImageUrlToCoin(coin)
         addFullNameToCoin(coin)
     }
@@ -62,5 +66,12 @@ class CoinsController(private val dbController: DBController, private val db: CM
             it.imgUrl = allCoins.find { it.name == coin.symbol }?.imageUrl ?: ""
         }
         dbController.saveTopCoinsList(list)
+    }
+
+    fun coinIsAdded(coin: TopCoinData): Boolean {
+        if (allDisplayCoins.isNotEmpty()) {
+            return allDisplayCoins.find { it.from == coin.symbol && it.to == USD } != null
+        }
+        return false
     }
 }

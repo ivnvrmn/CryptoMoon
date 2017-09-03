@@ -47,12 +47,28 @@
 
     </LinearLayout>
 
-    <com.github.mikephil.charting.charts.CandleStickChart
-        android:id="@+id/coin_info_graph"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="10dp"
-        android:background="@color/grey_light" />
+        android:background="@color/grey_light">
+
+        <com.github.mikephil.charting.charts.CandleStickChart
+            android:id="@+id/coin_info_graph"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:visibility="gone"
+            android:background="@color/grey_light" />
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/coin_info_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            style="@style/SpinKitView.Wave"
+            app:SpinKit_Color="@color/yellow"/>
+
+    </RelativeLayout>
 
     <Spinner
         android:id="@+id/coin_info_graph_periods"

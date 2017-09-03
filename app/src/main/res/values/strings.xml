@@ -34,6 +34,8 @@
     <string name="choose_currency">Choose currency</string>
     <string name="volume_24h">Volume 24h</string>
     <string name="dollar_sign">$</string>
+    <string name="pct_sign">%</string>
+    <string name="error">Error</string>
 
     <string-array name="histo_periods">
         <item>1 hour</item>

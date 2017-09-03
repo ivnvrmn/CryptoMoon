@@ -10,6 +10,7 @@ import com.rmnivnv.cryptomoon.model.DisplayCoin
 import com.rmnivnv.cryptomoon.model.MultiSelector
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.doubleFromString
+import com.rmnivnv.cryptomoon.utils.getChangeColor
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.coins_list_item.view.*
 import javax.inject.Inject
@@ -68,12 +69,6 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
                         .into(main_item_market_logo)
             }
         }
-    }
-
-    private fun getChangeColor(change: Double) = when {
-        change > 0 -> R.color.green
-        change == 0.0 -> R.color.orange_dark
-        else -> R.color.red
     }
 
     private fun getChangeArrowDrawable(change: Double) = when {

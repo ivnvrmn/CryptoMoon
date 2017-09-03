@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.view.topCoins
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -63,7 +64,16 @@ class TopCoinsFragment : Fragment(), ITopCoins.View {
         presenter.onStart()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+    }
+
     override fun hideRefreshing() {
         top_coins_fragment_swipe_refresh.isRefreshing = false
+    }
+
+    override fun startActivityByIntent(intent: Intent) {
+        activity.startActivity(intent)
     }
 }

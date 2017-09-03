@@ -117,4 +117,14 @@ class CoinInfoActivity : AppCompatActivity(), ICoinInfo.View {
     override fun setMarketCap(cap: String) {
         coin_info_market_cap.text = cap
     }
+
+    override fun enableGraphLoading() {
+        coin_info_loading.visibility = View.VISIBLE
+        coin_info_graph.visibility = View.GONE
+    }
+
+    override fun disableGraphLoading() {
+        coin_info_loading.visibility = View.GONE
+        coin_info_graph.visibility = View.VISIBLE
+    }
 }

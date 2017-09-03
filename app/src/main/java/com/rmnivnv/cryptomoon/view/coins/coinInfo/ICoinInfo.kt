@@ -20,6 +20,8 @@ interface ICoinInfo {
         fun setChangePct(pct: String)
         fun setSupply(supply: String)
         fun setMarketCap(cap: String)
+        fun enableGraphLoading()
+        fun disableGraphLoading()
     }
 
     interface Presenter {

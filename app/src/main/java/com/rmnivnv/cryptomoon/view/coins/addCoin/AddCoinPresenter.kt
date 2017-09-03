@@ -152,7 +152,7 @@ class AddCoinPresenter : IAddCoin.Presenter {
     private fun requestCoinInfo(coin: DisplayCoin) {
         view.enableLoadingLayout()
         disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)),
-                object : GetPriceCallback {
+                    object : GetPriceCallback {
             override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
                 if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
                     coinsController.saveDisplayCoinList(coinsInfoList)

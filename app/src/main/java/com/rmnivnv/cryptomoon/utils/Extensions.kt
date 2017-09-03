@@ -3,6 +3,7 @@ package com.rmnivnv.cryptomoon.utils
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import com.rmnivnv.cryptomoon.MainApp
 
@@ -23,4 +24,8 @@ fun Context.toastShort(message: CharSequence) {
 
 fun Context.toastLong(message: CharSequence) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Context.logDebug(message: String) {
+    Log.d("CM debug", message)
 }

@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.view.topCoins
 
+import android.content.Intent
 import com.rmnivnv.cryptomoon.model.TopCoinData
 
 /**
@@ -10,6 +11,7 @@ interface ITopCoins {
     interface View {
         fun updateRecyclerView()
         fun hideRefreshing()
+        fun startActivityByIntent(intent: Intent)
     }
 
     interface Presenter {
@@ -17,5 +19,7 @@ interface ITopCoins {
         fun onCoinClicked(coin: TopCoinData)
         fun onSwipeUpdate()
         fun onStart()
+        fun onAddCoinClicked(coin: TopCoinData, itemView: android.view.View)
+        fun onDestroy()
     }
 }

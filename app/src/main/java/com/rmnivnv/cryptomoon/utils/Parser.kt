@@ -3,7 +3,9 @@ package com.rmnivnv.cryptomoon.utils
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
+import java.text.DecimalFormat
 import java.text.NumberFormat
 
 /**
@@ -87,3 +89,14 @@ fun createCoinsMapWithCurrencies(coinsList: List<DisplayCoin>): HashMap<String, 
 }
 
 fun doubleFromString(number: String) = NumberFormat.getInstance().parse(number).toDouble()
+
+fun getChangeColor(change: Double) = when {
+    change > 0 -> R.color.green
+    change == 0.0 -> R.color.orange_dark
+    else -> R.color.red
+}
+
+fun addCommasToStringNumber(number: String?): String {
+    val formatter = DecimalFormat("#,###.00")
+    return formatter.format(number?.toDouble())
+}

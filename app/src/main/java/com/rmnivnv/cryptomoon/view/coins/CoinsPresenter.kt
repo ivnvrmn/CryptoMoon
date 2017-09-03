@@ -7,6 +7,7 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
+import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.network.NetworkRequests
@@ -86,6 +87,7 @@ class CoinsPresenter : ICoins.Presenter {
             coinsController.deleteDisplayCoins(coinsToDelete)
             app.toastShort(toast)
             multiSelector.atLeastOneIsSelected = false
+            RxBus.publish(MainCoinsListUpdatedEvent())
         }
     }
 

@@ -23,6 +23,7 @@ val ETH = "ETH"
 val SNT = "SNT"
 
 val COINS_FRAGMENT_PAGE_POSITION = 0
+val TOP_COINS_FRAGMENT_PAGE_POSITION = 1
 val NAME = "name"
 val TO = "to"
 val DATA = "Data"
