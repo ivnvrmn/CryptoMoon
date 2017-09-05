@@ -32,8 +32,6 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
         holder?.bindItems(coins[position], clickListener)
     }
 
-    override fun getItemCount() = coins.size
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(coin: DisplayCoin, listener: (DisplayCoin) -> Unit) = with(itemView) {
             setOnClickListener {
@@ -69,4 +67,10 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
         change == 0.0 -> R.drawable.ic_remove
         else -> R.drawable.ic_arrow_drop_down
     }
+
+    override fun getItemCount() = coins.size
+
+    override fun getItemId(position: Int) = position.toLong()
+
+    override fun getItemViewType(position: Int) = position
 }

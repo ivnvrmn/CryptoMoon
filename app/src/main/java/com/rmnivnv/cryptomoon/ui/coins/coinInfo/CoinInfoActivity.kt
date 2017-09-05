@@ -57,9 +57,11 @@ class CoinInfoActivity : DaggerAppCompatActivity(), ICoinInfo.View {
     }
 
     override fun setLogo(url: String) {
-        Picasso.with(this)
-                .load(url)
-                .into(coin_info_logo)
+        if (url.isNotEmpty()) {
+            Picasso.with(this)
+                    .load(url)
+                    .into(coin_info_logo)
+        }
     }
 
     override fun setMainPrice(price: String) {

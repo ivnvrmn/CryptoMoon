@@ -19,10 +19,11 @@ import javax.inject.Inject
  * Created by rmnivnv on 02/09/2017.
  */
 class TopCoinsAdapter @Inject constructor(private val coins: ArrayList<TopCoinData>,
-                      val resProvider: ResourceProvider,
-                      val presenter: ITopCoins.Presenter,
-                      val coinsController: CoinsController,
-                      val clickListener: (TopCoinData) -> Unit) : RecyclerView.Adapter<TopCoinsAdapter.ViewHolder>() {
+                                          private val resProvider: ResourceProvider,
+                                          private val presenter: ITopCoins.Presenter,
+                                          private val coinsController: CoinsController,
+                                          private val clickListener: (TopCoinData) -> Unit) :
+        RecyclerView.Adapter<TopCoinsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.top_coin_item, parent, false)
