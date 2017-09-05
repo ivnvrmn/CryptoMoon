@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.ui.coins.addCoin
+package com.rmnivnv.cryptomoon.ui.addCoin
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView

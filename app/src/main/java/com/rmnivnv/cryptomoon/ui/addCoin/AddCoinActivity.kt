@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.ui.coins.addCoin
+package com.rmnivnv.cryptomoon.ui.addCoin
 
 import android.content.Context
 import android.os.Bundle

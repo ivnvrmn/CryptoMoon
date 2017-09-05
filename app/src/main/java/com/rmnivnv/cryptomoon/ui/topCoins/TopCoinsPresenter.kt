@@ -11,7 +11,7 @@ import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
-import com.rmnivnv.cryptomoon.ui.coins.coinInfo.CoinInfoActivity
+import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

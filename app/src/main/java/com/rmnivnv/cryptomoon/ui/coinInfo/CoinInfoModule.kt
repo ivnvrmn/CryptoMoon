@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.ui.coins.coinInfo
+package com.rmnivnv.cryptomoon.ui.coinInfo
 
 import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerActivity

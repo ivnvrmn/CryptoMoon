@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/colorPrimaryDark"
     android:padding="8dp"
-    tools:context="com.rmnivnv.cryptomoon.ui.coins.coinInfo.CoinInfoActivity">
+    tools:context=".ui.coinInfo.CoinInfoActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

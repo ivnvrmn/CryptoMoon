@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.ui.coins.coinInfo
+package com.rmnivnv.cryptomoon.ui.coinInfo
 
 import android.os.Bundle
 import android.support.v7.widget.Toolbar

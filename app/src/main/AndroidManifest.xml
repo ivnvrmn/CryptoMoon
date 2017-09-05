@@ -21,8 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.coins.addCoin.AddCoinActivity" />
-        <activity android:name=".ui.coins.coinInfo.CoinInfoActivity"></activity>
+        <activity android:name=".ui.addCoin.AddCoinActivity" />
+        <activity android:name=".ui.coinInfo.CoinInfoActivity" />
+        <activity android:name=".ui.addTransaction.AddTransactionActivity"></activity>
     </application>
 
 </manifest>
