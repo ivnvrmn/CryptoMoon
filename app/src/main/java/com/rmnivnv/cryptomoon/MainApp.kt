@@ -1,28 +1,28 @@
 package com.rmnivnv.cryptomoon
 
+import android.app.Activity
 import android.app.Application
-import com.rmnivnv.cryptomoon.di.AppComponent
-import com.rmnivnv.cryptomoon.di.AppModule
 import com.rmnivnv.cryptomoon.di.DaggerAppComponent
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import javax.inject.Inject
 
 /**
  * Created by rmnivnv on 05/07/2017.
  */
 
 
-class MainApp : Application() {
+class MainApp : Application(), HasActivityInjector {
 
-    val component: AppComponent by lazy {
-        DaggerAppComponent
-                .builder()
-                .appModule(AppModule(this))
-                .build()
-    }
+    @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
         super.onCreate()
-        component.inject(this)
+        DaggerAppComponent.builder()
+                .application(this)
+                .build()
+                .inject(this)
     }
 
-    fun getAppComponent() = component
+    override fun activityInjector() = dispatchingAndroidInjector
 }

@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by rmnivnv on 06/08/2017.
  */
-class CoinsController(private val dbController: DBController, private val db: CMDatabase) {
+class CoinsController(private val dbController: DBController, db: CMDatabase) {
 
     init {
         db.allCoinsDao().getAllCoins()

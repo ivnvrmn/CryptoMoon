@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.utils
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import com.rmnivnv.cryptomoon.MainApp
@@ -7,14 +8,14 @@ import com.rmnivnv.cryptomoon.MainApp
 /**
  * Created by rmnivnv on 01/08/2017.
  */
-class ResourceProvider(val app: MainApp) {
+class ResourceProvider(val context: Context) {
 
-    fun getString(id: Int): String = app.getString(id)
+    fun getString(id: Int): String = context.getString(id)
 
-    fun getDrawable(id: Int): Drawable = ContextCompat.getDrawable(app, id)
+    fun getDrawable(id: Int): Drawable = ContextCompat.getDrawable(context, id)
 
-    fun getColor(id: Int) = ContextCompat.getColor(app, id)
+    fun getColor(id: Int) = ContextCompat.getColor(context, id)
 
-    fun getStringArray(id: Int) = app.resources.getStringArray(id)
+    fun getStringArray(id: Int) = context.resources.getStringArray(id)
 
 }

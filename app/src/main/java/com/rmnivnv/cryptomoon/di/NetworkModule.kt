@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides @Singleton
-    fun provideRetrofit() =
+    fun provideRetrofit(): Retrofit =
             Retrofit.Builder()
                     .baseUrl(BASE_CRYPTOCOMPARE_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -26,13 +26,12 @@ class NetworkModule {
                     .build()
 
     @Provides @Singleton
-    fun provideCrComApi(retrofit: Retrofit) = retrofit.create(CryptoCompareAPI::class.java)
+    fun provideCrComApi(retrofit: Retrofit): CryptoCompareAPI = retrofit.create(CryptoCompareAPI::class.java)
 
     @Provides @Singleton
-    fun provideCoinMarketCapApi(retrofit: Retrofit) = retrofit.create(CoinMarketCapApi::class.java)
+    fun provideCoinMarketCapApi(retrofit: Retrofit): CoinMarketCapApi = retrofit.create(CoinMarketCapApi::class.java)
 
     @Provides @Singleton
     fun provideNetworkRequests(cryptoCompareAPI: CryptoCompareAPI, coinMarketCapApi: CoinMarketCapApi) =
             NetworkRequests(cryptoCompareAPI, coinMarketCapApi)
-
 }
