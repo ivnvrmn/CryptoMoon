@@ -19,9 +19,10 @@ class CoinInfoModule {
 
     @Provides @PerActivity
     fun providePresenter(context: Context,
-                                   view: ICoinInfo.View,
-                                   coinsController: CoinsController,
-                                   networkRequests: NetworkRequests,
-                                   graphMaker: GraphMaker): ICoinInfo.Presenter =
+                         view: ICoinInfo.View,
+                         coinsController: CoinsController,
+                         networkRequests: NetworkRequests,
+                         graphMaker: GraphMaker): ICoinInfo.Presenter =
             CoinInfoPresenter(context, view, coinsController, networkRequests, graphMaker)
+
 }

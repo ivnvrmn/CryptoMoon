@@ -1,9 +1,11 @@
 package com.rmnivnv.cryptomoon.ui.coinInfo
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.network.NetworkRequests
+import com.rmnivnv.cryptomoon.ui.addTransaction.AddTransactionActivity
 import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
 import com.rmnivnv.cryptomoon.utils.logDebug
 import io.reactivex.Single
@@ -104,5 +106,9 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
 
     override fun onDestroy() {
         disposable.clear()
+    }
+
+    override fun onAddTransactionClicked() {
+        view.startActivityByIntent(Intent(context, AddTransactionActivity::class.java))
     }
 }

@@ -2,6 +2,8 @@ package com.rmnivnv.cryptomoon.di
 
 import com.rmnivnv.cryptomoon.ui.addCoin.AddCoinActivity
 import com.rmnivnv.cryptomoon.ui.addCoin.AddCoinModule
+import com.rmnivnv.cryptomoon.ui.addTransaction.AddTransactionActivity
+import com.rmnivnv.cryptomoon.ui.addTransaction.AddTransactionModule
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoModule
 import com.rmnivnv.cryptomoon.ui.main.MainActivity
@@ -27,4 +29,8 @@ abstract class ActivityBuilder {
     @PerActivity
     @ContributesAndroidInjector(modules = arrayOf(CoinInfoModule::class))
     abstract fun bindCoinInfoActivity(): CoinInfoActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = arrayOf(AddTransactionModule::class))
+    abstract fun bindAddTransactionActivity(): AddTransactionActivity
 }

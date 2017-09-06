@@ -36,6 +36,13 @@
     <string name="dollar_sign">$</string>
     <string name="pct_sign">%</string>
     <string name="error">Error</string>
+    <string name="current_price">Current price</string>
+    <string name="trading_price">Trading price</string>
+    <string name="quantity">Quantity</string>
+    <string name="trade_date">Trade date</string>
+    <string name="total_value">Total value</string>
+    <string name="confirm_transaction">Confirm transaction</string>
+    <string name="add_transaction">Add transaction</string>
 
     <string-array name="histo_periods">
         <item>1 hour</item>
