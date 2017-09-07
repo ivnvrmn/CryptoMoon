@@ -22,7 +22,7 @@ class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
                 .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
-    fun getPrice(map: Map<String, ArrayList<String>>, callback: GetPriceCallback): Disposable {
+    fun getPrice(map: Map<String, ArrayList<String?>>, callback: GetPriceCallback): Disposable {
         return cryptoCompareAPI.getPrice(getQuery(map, FSYMS), getQuery(map, TSYMS))
                 .subscribeOn(Schedulers.io())
                 .map { getCoinDisplayBodyFromJson(it, map) }
@@ -30,7 +30,7 @@ class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
                 .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
-    private fun getQuery(map: Map<String, ArrayList<String>>, type: String): String {
+    private fun getQuery(map: Map<String, ArrayList<String?>>, type: String): String {
         var result = ""
         map.forEach { (key, value) ->
             if (key == type) value.forEach { result += """$it,""" }
@@ -47,7 +47,7 @@ class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
                 .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
-    fun getHistoPeriod(period: String, from: String, to: String, callback: GetHistoCallback): Disposable {
+    fun getHistoPeriod(period: String, from: String?, to: String?, callback: GetHistoCallback): Disposable {
         val histoPeriod: String
         var limit = 30
         var aggregate = 1

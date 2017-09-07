@@ -1,6 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.coinInfo
 
-import android.content.Intent
 import android.os.Bundle
 import com.github.mikephil.charting.data.CandleData
 
@@ -23,7 +22,7 @@ interface ICoinInfo {
         fun setMarketCap(cap: String)
         fun enableGraphLoading()
         fun disableGraphLoading()
-        fun startActivityByIntent(intent: Intent)
+        fun startAddTransactionActivity(from: String?, to: String?, price: String?)
     }
 
     interface Presenter {

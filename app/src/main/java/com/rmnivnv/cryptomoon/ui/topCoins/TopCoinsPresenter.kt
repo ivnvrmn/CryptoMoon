@@ -1,7 +1,6 @@
 package com.rmnivnv.cryptomoon.ui.topCoins
 
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
@@ -11,7 +10,6 @@ import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
-import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -105,10 +103,7 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
     }
 
     override fun onCoinClicked(coin: TopCoinData) {
-        val intent = Intent(context, CoinInfoActivity::class.java)
-        intent.putExtra(NAME, coin.symbol)
-        intent.putExtra(TO, USD)
-        view.startActivityByIntent(intent)
+        view.startCoinInfoActivity(coin.symbol)
     }
 
     override fun onSwipeUpdate() {

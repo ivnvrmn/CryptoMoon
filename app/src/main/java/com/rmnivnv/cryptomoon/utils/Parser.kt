@@ -12,10 +12,10 @@ import java.text.NumberFormat
  * Created by rmnivnv on 12/07/2017.
  */
 
-fun getCoinDisplayBodyFromJson(jsonObject: JsonObject, map: Map<String, ArrayList<String>>): ArrayList<DisplayCoin> {
+fun getCoinDisplayBodyFromJson(jsonObject: JsonObject, map: Map<String, ArrayList<String?>>): ArrayList<DisplayCoin> {
     val result: ArrayList<DisplayCoin> = ArrayList()
     val display: JsonElement
-    val fromObjectsList: HashMap<String, JsonElement> = HashMap()
+    val fromObjectsList: HashMap<String?, JsonElement> = HashMap()
     if (jsonObject.has(DISPLAY)) {
         display = jsonObject[DISPLAY]
         for ((key, value) in map) {
@@ -77,12 +77,12 @@ fun getPairsListFromJson(jsonObject: JsonObject): ArrayList<PairData> {
     return result
 }
 
-fun createCoinsMapWithCurrencies(coinsList: List<DisplayCoin>): HashMap<String, ArrayList<String>> {
-    val map: HashMap<String, ArrayList<String>> = HashMap()
-    val fromList: ArrayList<String> = ArrayList()
+fun createCoinsMapWithCurrencies(coinsList: List<DisplayCoin>): HashMap<String, ArrayList<String?>> {
+    val map: HashMap<String, ArrayList<String?>> = HashMap()
+    val fromList: ArrayList<String?> = ArrayList()
     coinsList.forEach { fromList.add(it.from) }
     map.put(FSYMS, fromList)
-    val toList: ArrayList<String> = ArrayList()
+    val toList: ArrayList<String?> = ArrayList()
     coinsList.forEach { toList.add(it.to) }
     map.put(TSYMS, toList)
     return map

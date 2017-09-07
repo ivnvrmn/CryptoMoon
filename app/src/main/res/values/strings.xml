@@ -43,6 +43,10 @@
     <string name="total_value">Total value</string>
     <string name="confirm_transaction">Confirm transaction</string>
     <string name="add_transaction">Add transaction</string>
+    <string name="add_trans_fill_all_fields">Fill in all fields</string>
+    <string name="add_trans_fill_date">Choose transaction date</string>
+    <string name="add_trans_fill_price">Fill in price field</string>
+    <string name="add_trans_fill_quantity">Fill in quantity field</string>
 
     <string-array name="histo_periods">
         <item>1 hour</item>

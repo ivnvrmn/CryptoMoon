@@ -25,14 +25,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center_horizontal">
+        android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/add_trans_pair"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textColor="@color/grey_light"
             tools:text="BTC / USD"/>
 
@@ -42,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textColor="@color/grey_light"
             tools:text="$4504"/>
 
@@ -61,6 +60,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/trading_price"
             android:maxLines="1"
+            android:inputType="numberDecimal"
             android:textColor="@color/grey_light"
             android:textColorHint="@color/grey_light"/>
 
@@ -78,24 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/quantity"
-            android:maxLines="1"
-            android:textColor="@color/grey_light"
-            android:textColorHint="@color/grey_light"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/grey_light"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/add_trans_total_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/total_value"
+            android:inputType="numberDecimal"
             android:maxLines="1"
             android:textColor="@color/grey_light"
             android:textColorHint="@color/grey_light"/>
@@ -114,17 +97,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/trade_date"
+            android:focusable="false"
             android:maxLines="1"
             android:textColor="@color/grey_light"
             android:textColorHint="@color/grey_light"/>
 
     </android.support.design.widget.TextInputLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_value"
+            android:textColor="@color/grey_light"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/add_trans_total_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/grey_light"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/add_trans_confirm_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/confirm_transaction"/>
 

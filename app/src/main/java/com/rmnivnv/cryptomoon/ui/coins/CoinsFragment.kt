@@ -10,6 +10,9 @@ import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.DisplayCoin
 import com.rmnivnv.cryptomoon.model.MultiSelector
+import com.rmnivnv.cryptomoon.model.NAME
+import com.rmnivnv.cryptomoon.model.TO
+import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.coins_fragment.*
@@ -88,7 +91,10 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
         swipe_refresh.isEnabled = false
     }
 
-    override fun startActivityByIntent(intent: Intent) {
+    override fun startCoinInfoActivity(name: String?, to: String?) {
+        val intent = Intent(context, CoinInfoActivity::class.java)
+        intent.putExtra(NAME, name)
+        intent.putExtra(TO, to)
         activity.startActivity(intent)
     }
 }

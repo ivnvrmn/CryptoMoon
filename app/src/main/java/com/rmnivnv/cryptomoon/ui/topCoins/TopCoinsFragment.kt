@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.CoinsController
-import com.rmnivnv.cryptomoon.model.TopCoinData
+import com.rmnivnv.cryptomoon.model.*
+import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.top_coins_fragment.*
@@ -74,7 +74,10 @@ class TopCoinsFragment : DaggerFragment(), ITopCoins.View {
         top_coins_fragment_swipe_refresh.isRefreshing = false
     }
 
-    override fun startActivityByIntent(intent: Intent) {
+    override fun startCoinInfoActivity(name: String?) {
+        val intent = Intent(context, CoinInfoActivity::class.java)
+        intent.putExtra(NAME, name)
+        intent.putExtra(TO, USD)
         activity.startActivity(intent)
     }
 }

@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.rmnivnv.cryptomoon.ui.addCoin.AddCoinActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
 import com.rmnivnv.cryptomoon.ui.topCoins.TopCoinsFragment
@@ -135,7 +136,7 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
         presenter.onDestroy()
     }
 
-    override fun startActivityFromIntent(intent: Intent) {
-        startActivity(intent)
+    override fun startAddCoinActivity() {
+        startActivity(Intent(this, AddCoinActivity::class.java))
     }
 }

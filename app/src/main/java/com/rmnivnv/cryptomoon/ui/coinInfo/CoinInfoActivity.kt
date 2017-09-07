@@ -12,6 +12,10 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.CandleData
 
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.model.FROM
+import com.rmnivnv.cryptomoon.model.PRICE
+import com.rmnivnv.cryptomoon.model.TO
+import com.rmnivnv.cryptomoon.ui.addTransaction.AddTransactionActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerAppCompatActivity
@@ -88,10 +92,6 @@ class CoinInfoActivity : DaggerAppCompatActivity(), ICoinInfo.View {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun startActivityByIntent(intent: Intent) {
-        startActivity(intent)
-    }
-
     override fun drawChart(line: CandleData) {
         val xAxis = coin_info_graph.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -140,5 +140,13 @@ class CoinInfoActivity : DaggerAppCompatActivity(), ICoinInfo.View {
     override fun disableGraphLoading() {
         coin_info_loading.visibility = View.GONE
         coin_info_graph.visibility = View.VISIBLE
+    }
+
+    override fun startAddTransactionActivity(from: String?, to: String?, price: String?) {
+        val intent = Intent(this, AddTransactionActivity::class.java)
+        intent.putExtra(FROM, from)
+        intent.putExtra(TO, to)
+        intent.putExtra(PRICE, price)
+        startActivity(intent)
     }
 }

@@ -1,6 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.main
 
-import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerActivity
 import com.rmnivnv.cryptomoon.model.MultiSelector
 import com.rmnivnv.cryptomoon.model.PageController
@@ -17,7 +16,8 @@ class MainModule {
     fun provideView(mainActivity: MainActivity): IMain.View = mainActivity
 
     @Provides @PerActivity
-    fun providePresenter(context: Context, view: IMain.View, multiSelector: MultiSelector,
-                                   pageController: PageController): IMain.Presenter =
-            MainPresenter(context, view, multiSelector, pageController)
+    fun providePresenter(view: IMain.View,
+                         multiSelector: MultiSelector,
+                         pageController: PageController): IMain.Presenter =
+            MainPresenter(view, multiSelector, pageController)
 }

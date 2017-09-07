@@ -1,6 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.coins
 
-import android.content.Intent
 import com.rmnivnv.cryptomoon.model.DisplayCoin
 
 /**
@@ -13,7 +12,7 @@ interface ICoins {
         fun hideRefreshing()
         fun enableSwipeToRefresh()
         fun disableSwipeToRefresh()
-        fun startActivityByIntent(intent: Intent)
+        fun startCoinInfoActivity(name: String?, to: String?)
     }
 
     interface Presenter {

@@ -66,9 +66,9 @@ data class RawCoin(
 @Entity(tableName = "display_coins", primaryKeys = arrayOf("from_name", "to_name"))
 data class DisplayCoin(
         @ColumnInfo(name = "from_name")
-        var from: String = "",
+        var from: String? = "",
         @ColumnInfo(name = "to_name")
-        var to: String = "",
+        var to: String? = "",
         var imgUrl: String = "",
         var fullName: String = "",
         var selected: Boolean = false,

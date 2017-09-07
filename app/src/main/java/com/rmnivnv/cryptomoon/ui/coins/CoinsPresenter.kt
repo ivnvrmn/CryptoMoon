@@ -1,8 +1,6 @@
 package com.rmnivnv.cryptomoon.ui.coins
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
@@ -14,7 +12,6 @@ import com.rmnivnv.cryptomoon.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
 import com.rmnivnv.cryptomoon.utils.toastShort
-import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -118,7 +115,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
             }
 
             override fun onError(t: Throwable) {
-                Log.d("onError", t.message)
+
             }
         }))
     }
@@ -152,9 +149,8 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     private fun filterList(coinsInfoList: ArrayList<DisplayCoin>): ArrayList<DisplayCoin> {
         val result: ArrayList<DisplayCoin> = ArrayList()
-        coins.forEach {
-            val coin = it
-            val find = coinsInfoList.find { it.from == coin.from && it.to == coin.to }
+        coins.forEach { (from, to) ->
+            val find = coinsInfoList.find { it.from == from && it.to == to }
             if (find != null) result.add(find)
         }
         return result
@@ -184,9 +180,6 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     }
 
     override fun onCoinClicked(coin: DisplayCoin) {
-        val intent = Intent(context, CoinInfoActivity::class.java)
-        intent.putExtra(NAME, coin.from)
-        intent.putExtra(TO, coin.to)
-        view.startActivityByIntent(intent)
+        view.startCoinInfoActivity(coin.from, coin.to)
     }
 }

@@ -21,8 +21,8 @@ interface CryptoCompareAPI {
 
     @GET("{period}")
     fun getHistoPeriod(@Path("period") period: String,
-                       @Query("fsym") from: String,
-                       @Query("tsym") to: String,
+                       @Query("fsym") from: String?,
+                       @Query("tsym") to: String?,
                        @Query("limit") limit: Int,
                        @Query("aggregate") aggregate: Int): Single<JsonObject>
 

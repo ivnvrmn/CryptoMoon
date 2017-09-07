@@ -1,7 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.main
 
-import android.content.Intent
-
 /**
  * Created by rmnivnv on 06/07/2017.
  */
@@ -9,7 +7,7 @@ interface IMain {
 
     interface View {
         fun setCoinsLoadingVisibility(isLoading: Boolean)
-        fun startActivityFromIntent(intent: Intent)
+        fun startAddCoinActivity()
         fun setMenuIconsVisibility(isSelected: Boolean)
     }
 

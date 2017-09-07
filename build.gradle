@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.4-2'
+    ext.kotlin_version = '1.1.4-3'
     ext.dagger_version = '2.11'
     ext.room_version = '1.0.0-alpha5'
     ext.support_version = '26.0.1'
@@ -22,11 +22,9 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
-        maven {
-            url "https://maven.google.com"
-        }
-        maven { url "https://jitpack.io" }
+        maven { url 'http://jcenter.bintray.com/' }
+        maven { url 'https://maven.google.com' }
+        maven { url 'https://jitpack.io' }
     }
 }
 

@@ -1,7 +1,6 @@
 package com.rmnivnv.cryptomoon.ui.addCoin
 
 import android.content.Context
-import android.util.Log
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
@@ -42,7 +41,6 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
     }
 
     private fun onAllCoinsUpdates(coinsList: List<InfoCoin>) {
-        Log.d("All coins size ", coinsList.size.toString())
         if (coinsList.isNotEmpty()) {
             allCoins = coinsList
         }
@@ -163,7 +161,6 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
             override fun onError(t: Throwable) {
                 view.disableLoadingLayout()
                 context.toastShort(resProvider.getString(R.string.coin_not_found))
-                Log.d("onError", t.message)
             }
         }))
     }
