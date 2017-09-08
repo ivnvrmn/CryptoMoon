@@ -7,6 +7,7 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.util.*
 
 /**
  * Created by rmnivnv on 12/07/2017.
@@ -88,7 +89,7 @@ fun createCoinsMapWithCurrencies(coinsList: List<DisplayCoin>): HashMap<String, 
     return map
 }
 
-fun doubleFromString(number: String) = NumberFormat.getInstance().parse(number).toDouble()
+fun doubleFromString(number: String) = NumberFormat.getInstance(Locale.getDefault()).parse(number).toDouble()
 
 fun getChangeColor(change: Double) = when {
     change > 0 -> R.color.green
