@@ -97,4 +97,20 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
         intent.putExtra(TO, to)
         activity.startActivity(intent)
     }
+
+    override fun enableTotalHoldings() {
+        coins_fragment_holding_layout.visibility = View.VISIBLE
+    }
+
+    override fun disableTotalHoldings() {
+        coins_fragment_holding_layout.visibility = View.GONE
+    }
+
+    override fun setTotalHoldingsValue(total: String) {
+        coins_fragment_total_holdings.text = total
+    }
+
+    override fun setTotalHoldingsChangePercent(percent: String) {
+        coins_fragment_holdings_all_time_change.text = percent
+    }
 }

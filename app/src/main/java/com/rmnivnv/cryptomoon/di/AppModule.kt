@@ -40,4 +40,7 @@ class AppModule {
 
     @Provides @Singleton
     fun provideGraphMaker(resourceProvider: ResourceProvider) = GraphMaker(resourceProvider)
+
+    @Provides @Singleton
+    fun provideHoldingsHandler(db: CMDatabase) = HoldingsHandler(db)
 }

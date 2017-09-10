@@ -82,4 +82,8 @@ class AddTransactionActivity : DaggerAppCompatActivity(), IAddTransaction.View {
     override fun setTransactionDate(date: String) {
         add_trans_trade_date.setText(date)
     }
+
+    override fun closeActivity() {
+        finish()
+    }
 }

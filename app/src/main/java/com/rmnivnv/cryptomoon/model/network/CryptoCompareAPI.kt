@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.network
+package com.rmnivnv.cryptomoon.model.network
 
 import com.google.gson.JsonObject
 import com.rmnivnv.cryptomoon.model.AllCoinsResponse

@@ -12,6 +12,7 @@ interface IAddTransaction {
         fun setTotalValue(value: String)
         fun showDatePickerDialog()
         fun setTransactionDate(date: String)
+        fun closeActivity()
     }
 
     interface Presenter {

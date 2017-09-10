@@ -5,17 +5,11 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 /**
  * Created by rmnivnv on 02/07/2017.
  */
-
-data class Market(val from: String,
-                  val to: String,
-                  val price: Int,
-                  val change: Double,
-                  val hold: Double,
-                  val logo: Int)
 
 data class AllCoinsResponse(
         @SerializedName("Response") val response: String,
@@ -125,3 +119,10 @@ data class TopCoinData(
         var last_updated: String? = "",
         var imgUrl: String? = ""
 )
+
+@Entity(tableName = "holdings", primaryKeys = arrayOf("from_coin", "to_currency", "transaction_date"))
+data class HoldingData(@ColumnInfo(name = "from_coin") var from: String = "",
+                       @ColumnInfo(name = "to_currency") var to: String = "",
+                       var quantity: Double = 0.0,
+                       var price: Double = 0.0,
+                       @ColumnInfo(name = "transaction_date") var date: Long? = 0L)

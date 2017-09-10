@@ -3,7 +3,7 @@ package com.rmnivnv.cryptomoon.ui.coinInfo
 import android.content.Context
 import android.os.Bundle
 import com.rmnivnv.cryptomoon.model.*
-import com.rmnivnv.cryptomoon.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
 import com.rmnivnv.cryptomoon.utils.logDebug
 import io.reactivex.Single

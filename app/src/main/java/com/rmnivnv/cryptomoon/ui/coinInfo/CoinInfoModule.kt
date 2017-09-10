@@ -4,7 +4,7 @@ import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerActivity
 import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.GraphMaker
-import com.rmnivnv.cryptomoon.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import dagger.Module
 import dagger.Provides
 

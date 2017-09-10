@@ -1,9 +1,9 @@
 package com.rmnivnv.cryptomoon.di
 
 import com.rmnivnv.cryptomoon.model.BASE_CRYPTOCOMPARE_URL
-import com.rmnivnv.cryptomoon.network.CoinMarketCapApi
-import com.rmnivnv.cryptomoon.network.CryptoCompareAPI
-import com.rmnivnv.cryptomoon.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.network.CoinMarketCapApi
+import com.rmnivnv.cryptomoon.model.network.CryptoCompareAPI
+import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

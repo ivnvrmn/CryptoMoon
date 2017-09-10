@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.network
+package com.rmnivnv.cryptomoon.model.network
 
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.utils.getAllCoinsFromJson

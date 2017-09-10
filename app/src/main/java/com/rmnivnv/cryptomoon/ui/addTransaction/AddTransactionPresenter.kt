@@ -4,9 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.FROM
+import com.rmnivnv.cryptomoon.model.HoldingData
 import com.rmnivnv.cryptomoon.model.PRICE
 import com.rmnivnv.cryptomoon.model.TO
+import com.rmnivnv.cryptomoon.model.db.DBController
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.doubleFromString
 import com.rmnivnv.cryptomoon.utils.toastShort
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,8 +20,12 @@ import javax.inject.Inject
  */
 class AddTransactionPresenter @Inject constructor(private val view: IAddTransaction.View,
                                                   private val context: Context,
-                                                  private val resourceProvider: ResourceProvider) : IAddTransaction.Presenter {
-    private var transactionDate = ""
+                                                  private val resourceProvider: ResourceProvider,
+                                                  private val dbController: DBController) : IAddTransaction.Presenter {
+    private var from = ""
+    private var to = ""
+    private var price = 0.0
+    private var transactionDate: Date? = null
     private var tradingPrice: Double = 0.0
         set(value) {
             field = value
@@ -38,7 +45,10 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
 
     override fun onCreate(extras: Bundle) {
         if (extras[FROM] != null && extras[TO] != null && extras[PRICE] != null) {
-            view.setTitle("${extras.getString(FROM)} / ${extras.getString(TO)}", extras.getString(PRICE))
+            from = extras.getString(FROM)
+            to = extras.getString(TO)
+            price = doubleFromString(extras.getString(PRICE).substring(2))
+            view.setTitle("$from / $to", extras.getString(PRICE))
         }
     }
 
@@ -63,22 +73,25 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         pickedDate.set(Calendar.YEAR, year)
         pickedDate.set(Calendar.MONTH, month)
         pickedDate.set(Calendar.DATE, day)
+        transactionDate = pickedDate.time
+        setDate()
+    }
+
+    private fun setDate() {
         val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        setDate(format.format(pickedDate.time))
+        view.setTransactionDate(format.format(transactionDate))
     }
 
-    private fun setDate(date: String) {
-        transactionDate = date
-        view.setTransactionDate(transactionDate)
+    override fun onDatePickerDialogCancelled() {
+        transactionDate = null
     }
-
-    override fun onDatePickerDialogCancelled() = setDate("")
 
     override fun onConfirmClicked() {
         if (allFieldsAreFilled()) {
-        } else if (tradingPrice == 0.0 && quantity == 0.0 && transactionDate.isEmpty()) {
+            saveHoldings()
+        } else if (tradingPrice == 0.0 && quantity == 0.0 && transactionDate == null) {
             context.toastShort(resourceProvider.getString(R.string.add_trans_fill_all_fields))
-        } else if (transactionDate.isEmpty()) {
+        } else if (transactionDate == null) {
             context.toastShort(resourceProvider.getString(R.string.add_trans_fill_date))
         } else if (tradingPrice == 0.0) {
             context.toastShort(resourceProvider.getString(R.string.add_trans_fill_price))
@@ -87,5 +100,11 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         }
     }
 
-    private fun allFieldsAreFilled() = tradingPrice != 0.0 && quantity != 0.0 && transactionDate.isNotEmpty()
+    private fun allFieldsAreFilled() = tradingPrice != 0.0 && quantity != 0.0 && transactionDate != null
+
+    private fun saveHoldings() {
+        dbController.saveHoldingData(HoldingData(from, to, quantity, price, transactionDate?.time))
+        context.toastShort(resourceProvider.getString(R.string.transaction_added))
+        view.closeActivity()
+    }
 }

@@ -3,10 +3,11 @@ package com.rmnivnv.cryptomoon.ui.coins
 import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerFragment
 import com.rmnivnv.cryptomoon.model.CoinsController
+import com.rmnivnv.cryptomoon.model.HoldingsHandler
 import com.rmnivnv.cryptomoon.model.MultiSelector
 import com.rmnivnv.cryptomoon.model.PageController
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
-import com.rmnivnv.cryptomoon.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
@@ -28,6 +29,8 @@ class CoinsModule {
                          db: CMDatabase,
                          resProvider: ResourceProvider,
                          pageController: PageController,
-                         multiSelector: MultiSelector): ICoins.Presenter =
-            CoinsPresenter(context, view, networkRequests, coinsController, db, resProvider, pageController, multiSelector)
+                         multiSelector: MultiSelector,
+                         holdingsHandler: HoldingsHandler): ICoins.Presenter =
+            CoinsPresenter(context, view, networkRequests, coinsController, db, resProvider,
+                    pageController, multiSelector, holdingsHandler)
 }

@@ -8,7 +8,7 @@ import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
 import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
-import com.rmnivnv.cryptomoon.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
 import com.rmnivnv.cryptomoon.utils.toastShort
@@ -27,7 +27,8 @@ class CoinsPresenter @Inject constructor(private val context: Context,
                                          private val db: CMDatabase,
                                          private val resProvider: ResourceProvider,
                                          private val pageController: PageController,
-                                         private val multiSelector: MultiSelector) : ICoins.Presenter {
+                                         private val multiSelector: MultiSelector,
+                                         private val holdingsHandler: HoldingsHandler) : ICoins.Presenter {
 
     private val disposable = CompositeDisposable()
     private var coins: ArrayList<DisplayCoin> = ArrayList()
@@ -42,6 +43,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     private fun subscribeToObservables() {
         addCoinsChangesObservable()
+        addHoldingsChangesObservable()
         setupRxBusEventsListeners()
         addOnPageChangedObservable()
     }
@@ -63,6 +65,23 @@ class CoinsPresenter @Inject constructor(private val context: Context,
                 isFirstStart = false
                 updatePrices()
             }
+        }
+    }
+
+    private fun addHoldingsChangesObservable() {
+        disposable.add(db.holdingsDao().getAllHoldings()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onHoldingsUpdate(it) }))
+    }
+
+    private fun onHoldingsUpdate(holdings: List<HoldingData>) {
+        if (holdings.isNotEmpty()) {
+            view.enableTotalHoldings()
+            view.setTotalHoldingsValue("$ ${holdingsHandler.getTotalValue(holdings)}")
+            view.setTotalHoldingsChangePercent("${holdingsHandler.getTotalChangePercent(holdings)}%")
+        } else {
+            view.disableTotalHoldings()
         }
     }
 

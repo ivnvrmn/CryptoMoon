@@ -13,6 +13,10 @@ interface ICoins {
         fun enableSwipeToRefresh()
         fun disableSwipeToRefresh()
         fun startCoinInfoActivity(name: String?, to: String?)
+        fun enableTotalHoldings()
+        fun disableTotalHoldings()
+        fun setTotalHoldingsValue(total: String)
+        fun setTotalHoldingsChangePercent(percent: String)
     }
 
     interface Presenter {
