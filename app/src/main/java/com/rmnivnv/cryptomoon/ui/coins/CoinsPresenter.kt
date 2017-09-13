@@ -9,9 +9,7 @@ import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
-import com.rmnivnv.cryptomoon.utils.toastShort
+import com.rmnivnv.cryptomoon.utils.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -78,11 +76,22 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     private fun onHoldingsUpdate(holdings: List<HoldingData>) {
         if (holdings.isNotEmpty()) {
             view.enableTotalHoldings()
-            view.setTotalHoldingsValue("$ ${holdingsHandler.getTotalValue(holdings)}")
-            view.setTotalHoldingsChangePercent("${holdingsHandler.getTotalChangePercent(holdings)}%")
+            setTotalHoldingValue(holdings)
+            setTotalHoldingsChangePercent(holdings)
         } else {
             view.disableTotalHoldings()
         }
+    }
+
+    private fun setTotalHoldingValue(holdings: List<HoldingData>) {
+        view.setTotalHoldingsValue("$ ${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPrice(holdings))}")
+    }
+
+    private fun setTotalHoldingsChangePercent(holdings: List<HoldingData>) {
+        val totalChangePercent = holdingsHandler.getTotalChangePercent(holdings)
+        val sign = if (totalChangePercent >= 0) "+" else "-"
+        view.setTotalHoldingsChangePercent("$sign${getStringWithTwoDecimalsFromDouble(totalChangePercent)}%")
+        view.setTotalHoldingsChangePercentColor(getChangeColor(totalChangePercent))
     }
 
     private fun setupRxBusEventsListeners() {

@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 
 
-class MainApp : Application(), HasActivityInjector {
+class CMApp : Application(), HasActivityInjector {
 
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 

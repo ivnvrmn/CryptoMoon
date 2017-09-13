@@ -43,3 +43,5 @@ val MONTH = "1 month"
 val MONTHS3 = "3 months"
 val MONTHS6 = "6 months"
 val YEAR = "1 year"
+
+val DEFAULT_DATE_FORMAT = "dd/MM/yyyy"

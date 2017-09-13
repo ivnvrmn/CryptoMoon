@@ -1,7 +1,7 @@
 package com.rmnivnv.cryptomoon.di
 
 import android.app.Application
-import com.rmnivnv.cryptomoon.MainApp
+import com.rmnivnv.cryptomoon.CMApp
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -21,5 +21,5 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
-    fun inject(app: MainApp)
+    fun inject(app: CMApp)
 }

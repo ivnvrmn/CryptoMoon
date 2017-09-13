@@ -3,7 +3,6 @@ package com.rmnivnv.cryptomoon.utils
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
-import com.rmnivnv.cryptomoon.MainApp
 
 /**
  * Created by rmnivnv on 01/08/2017.

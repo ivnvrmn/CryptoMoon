@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by rmnivnv on 09/09/2017.
  */
-class HoldingsHandler(private val db: CMDatabase) {
+class HoldingsHandler(db: CMDatabase) {
 
     init {
         db.displayCoinsDao().getAllCoins()
@@ -17,14 +17,8 @@ class HoldingsHandler(private val db: CMDatabase) {
 
     private var displayCoins: List<DisplayCoin> = arrayListOf()
 
-    fun getTotalValue(holdings: List<HoldingData>): Double {
-        var totalValue = 0.0
-        holdings.forEach { totalValue += (it.price * it.quantity) }
-        return totalValue
-    }
-
     fun getTotalChangePercent(holdings: List<HoldingData>): Double {
-        val oldValue = getTotalValue(holdings)
+        val oldValue = getTotalValueWithTradePrice(holdings)
         var newValue = 0.0
 
         holdings.forEach {
@@ -42,9 +36,34 @@ class HoldingsHandler(private val db: CMDatabase) {
     }
 
     private fun calculateChangePercent(value1: Double, value2: Double) =
-        if (value1 > value1) {
-            (value2 - value1) / value2 * 100
-        } else {
-            (value2 - value1) / value1 * 100
+            if (value1 > value1) (value2 - value1) / value2 * 100
+            else (value2 - value1) / value1 * 100
+
+    private fun getTotalValueWithTradePrice(holdings: List<HoldingData>): Double {
+        val sums: ArrayList<Double> = arrayListOf()
+        holdings.forEach { sums.add(it.quantity * it.price) }
+        return sums.sum()
+    }
+
+    fun getTotalValueWithCurrentPrice(holdings: List<HoldingData>): Double {
+        val sums: ArrayList<Double> = arrayListOf()
+        holdings.forEach { (from, _, quantity) ->
+            val currentPrice = displayCoins.find { it.from == from }?.PRICE
+            if (currentPrice != null) {
+                sums.add(quantity * doubleFromString(currentPrice.substring(2)))
+            }
         }
+        return sums.sum()
+    }
+
+    fun getTotalValueWithCurrentPriceByHoldingData(holdingData: HoldingData): Double {
+        val currentPrice = displayCoins.find { it.from == holdingData.from && it.to == holdingData.to }?.PRICE
+        if (currentPrice != null) {
+            return doubleFromString(currentPrice) * holdingData.quantity
+        }
+        return 0.0
+    }
+
+
+
 }

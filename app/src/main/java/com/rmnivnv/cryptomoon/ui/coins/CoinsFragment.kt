@@ -113,4 +113,8 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
     override fun setTotalHoldingsChangePercent(percent: String) {
         coins_fragment_holdings_all_time_change.text = percent
     }
+
+    override fun setTotalHoldingsChangePercentColor(color: Int) {
+        coins_fragment_holdings_all_time_change.setTextColor(resProvider.getColor(color))
+    }
 }

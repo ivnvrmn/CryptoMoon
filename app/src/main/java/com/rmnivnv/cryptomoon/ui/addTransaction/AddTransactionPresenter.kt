@@ -3,15 +3,12 @@ package com.rmnivnv.cryptomoon.ui.addTransaction
 import android.content.Context
 import android.os.Bundle
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.FROM
-import com.rmnivnv.cryptomoon.model.HoldingData
-import com.rmnivnv.cryptomoon.model.PRICE
-import com.rmnivnv.cryptomoon.model.TO
+import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.DBController
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.doubleFromString
+import com.rmnivnv.cryptomoon.utils.formatLongDateToString
 import com.rmnivnv.cryptomoon.utils.toastShort
-import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -78,8 +75,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
     }
 
     private fun setDate() {
-        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        view.setTransactionDate(format.format(transactionDate))
+        view.setTransactionDate(formatLongDateToString(transactionDate?.time, DEFAULT_DATE_FORMAT))
     }
 
     override fun onDatePickerDialogCancelled() {
@@ -103,7 +99,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
     private fun allFieldsAreFilled() = tradingPrice != 0.0 && quantity != 0.0 && transactionDate != null
 
     private fun saveHoldings() {
-        dbController.saveHoldingData(HoldingData(from, to, quantity, price, transactionDate?.time))
+        dbController.saveHoldingData(HoldingData(from, to, quantity, tradingPrice, transactionDate?.time))
         context.toastShort(resourceProvider.getString(R.string.transaction_added))
         view.closeActivity()
     }

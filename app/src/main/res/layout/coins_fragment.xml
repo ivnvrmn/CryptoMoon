@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@color/black"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -26,12 +26,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/grey_light"
                     android:text="@string/total_holdings"/>
 
                 <TextView
                     android:id="@+id/coins_fragment_total_holdings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/grey_light"
                     tools:text="$ 123213"/>
 
             </LinearLayout>
@@ -47,24 +49,29 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/grey_light"
                     android:text="@string/total_holdings_change"/>
 
                 <TextView
                     android:id="@+id/coins_fragment_holdings_all_time_change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/grey_light"
                     tools:text="+123%"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
+                    android:textColor="@color/grey_light"
                     android:text="@string/holdings_24h"/>
 
                 <TextView
                     android:id="@+id/coins_fragment_24h_change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/grey_light"
                     tools:text="+12%"/>
 
             </LinearLayout>

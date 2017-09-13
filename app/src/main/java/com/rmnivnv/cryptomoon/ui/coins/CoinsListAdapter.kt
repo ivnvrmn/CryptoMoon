@@ -23,10 +23,8 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
                        private val multiSelector: MultiSelector,
                        val clickListener: (DisplayCoin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
 {
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false)
-        return ViewHolder(v)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
+            ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.bindItems(coins[position], clickListener)

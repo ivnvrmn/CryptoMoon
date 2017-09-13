@@ -7,6 +7,7 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -101,3 +102,8 @@ fun addCommasToStringNumber(number: String?): String {
     val formatter = DecimalFormat("#,###.00")
     return formatter.format(number?.toDouble())
 }
+
+fun getStringWithTwoDecimalsFromDouble(value: Double) = (Math.round(value * 100.0) / 100.0).toString()
+
+fun formatLongDateToString(date: Long?, format: String): String = SimpleDateFormat(format, Locale.getDefault()).format(date)
+

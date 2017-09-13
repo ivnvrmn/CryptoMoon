@@ -17,6 +17,7 @@ interface ICoins {
         fun disableTotalHoldings()
         fun setTotalHoldingsValue(total: String)
         fun setTotalHoldingsChangePercent(percent: String)
+        fun setTotalHoldingsChangePercentColor(color: Int)
     }
 
     interface Presenter {
