@@ -89,8 +89,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     private fun setTotalHoldingsChangePercent(holdings: List<HoldingData>) {
         val totalChangePercent = holdingsHandler.getTotalChangePercent(holdings)
-        val sign = if (totalChangePercent >= 0) "+" else "-"
-        view.setTotalHoldingsChangePercent("$sign${getStringWithTwoDecimalsFromDouble(totalChangePercent)}%")
+        view.setTotalHoldingsChangePercent("${getNumberSignByValue(totalChangePercent)}${getStringWithTwoDecimalsFromDouble(totalChangePercent)}%")
         view.setTotalHoldingsChangePercentColor(getChangeColor(totalChangePercent))
     }
 
@@ -209,5 +208,9 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     override fun onCoinClicked(coin: DisplayCoin) {
         view.startCoinInfoActivity(coin.from, coin.to)
+    }
+
+    override fun onHoldingsClicked() {
+        view.startHoldingsActivity()
     }
 }

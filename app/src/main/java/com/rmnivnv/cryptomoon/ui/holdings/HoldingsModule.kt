@@ -1,6 +1,7 @@
 package com.rmnivnv.cryptomoon.ui.holdings
 
 import com.rmnivnv.cryptomoon.di.PerActivity
+import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import dagger.Module
 import dagger.Provides
 
@@ -14,6 +15,6 @@ class HoldingsModule {
     fun provideView(holdingsActivity: HoldingsActivity): IHoldings.View = holdingsActivity
 
     @Provides @PerActivity
-    fun providePresenter(view: IHoldings.View): IHoldings.Presenter = HoldingsPresenter(view)
+    fun providePresenter(view: IHoldings.View, db: CMDatabase): IHoldings.Presenter = HoldingsPresenter(view, db)
 
 }

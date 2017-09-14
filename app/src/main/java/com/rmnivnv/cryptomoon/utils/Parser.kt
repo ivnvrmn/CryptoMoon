@@ -107,3 +107,5 @@ fun getStringWithTwoDecimalsFromDouble(value: Double) = (Math.round(value * 100.
 
 fun formatLongDateToString(date: Long?, format: String): String = SimpleDateFormat(format, Locale.getDefault()).format(date)
 
+fun getNumberSignByValue(value: Double) = if (value >= 0) "+" else "-"
+

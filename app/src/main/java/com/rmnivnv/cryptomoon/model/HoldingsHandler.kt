@@ -59,11 +59,29 @@ class HoldingsHandler(db: CMDatabase) {
     fun getTotalValueWithCurrentPriceByHoldingData(holdingData: HoldingData): Double {
         val currentPrice = displayCoins.find { it.from == holdingData.from && it.to == holdingData.to }?.PRICE
         if (currentPrice != null) {
-            return doubleFromString(currentPrice) * holdingData.quantity
+            return doubleFromString(currentPrice.substring(2)) * holdingData.quantity
         }
         return 0.0
     }
 
+    fun getChangePercentByHoldingData(holdingData: HoldingData): Double {
+        val oldValue = holdingData.price * holdingData.quantity
+        val selectedCoin = displayCoins.find { it.from == holdingData.from && it.to == holdingData.to }
+        if (selectedCoin != null) {
+            val newValue = doubleFromString(selectedCoin.PRICE.substring(2)) * holdingData.quantity
+            return calculateChangePercent(oldValue, newValue)
+        }
+        return 0.0
+    }
 
+    fun getChangeValueByHoldingData(holdingData: HoldingData): Double {
+        val oldValue = holdingData.price * holdingData.quantity
+        val selectedCoin = displayCoins.find { it.from == holdingData.from && it.to == holdingData.to }
+        if (selectedCoin != null) {
+            val newValue = doubleFromString(selectedCoin.PRICE.substring(2)) * holdingData.quantity
+            return newValue - oldValue
+        }
+        return 0.0
+    }
 
 }

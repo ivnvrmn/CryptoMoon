@@ -13,6 +13,7 @@ import com.rmnivnv.cryptomoon.model.MultiSelector
 import com.rmnivnv.cryptomoon.model.NAME
 import com.rmnivnv.cryptomoon.model.TO
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
+import com.rmnivnv.cryptomoon.ui.holdings.HoldingsActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.coins_fragment.*
@@ -44,6 +45,7 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
         setupRecView()
         setupSwipeRefresh()
         presenter.onViewCreated()
+        coins_fragment_holding_layout.setOnClickListener { presenter.onHoldingsClicked() }
     }
 
     private fun setupRecView() {
@@ -116,5 +118,9 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
 
     override fun setTotalHoldingsChangePercentColor(color: Int) {
         coins_fragment_holdings_all_time_change.setTextColor(resProvider.getColor(color))
+    }
+
+    override fun startHoldingsActivity() {
+        startActivity(Intent(activity, HoldingsActivity::class.java))
     }
 }

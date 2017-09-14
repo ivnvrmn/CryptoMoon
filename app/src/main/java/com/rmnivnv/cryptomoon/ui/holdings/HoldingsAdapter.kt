@@ -8,7 +8,7 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.DEFAULT_DATE_FORMAT
 import com.rmnivnv.cryptomoon.model.HoldingData
 import com.rmnivnv.cryptomoon.model.HoldingsHandler
-import com.rmnivnv.cryptomoon.utils.formatLongDateToString
+import com.rmnivnv.cryptomoon.utils.*
 import kotlinx.android.synthetic.main.holdings_item.view.*
 
 /**
@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.holdings_item.view.*
  */
 class HoldingsAdapter(private val holdings: ArrayList<HoldingData>,
                       private val holdingsHandler: HoldingsHandler,
+                      private val resProvider: ResourceProvider,
                       val clickListener: (HoldingData) -> Unit) : RecyclerView.Adapter<HoldingsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
@@ -31,8 +32,15 @@ class HoldingsAdapter(private val holdings: ArrayList<HoldingData>,
             holdings_item_trade_price.text = "$${holdingData.price}"
             holdings_item_trade_date.text = formatLongDateToString(holdingData.date, DEFAULT_DATE_FORMAT)
             holdings_item_quantity.text = holdingData.quantity.toString()
-            holdings_item_current_total.text = holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holdingData).toString()
+            holdings_item_current_total.text = "$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holdingData))}"
 
+            val changePercent = holdingsHandler.getChangePercentByHoldingData(holdingData)
+            holdings_item_change_percent.text = "${getStringWithTwoDecimalsFromDouble(changePercent)}%"
+            holdings_item_change_percent.setTextColor(resProvider.getColor(getChangeColor(changePercent)))
+
+            val changeValue = holdingsHandler.getChangeValueByHoldingData(holdingData)
+            holdings_item_change_value.text = "$${getStringWithTwoDecimalsFromDouble(changeValue)}"
+            holdings_item_change_value.setTextColor(resProvider.getColor(getChangeColor(changeValue)))
         }
     }
 

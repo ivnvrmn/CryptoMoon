@@ -18,6 +18,7 @@ interface ICoins {
         fun setTotalHoldingsValue(total: String)
         fun setTotalHoldingsChangePercent(percent: String)
         fun setTotalHoldingsChangePercentColor(color: Int)
+        fun startHoldingsActivity()
     }
 
     interface Presenter {
@@ -28,5 +29,6 @@ interface ICoins {
         fun onDestroy()
         fun onSwipeUpdate()
         fun onCoinClicked(coin: DisplayCoin)
+        fun onHoldingsClicked()
     }
 }

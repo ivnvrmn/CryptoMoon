@@ -1,14 +1,59 @@
 package com.rmnivnv.cryptomoon.ui.holdings
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.model.HoldingData
+import com.rmnivnv.cryptomoon.model.HoldingsHandler
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.android.synthetic.main.activity_holdings.*
+import javax.inject.Inject
 
 class HoldingsActivity : DaggerAppCompatActivity(), IHoldings.View {
+
+    @Inject lateinit var presenter: IHoldings.Presenter
+    @Inject lateinit var resProvider: ResourceProvider
+    @Inject lateinit var holdingsHandler: HoldingsHandler
+
+    private var holdings: ArrayList<HoldingData> = ArrayList()
+    private lateinit var recView: RecyclerView
+    private lateinit var adapter: HoldingsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_holdings)
+        setupToolbar()
+        setupRecView()
+        presenter.onCreate(holdings)
+    }
+
+    private fun setupToolbar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = resProvider.getString(R.string.holdings)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        toolbar.setNavigationOnClickListener { finish() }
+    }
+
+    private fun setupRecView() {
+        recView = holdings_rec_view
+        recView.layoutManager = LinearLayoutManager(this)
+        adapter = HoldingsAdapter(holdings, holdingsHandler, resProvider) {
+
+        }
+        recView.adapter = adapter
+    }
+
+    override fun updateRecyclerView() {
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }
