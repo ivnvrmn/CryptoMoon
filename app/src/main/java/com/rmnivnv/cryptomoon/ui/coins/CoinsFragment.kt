@@ -102,10 +102,12 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
 
     override fun enableTotalHoldings() {
         coins_fragment_holding_layout.visibility = View.VISIBLE
+        coins_fragment_holdings_line.visibility = View.VISIBLE
     }
 
     override fun disableTotalHoldings() {
         coins_fragment_holding_layout.visibility = View.GONE
+        coins_fragment_holdings_line.visibility = View.GONE
     }
 
     override fun setTotalHoldingsValue(total: String) {
@@ -113,14 +115,26 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
     }
 
     override fun setTotalHoldingsChangePercent(percent: String) {
-        coins_fragment_holdings_all_time_change.text = percent
+        coins_fragment_holdings_change_percent.text = percent
     }
 
     override fun setTotalHoldingsChangePercentColor(color: Int) {
-        coins_fragment_holdings_all_time_change.setTextColor(resProvider.getColor(color))
+        coins_fragment_holdings_change_percent.setTextColor(resProvider.getColor(color))
     }
 
     override fun startHoldingsActivity() {
         startActivity(Intent(activity, HoldingsActivity::class.java))
+    }
+
+    override fun setTotalHoldingsChangeValue(value: String) {
+        coins_fragment_holdings_change_value.text = value
+    }
+
+    override fun setTotalHoldingsChangeValueColor(color: Int) {
+        coins_fragment_holdings_change_value.setTextColor(resProvider.getColor(color))
+    }
+
+    override fun setAllTimeProfitLossString(text: String) {
+        coins_fragment_all_time_profit_loss.text = text
     }
 }

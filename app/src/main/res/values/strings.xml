@@ -48,7 +48,10 @@
     <string name="add_trans_fill_price">Fill in price field</string>
     <string name="add_trans_fill_quantity">Fill in quantity field</string>
     <string name="total_holdings">Total holdings</string>
-    <string name="total_holdings_change">All time</string>
+    <string name="total_holdings_change">All time change</string>
+    <string name="all_time">All time</string>
+    <string name="profit">profit</string>
+    <string name="loss">loss</string>
     <string name="holdings_24h">24H</string>
     <string name="holdings">Holdings</string>
     <string name="transaction_added">Transaction added</string>

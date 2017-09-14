@@ -18,6 +18,9 @@ interface ICoins {
         fun setTotalHoldingsValue(total: String)
         fun setTotalHoldingsChangePercent(percent: String)
         fun setTotalHoldingsChangePercentColor(color: Int)
+        fun setTotalHoldingsChangeValue(value: String)
+        fun setTotalHoldingsChangeValueColor(color: Int)
+        fun setAllTimeProfitLossString(text: String)
         fun startHoldingsActivity()
     }
 

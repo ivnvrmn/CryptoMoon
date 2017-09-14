@@ -13,15 +13,17 @@
 
         <RelativeLayout
             android:id="@+id/coins_fragment_holding_layout"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_centerVertical="true">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -34,6 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey_light"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
                     tools:text="$ 123213"/>
 
             </LinearLayout>
@@ -46,18 +50,43 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="end">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/grey_light"
-                    android:text="@string/total_holdings_change"/>
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/grey_light"
+                        android:text="@string/all_time"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginEnd="3dp"/>
+
+                    <TextView
+                        android:id="@+id/coins_fragment_all_time_profit_loss"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/grey_light"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/coins_fragment_holdings_all_time_change"
+                    android:id="@+id/coins_fragment_holdings_change_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey_light"
+                    android:textSize="16sp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     tools:text="+123%"/>
+
+                <TextView
+                    android:id="@+id/coins_fragment_holdings_change_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey_light"
+                    android:textSize="16sp"
+                    tools:text="$1544"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,6 +106,14 @@
             </LinearLayout>
 
         </RelativeLayout>
+
+        <View
+            android:id="@+id/coins_fragment_holdings_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:background="@color/colorAccent"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/coins_fragment_rec_view"

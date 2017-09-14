@@ -13,12 +13,16 @@ class HoldingsHandler(db: CMDatabase) {
         db.displayCoinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
                 .subscribe({ displayCoins = it })
+        db.holdingsDao().getAllHoldings()
+                .subscribeOn(Schedulers.io())
+                .subscribe({ holdings = it })
     }
 
     private var displayCoins: List<DisplayCoin> = arrayListOf()
+    private var holdings: List<HoldingData> = arrayListOf()
 
-    fun getTotalChangePercent(holdings: List<HoldingData>): Double {
-        val oldValue = getTotalValueWithTradePrice(holdings)
+    fun getTotalChangePercent(): Double {
+        val oldValue = getTotalValueWithTradePrice()
         var newValue = 0.0
 
         holdings.forEach {
@@ -35,17 +39,19 @@ class HoldingsHandler(db: CMDatabase) {
         return calculateChangePercent(oldValue, newValue)
     }
 
-    private fun calculateChangePercent(value1: Double, value2: Double) =
-            if (value1 > value1) (value2 - value1) / value2 * 100
-            else (value2 - value1) / value1 * 100
-
-    private fun getTotalValueWithTradePrice(holdings: List<HoldingData>): Double {
+    private fun getTotalValueWithTradePrice(): Double {
         val sums: ArrayList<Double> = arrayListOf()
         holdings.forEach { sums.add(it.quantity * it.price) }
         return sums.sum()
     }
 
-    fun getTotalValueWithCurrentPrice(holdings: List<HoldingData>): Double {
+    private fun calculateChangePercent(value1: Double, value2: Double) =
+            if (value1 > value1) (value2 - value1) / value2 * 100
+            else (value2 - value1) / value1 * 100
+
+    fun getTotalChangeValue() = getTotalValueWithCurrentPrice() - getTotalValueWithTradePrice()
+
+    fun getTotalValueWithCurrentPrice(): Double {
         val sums: ArrayList<Double> = arrayListOf()
         holdings.forEach { (from, _, quantity) ->
             val currentPrice = displayCoins.find { it.from == from }?.PRICE

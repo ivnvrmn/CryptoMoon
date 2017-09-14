@@ -76,22 +76,36 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     private fun onHoldingsUpdate(holdings: List<HoldingData>) {
         if (holdings.isNotEmpty()) {
             view.enableTotalHoldings()
-            setTotalHoldingValue(holdings)
-            setTotalHoldingsChangePercent(holdings)
+            setTotalHoldingValue()
+            setTotalHoldingsChangePercent()
+            setTotalHoldingsChangeValue()
         } else {
             view.disableTotalHoldings()
         }
     }
 
-    private fun setTotalHoldingValue(holdings: List<HoldingData>) {
-        view.setTotalHoldingsValue("$ ${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPrice(holdings))}")
+    private fun setTotalHoldingValue() {
+        view.setTotalHoldingsValue("$ ${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPrice())}")
     }
 
-    private fun setTotalHoldingsChangePercent(holdings: List<HoldingData>) {
-        val totalChangePercent = holdingsHandler.getTotalChangePercent(holdings)
+    private fun setTotalHoldingsChangePercent() {
+        val totalChangePercent = holdingsHandler.getTotalChangePercent()
         view.setTotalHoldingsChangePercent("${getNumberSignByValue(totalChangePercent)}${getStringWithTwoDecimalsFromDouble(totalChangePercent)}%")
         view.setTotalHoldingsChangePercentColor(getChangeColor(totalChangePercent))
     }
+
+    private fun setTotalHoldingsChangeValue() {
+        val totalChangeValue = holdingsHandler.getTotalChangeValue()
+        view.setTotalHoldingsChangeValue("$${getStringWithTwoDecimalsFromDouble(totalChangeValue)}")
+        view.setTotalHoldingsChangeValueColor(getChangeColor(totalChangeValue))
+        setAllTimeProfitLossString(totalChangeValue)
+    }
+
+    private fun setAllTimeProfitLossString(change: Double) {
+        view.setAllTimeProfitLossString(getProfitLossText(change))
+    }
+
+    private fun getProfitLossText(change: Double) = if (change >= 0) resProvider.getString(R.string.profit) else  resProvider.getString(R.string.loss)
 
     private fun setupRxBusEventsListeners() {
         disposable.add(RxBus.listen(OnDeleteCoinsMenuItemClickedEvent::class.java)
