@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.jakewharton.rxbinding2.widget.textChanges
 
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.InfoCoin
@@ -30,9 +29,9 @@ class AddCoinActivity : DaggerAppCompatActivity(), IAddCoin.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_coin)
         setupToolbar()
-        setupEdts()
         setupRecView()
         presenter.onCreate(matches)
+        presenter.observeFromText(add_coin_from_edt.textChanges())
     }
 
     private fun setupToolbar() {
@@ -42,22 +41,6 @@ class AddCoinActivity : DaggerAppCompatActivity(), IAddCoin.View {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
-    }
-
-    private fun setupEdts() {
-        add_coin_from_edt.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                presenter.onFromTextChanged(p0.toString())
-            }
-        })
     }
 
     private fun setupRecView() {

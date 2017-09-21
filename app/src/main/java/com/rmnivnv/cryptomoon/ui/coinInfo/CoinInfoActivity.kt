@@ -47,16 +47,14 @@ class CoinInfoActivity : DaggerAppCompatActivity(), ICoinInfo.View {
         coin_info_graph_periods.adapter = ArrayAdapter<String>(this, R.layout.period_item, R.id.period,
                 resProvider.getStringArray(R.array.histo_periods))
         coin_info_graph_periods.setSelection(5)
-        val listener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
+        coin_info_graph_periods.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 presenter.onSpinnerItemClicked(coin_info_graph_periods.selectedItem.toString())
 
             }
         }
-        coin_info_graph_periods.onItemSelectedListener = listener
     }
 
     override fun setTitle(title: String) {

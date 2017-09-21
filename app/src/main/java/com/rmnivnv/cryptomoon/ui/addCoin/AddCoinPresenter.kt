@@ -6,6 +6,7 @@ import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.*
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -64,7 +65,15 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
         disposable.clear()
     }
 
-    override fun onFromTextChanged(text: String) {
+    override fun observeFromText(observable: Observable<CharSequence>) {
+        disposable.add(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onFromTextArrived))
+    }
+
+    private fun onFromTextArrived(char: CharSequence) {
+        val text = char.toString()
         view.enableMatchesCount()
         if (text.isNotEmpty() && allCoins.isNotEmpty()) {
             val matchesList = allCoins.filter { (it.coinName.contains(text, true)) ||

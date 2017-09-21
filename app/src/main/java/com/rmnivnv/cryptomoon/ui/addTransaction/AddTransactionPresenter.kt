@@ -9,6 +9,10 @@ import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.doubleFromString
 import com.rmnivnv.cryptomoon.utils.formatLongDateToString
 import com.rmnivnv.cryptomoon.utils.toastShort
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
@@ -23,6 +27,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
     private var to = ""
     private var price = 0.0
     private var transactionDate: Date? = null
+    private val disposable = CompositeDisposable()
     private var tradingPrice: Double = 0.0
         set(value) {
             field = value
@@ -49,7 +54,15 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         }
     }
 
-    override fun onTradingPriceTextChanged(text: String) {
+    override fun observeTradingPrice(observable: Observable<CharSequence>) {
+        disposable.add(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onTradingPriceTextChanged))
+    }
+
+    private fun onTradingPriceTextChanged(char: CharSequence) {
+        val text = char.toString()
         if (text.isNotEmpty()) tradingPrice = text.toDouble()
         else {
             tradingPrice = 0.0
@@ -57,12 +70,34 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         }
     }
 
-    override fun onQuantityTextChanged(text: String) {
+    override fun observeQuantity(observable: Observable<CharSequence>) {
+        disposable.add(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onQuantityTextChanged))
+    }
+
+    private fun onQuantityTextChanged(char: CharSequence) {
+        val text = char.toString()
         if (text.isNotEmpty()) quantity = text.toDouble()
         else {
             quantity = 0.0
             view.setTotalValue("0.0")
         }
+    }
+
+    override fun observeDateClicks(observable: Observable<Unit>) {
+        disposable.add(observable
+                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ view.showDatePickerDialog() }))
+    }
+
+    override fun observeConfirmClicks(observable: Observable<Unit>) {
+        disposable.add(observable
+                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onConfirmClicked() }))
     }
 
     override fun onDatePicked(year: Int, month: Int, day: Int) {
@@ -82,7 +117,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         transactionDate = null
     }
 
-    override fun onConfirmClicked() {
+    private fun onConfirmClicked() {
         if (allFieldsAreFilled()) {
             saveHoldings()
         } else if (tradingPrice == 0.0 && quantity == 0.0 && transactionDate == null) {
@@ -102,5 +137,9 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         dbController.saveHoldingData(HoldingData(from, to, quantity, tradingPrice, transactionDate?.time))
         context.toastShort(resourceProvider.getString(R.string.transaction_added))
         view.closeActivity()
+    }
+
+    override fun onDestroy() {
+        disposable.clear()
     }
 }

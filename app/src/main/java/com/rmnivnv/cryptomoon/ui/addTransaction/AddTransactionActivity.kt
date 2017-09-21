@@ -3,8 +3,8 @@ package com.rmnivnv.cryptomoon.ui.addTransaction
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import android.text.Editable
-import android.text.TextWatcher
+import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.widget.textChanges
 
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
@@ -22,7 +22,7 @@ class AddTransactionActivity : DaggerAppCompatActivity(), IAddTransaction.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_transaction)
         setupToolbar()
-        setupListeners()
+        setupObservables()
         setTotalValue("0.0")
         presenter.onCreate(intent.extras)
     }
@@ -36,27 +36,11 @@ class AddTransactionActivity : DaggerAppCompatActivity(), IAddTransaction.View {
         toolbar.setNavigationOnClickListener { finish() }
     }
 
-    private fun setupListeners() {
-        add_trans_trade_date.setOnClickListener { showDatePickerDialog() }
-        add_trans_confirm_btn.setOnClickListener { presenter.onConfirmClicked() }
-        add_trans_trading_price.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                presenter.onTradingPriceTextChanged(p0.toString())
-            }
-        })
-        add_trans_quantity.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                presenter.onQuantityTextChanged(p0.toString())
-            }
-        })
+    private fun setupObservables() {
+        presenter.observeDateClicks(add_trans_trade_date.clicks())
+        presenter.observeConfirmClicks(add_trans_confirm_btn.clicks())
+        presenter.observeTradingPrice(add_trans_trading_price.textChanges())
+        presenter.observeQuantity(add_trans_quantity.textChanges())
     }
 
     override fun setTitle(pair: String, price: String) {
@@ -85,5 +69,10 @@ class AddTransactionActivity : DaggerAppCompatActivity(), IAddTransaction.View {
 
     override fun closeActivity() {
         finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 }

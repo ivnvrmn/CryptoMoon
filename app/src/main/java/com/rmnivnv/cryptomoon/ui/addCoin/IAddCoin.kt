@@ -1,6 +1,7 @@
 package com.rmnivnv.cryptomoon.ui.addCoin
 
 import com.rmnivnv.cryptomoon.model.InfoCoin
+import io.reactivex.Observable
 
 /**
  * Created by rmnivnv on 27/07/2017.
@@ -22,7 +23,7 @@ interface IAddCoin {
     interface Presenter {
         fun onCreate(matches: ArrayList<InfoCoin>)
         fun onDestroy()
-        fun onFromTextChanged(text: String)
         fun onFromItemClicked(coin: InfoCoin)
+        fun observeFromText(observable: Observable<CharSequence>)
     }
 }
