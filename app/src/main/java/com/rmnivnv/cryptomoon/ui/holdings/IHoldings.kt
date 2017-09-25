@@ -12,5 +12,6 @@ interface IHoldings {
     interface Presenter {
         fun onCreate(holdings: ArrayList<HoldingData>)
         fun onDestroy()
+        fun onItemSwiped(position: Int?)
     }
 }

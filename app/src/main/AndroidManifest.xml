@@ -24,7 +24,7 @@
         <activity android:name=".ui.addCoin.AddCoinActivity" />
         <activity android:name=".ui.coinInfo.CoinInfoActivity" />
         <activity android:name=".ui.addTransaction.AddTransactionActivity" />
-        <activity android:name=".ui.holdings.HoldingsActivity"></activity>
+        <activity android:name=".ui.holdings.HoldingsActivity"/>
     </application>
 
 </manifest>

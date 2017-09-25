@@ -2,6 +2,7 @@ package com.rmnivnv.cryptomoon.ui.holdings
 
 import com.rmnivnv.cryptomoon.model.HoldingData
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -38,5 +39,13 @@ class HoldingsPresenter @Inject constructor(private val view: IHoldings.View,
 
     override fun onDestroy() {
         disposable.clear()
+    }
+
+    override fun onItemSwiped(position: Int?) {
+        if (position != null) {
+            disposable.add(Single.fromCallable { db.holdingsDao().deleteHolding(holdings[position]) }
+                    .subscribeOn(Schedulers.io())
+                    .subscribe())
+        }
     }
 }
