@@ -129,17 +129,15 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
     private fun requestPairs(coin: InfoCoin) {
         if (!coin.name.isEmpty()) {
             view.enableLoadingLayout()
-            disposable.add(networkRequests.getPairs(coin.name, object : GetPairsCallback {
-                override fun onSuccess(pairs: ArrayList<PairData>) {
-                    view.disableLoadingLayout()
-                    onPairsReceived(pairs)
-                }
-
-                override fun onError(t: Throwable) {
-                    view.disableLoadingLayout()
-                }
-            }))
+            disposable.add(networkRequests.getPairs(coin.name)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ onPairsArrived(it) }, { view.disableLoadingLayout() }))
         }
+    }
+
+    private fun onPairsArrived(pairs: ArrayList<PairData>) {
+        view.disableLoadingLayout()
+        onPairsReceived(pairs)
     }
 
     private fun onPairsReceived(pairs: ArrayList<PairData>) {
@@ -155,23 +153,23 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
 
     private fun requestCoinInfo(coin: DisplayCoin) {
         view.enableLoadingLayout()
-        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)),
-                    object : GetPriceCallback {
-            override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
-                if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
-                    coinsController.saveDisplayCoinList(coinsInfoList)
-                    coinSuccessfullyAdded()
-                } else {
-                    view.disableLoadingLayout()
-                    context.toastShort(resProvider.getString(R.string.coin_not_found))
-                }
-            }
+        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onPriceUpdated(it) }, { coinNotFound() }))
+    }
 
-            override fun onError(t: Throwable) {
-                view.disableLoadingLayout()
-                context.toastShort(resProvider.getString(R.string.coin_not_found))
-            }
-        }))
+    private fun onPriceUpdated(list: ArrayList<DisplayCoin>) {
+        if (list.isNotEmpty()) {
+            coinsController.saveDisplayCoinList(list)
+            coinSuccessfullyAdded()
+        } else {
+            coinNotFound()
+        }
+    }
+
+    private fun coinNotFound() {
+        view.disableLoadingLayout()
+        context.toastShort(resProvider.getString(R.string.coin_not_found))
     }
 
     private fun coinSuccessfullyAdded() {

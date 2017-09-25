@@ -5,8 +5,7 @@ import com.rmnivnv.cryptomoon.utils.getAllCoinsFromJson
 import com.rmnivnv.cryptomoon.utils.getCoinDisplayBodyFromJson
 import com.rmnivnv.cryptomoon.utils.getHistoListFromJson
 import com.rmnivnv.cryptomoon.utils.getPairsListFromJson
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
 /**
@@ -15,19 +14,16 @@ import io.reactivex.schedulers.Schedulers
 class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
                       private val coinMarketCapApi: CoinMarketCapApi) {
 
-    fun getAllCoins(callback: GetAllCoinsCallback): Disposable  {
+    fun getAllCoins(): Single<ArrayList<InfoCoin>>  {
         return cryptoCompareAPI.getCoinsList(COINS_LIST_URL)
                 .subscribeOn(Schedulers.io())
                 .map { getAllCoinsFromJson(it) }
-                .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
-    fun getPrice(map: Map<String, ArrayList<String?>>, callback: GetPriceCallback): Disposable {
+    fun getPrice(map: Map<String, ArrayList<String?>>): Single<ArrayList<DisplayCoin>> {
         return cryptoCompareAPI.getPrice(getQuery(map, FSYMS), getQuery(map, TSYMS))
                 .subscribeOn(Schedulers.io())
                 .map { getCoinDisplayBodyFromJson(it, map) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
     private fun getQuery(map: Map<String, ArrayList<String?>>, type: String): String {
@@ -39,15 +35,13 @@ class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
         return result
     }
 
-    fun getPairs(from: String, callback: GetPairsCallback): Disposable {
+    fun getPairs(from: String): Single<ArrayList<PairData>> {
         return cryptoCompareAPI.getPairs(from)
                 .subscribeOn(Schedulers.io())
                 .map { getPairsListFromJson(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
-    fun getHistoPeriod(period: String, from: String?, to: String?, callback: GetHistoCallback): Disposable {
+    fun getHistoPeriod(period: String, from: String?, to: String?): Single<ArrayList<HistoData>> {
         val histoPeriod: String
         var limit = 30
         var aggregate = 1
@@ -93,15 +87,11 @@ class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
         return cryptoCompareAPI.getHistoPeriod(histoPeriod, from, to, limit, aggregate)
                 .subscribeOn(Schedulers.io())
                 .map { getHistoListFromJson(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
-    fun getTopCoins(callback: GetTopCoinsCallback): Disposable {
+    fun getTopCoins(): Single<List<TopCoinData>> {
         return coinMarketCapApi.getTopCoins(COIN_MARKET_CAP_URL_TICKER, 100)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ callback.onSuccess(it) }, { callback.onError(it) })
     }
 
 }

@@ -51,18 +51,14 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
     }
 
     private fun requestHisto(period: String) {
-        disposable.add(networkRequests.getHistoPeriod(period, coin?.from, coin?.to,
-                object : GetHistoCallback {
-                    override fun onSuccess(histoList: ArrayList<HistoData>) {
-                        println("histo size = " + histoList.size)
-                        view.disableGraphLoading()
-                        view.drawChart(graphMaker.makeChart(histoList, period))
-                    }
+        disposable.add(networkRequests.getHistoPeriod(period, coin?.from, coin?.to)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onHistoReceived(it, period) }, { view.disableGraphLoading() }))
+    }
 
-                    override fun onError(t: Throwable) {
-                        view.disableGraphLoading()
-                    }
-                }))
+    private fun onHistoReceived(histoList: ArrayList<HistoData>, period: String) {
+        view.disableGraphLoading()
+        view.drawChart(graphMaker.makeChart(histoList, period))
     }
 
     private fun setCoinInfo() {
@@ -81,18 +77,17 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
     }
 
     private fun requestCoinInfo(coin: DisplayCoin) {
-        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)),
-                object : GetPriceCallback { override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
-                    if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
-                        val arrivedCoin = coinsInfoList[0]
-                        coinsController.addAdditionalInfo(arrivedCoin)
-                        onCoinArrived(arrivedCoin)
-                    }
-                }
+        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onPriceUpdated(it) }, {  }))
+    }
 
-                    override fun onError(t: Throwable) {
-                    }
-                }))
+    private fun onPriceUpdated(list: ArrayList<DisplayCoin>) {
+        if (list.isNotEmpty()) {
+            val arrivedCoin = list[0]
+            coinsController.addAdditionalInfo(arrivedCoin)
+            onCoinArrived(arrivedCoin)
+        }
     }
 
     override fun onSpinnerItemClicked(selectedItem: String) {

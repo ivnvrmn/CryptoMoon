@@ -148,17 +148,12 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     }
 
     private fun getAllCoinsInfo() {
-        disposable.add(networkRequests.getAllCoins(object : GetAllCoinsCallback {
-            override fun onSuccess(allCoins: ArrayList<InfoCoin>) {
-                if (allCoins.isNotEmpty()) {
-                    coinsController.saveAllCoinsInfo(allCoins)
-                }
-            }
+        disposable.add(networkRequests.getAllCoins()
+                .subscribe(this::onAllCoinsReceived))
+    }
 
-            override fun onError(t: Throwable) {
-
-            }
-        }))
+    private fun onAllCoinsReceived(list: ArrayList<InfoCoin>) {
+        if (list.isNotEmpty()) coinsController.saveAllCoinsInfo(list)
     }
 
     override fun onViewCreated() {
@@ -173,19 +168,17 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         val queryMap = createCoinsMapWithCurrencies(coins)
         if (queryMap.isNotEmpty()) {
             RxBus.publish(CoinsLoadingEvent(true))
-            disposable.add(networkRequests.getPrice(queryMap, object : GetPriceCallback {
-                override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
-                    if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
-                        coinsController.saveDisplayCoinList(filterList(coinsInfoList))
-                    }
-                    afterRefreshing()
-                }
-
-                override fun onError(t: Throwable) {
-                    afterRefreshing()
-                }
-            }))
+            disposable.add(networkRequests.getPrice(queryMap)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ onPriceUpdated(it) }, { afterRefreshing() }))
         }
+    }
+
+    private fun onPriceUpdated(list: ArrayList<DisplayCoin>) {
+        if (list.isNotEmpty()) {
+            coinsController.saveDisplayCoinList(filterList(list))
+        }
+        afterRefreshing()
     }
 
     private fun filterList(coinsInfoList: ArrayList<DisplayCoin>): ArrayList<DisplayCoin> {

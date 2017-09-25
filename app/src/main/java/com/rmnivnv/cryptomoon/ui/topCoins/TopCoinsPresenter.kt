@@ -85,21 +85,19 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
     }
 
     private fun updateTopCoins() {
-        disposable.add(networkRequests.getTopCoins(object : GetTopCoinsCallback {
-            override fun onSuccess(coins: List<TopCoinData>) {
-                if (coins.isNotEmpty()) {
-                    coinsController.saveTopCoinsList(coins)
-                    if (isRefreshing) {
-                        view.hideRefreshing()
-                        isRefreshing = false
-                    }
-                }
-            }
+        disposable.add(networkRequests.getTopCoins()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onTopCoinsReceived))
+    }
 
-            override fun onError(t: Throwable) {
-
+    private fun onTopCoinsReceived(coins: List<TopCoinData>) {
+        if (coins.isNotEmpty()) {
+            coinsController.saveTopCoinsList(coins)
+            if (isRefreshing) {
+                view.hideRefreshing()
+                isRefreshing = false
             }
-        }))
+        }
     }
 
     override fun onCoinClicked(coin: TopCoinData) {
@@ -115,24 +113,25 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
         itemView.top_coin_add_loading.visibility = View.VISIBLE
         itemView.top_coin_add_icon.visibility = View.GONE
         val displayCoin = DisplayCoin(from = coin.symbol!!, to = USD)
-        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(displayCoin)),
-                object : GetPriceCallback {
-                    override fun onSuccess(coinsInfoList: ArrayList<DisplayCoin>?) {
-                        if (coinsInfoList != null && coinsInfoList.isNotEmpty()) {
-                            coinsController.saveDisplayCoinList(coinsInfoList)
-                            itemView.top_coin_add_icon.setImageDrawable(resProvider.getDrawable(R.drawable.ic_done))
-                            context.toastShort(resProvider.getString(R.string.coin_added))
-                        } else {
-                            context.toastShort(resProvider.getString(R.string.error))
-                        }
-                        afterAdded(itemView)
-                    }
+        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(displayCoin)))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onPriceUpdated(it, itemView) }, { onError(itemView) }))
+    }
 
-                    override fun onError(t: Throwable) {
-                        afterAdded(itemView)
-                        context.toastShort(resProvider.getString(R.string.error))
-                    }
-                }))
+    private fun onPriceUpdated(list: ArrayList<DisplayCoin>, itemView: View) {
+        if (list.isNotEmpty()) {
+            coinsController.saveDisplayCoinList(list)
+            itemView.top_coin_add_icon.setImageDrawable(resProvider.getDrawable(R.drawable.ic_done))
+            context.toastShort(resProvider.getString(R.string.coin_added))
+        } else {
+            context.toastShort(resProvider.getString(R.string.error))
+        }
+        afterAdded(itemView)
+    }
+
+    private fun onError(itemView: View) {
+        afterAdded(itemView)
+        context.toastShort(resProvider.getString(R.string.error))
     }
 
     private fun afterAdded(itemView: View) {
