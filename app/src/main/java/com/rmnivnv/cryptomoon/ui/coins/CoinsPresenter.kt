@@ -30,6 +30,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     private val disposable = CompositeDisposable()
     private var coins: ArrayList<DisplayCoin> = ArrayList()
+    private var holdings: ArrayList<HoldingData> = ArrayList()
     private var isRefreshing = false
     private var isFirstStart = true
 
@@ -63,6 +64,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
                 isFirstStart = false
                 updatePrices()
             }
+            if (holdings.isNotEmpty()) updateHoldings()
         }
     }
 
@@ -75,13 +77,19 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     private fun onHoldingsUpdate(holdings: List<HoldingData>) {
         if (holdings.isNotEmpty()) {
+            this.holdings.clear()
+            this.holdings.addAll(holdings)
             view.enableTotalHoldings()
-            setTotalHoldingValue()
-            setTotalHoldingsChangePercent()
-            setTotalHoldingsChangeValue()
+            updateHoldings()
         } else {
             view.disableTotalHoldings()
         }
+    }
+
+    private fun updateHoldings() {
+        setTotalHoldingValue()
+        setTotalHoldingsChangePercent()
+        setTotalHoldingsChangeValue()
     }
 
     private fun setTotalHoldingValue() {
@@ -90,7 +98,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     private fun setTotalHoldingsChangePercent() {
         val totalChangePercent = holdingsHandler.getTotalChangePercent()
-        view.setTotalHoldingsChangePercent("${getNumberSignByValue(totalChangePercent)}${getStringWithTwoDecimalsFromDouble(totalChangePercent)}%")
+        view.setTotalHoldingsChangePercent("${getStringWithTwoDecimalsFromDouble(totalChangePercent)}%")
         view.setTotalHoldingsChangePercentColor(getChangeColor(totalChangePercent))
     }
 
@@ -175,9 +183,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     }
 
     private fun onPriceUpdated(list: ArrayList<DisplayCoin>) {
-        if (list.isNotEmpty()) {
-            coinsController.saveDisplayCoinList(filterList(list))
-        }
+        if (list.isNotEmpty()) coinsController.saveDisplayCoinList(filterList(list))
         afterRefreshing()
     }
 

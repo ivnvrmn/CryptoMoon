@@ -57,6 +57,13 @@
     <string name="transaction_added">Transaction added</string>
     <string name="current_total">Current total</string>
     <string name="current">Current</string>
+    <string name="qty">QTY</string>
+    <string name="val">VAL</string>
+    <string name="ch_pct">CH PCT</string>
+    <string name="prf">PRF</string>
+    <string name="ls">LS</string>
+    <string name="holdings_deleted">Holdings deleted</string>
+
 
     <string-array name="histo_periods">
         <item>1 hour</item>

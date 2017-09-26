@@ -1,7 +1,11 @@
 package com.rmnivnv.cryptomoon.ui.holdings
 
+import android.content.Context
+import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.HoldingData
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -12,7 +16,9 @@ import javax.inject.Inject
  * Created by ivanov_r on 13.09.2017.
  */
 class HoldingsPresenter @Inject constructor(private val view: IHoldings.View,
-                                            private val db: CMDatabase) : IHoldings.Presenter {
+                                            private val db: CMDatabase,
+                                            private val context: Context,
+                                            private val resourceProvider: ResourceProvider) : IHoldings.Presenter {
 
     private val disposable = CompositeDisposable()
     private var holdings: ArrayList<HoldingData> = ArrayList()
@@ -46,6 +52,7 @@ class HoldingsPresenter @Inject constructor(private val view: IHoldings.View,
             disposable.add(Single.fromCallable { db.holdingsDao().deleteHolding(holdings[position]) }
                     .subscribeOn(Schedulers.io())
                     .subscribe())
+            context.toastShort(resourceProvider.getString(R.string.holdings_deleted))
         }
     }
 }

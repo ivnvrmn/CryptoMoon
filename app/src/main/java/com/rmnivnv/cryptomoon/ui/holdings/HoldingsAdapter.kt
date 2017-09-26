@@ -9,6 +9,7 @@ import com.rmnivnv.cryptomoon.model.DEFAULT_DATE_FORMAT
 import com.rmnivnv.cryptomoon.model.HoldingData
 import com.rmnivnv.cryptomoon.model.HoldingsHandler
 import com.rmnivnv.cryptomoon.utils.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.holdings_item.view.*
 
 /**
@@ -41,8 +42,22 @@ class HoldingsAdapter(private val holdings: ArrayList<HoldingData>,
             val changeValue = holdingsHandler.getChangeValueByHoldingData(holdingData)
             holdings_item_change_value.text = "$${getStringWithTwoDecimalsFromDouble(changeValue)}"
             holdings_item_change_value.setTextColor(resProvider.getColor(getChangeColor(changeValue)))
+
+            if (holdingsHandler.getImageUrlByHolding(holdingData).isNotEmpty()) {
+                Picasso.with(context)
+                        .load(holdingsHandler.getImageUrlByHolding(holdingData))
+                        .into(holdings_item_icon)
+            }
+
+            if (holdingsHandler.getCurrentPriceByHolding(holdingData).isNotEmpty()) {
+                holdings_item_main_price.text = holdingsHandler.getCurrentPriceByHolding(holdingData)
+            }
+
+            holdings_item_profit_loss.text = getProfitLossText(holdingsHandler.getTotalChangeValue())
         }
     }
 
     override fun getItemCount() = holdings.size
+
+    private fun getProfitLossText(change: Double) = if (change >= 0) resProvider.getString(R.string.prf) else  resProvider.getString(R.string.ls)
 }

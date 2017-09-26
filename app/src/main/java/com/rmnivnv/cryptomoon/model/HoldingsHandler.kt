@@ -90,4 +90,8 @@ class HoldingsHandler(db: CMDatabase) {
         return 0.0
     }
 
+    fun getImageUrlByHolding(holdingData: HoldingData) = displayCoins.find { it.from == holdingData.from }?.imgUrl ?: ""
+
+    fun getCurrentPriceByHolding(holdingData: HoldingData) = displayCoins.find { it.from == holdingData.from }?.PRICE ?: ""
+
 }
