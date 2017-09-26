@@ -20,6 +20,7 @@ import android.widget.TextView
 import com.rmnivnv.cryptomoon.ui.addCoin.AddCoinActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
+import com.rmnivnv.cryptomoon.ui.news.NewsFragment
 import com.rmnivnv.cryptomoon.ui.topCoins.TopCoinsFragment
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,6 +35,7 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
     private var deleteMenuItem: MenuItem? = null
     private var addMenuItem: MenuItem? = null
     private var settingsMenuItem: MenuItem? = null
+    private lateinit var newsFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +50,9 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(CoinsFragment(), resProvider.getString(R.string.coins))
         adapter.addFragment(TopCoinsFragment(), resProvider.getString(R.string.top100))
+        newsFragment = NewsFragment()
+        adapter.addFragment(newsFragment, resProvider.getString(R.string.news))
+
         viewpager.adapter = adapter
         tabs.setupWithViewPager(viewpager)
         setCustomTab()
@@ -138,5 +143,10 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
 
     override fun startAddCoinActivity() {
         startActivity(Intent(this, AddCoinActivity::class.java))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        newsFragment.onActivityResult(requestCode, resultCode, data)
     }
 }

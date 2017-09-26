@@ -3,6 +3,7 @@ package com.rmnivnv.cryptomoon
 import android.app.Activity
 import android.app.Application
 import com.rmnivnv.cryptomoon.di.DaggerAppComponent
+import com.twitter.sdk.android.core.Twitter
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -22,6 +23,7 @@ class CMApp : Application(), HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this)
+        Twitter.initialize(this)
     }
 
     override fun activityInjector() = dispatchingAndroidInjector

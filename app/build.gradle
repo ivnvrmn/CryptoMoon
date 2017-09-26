@@ -81,6 +81,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    compile 'com.twitter.sdk.android:twitter-core:3.1.1'
+    compile 'com.twitter.sdk.android:tweet-ui:3.1.1'
     //Tests
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.22'

@@ -1,5 +1,8 @@
-<resources>
+<resources >
     <string name="app_name">CryptoMoon</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">riCBLpP9iH2s7MFnpGl1e4WTE</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">81jDscHIH4cZ6EBGvkyPyleX2IldRLCPheOTscEactc2knw6dd</string>
+
     <string name="market">Market</string>
     <string name="last_price">Last price</string>
     <string name="change_24h">Change 24h</string>

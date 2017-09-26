@@ -72,11 +72,6 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
         presenter.onStop()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
-    }
-
     override fun updateRecyclerView() {
         adapter.notifyDataSetChanged()
     }

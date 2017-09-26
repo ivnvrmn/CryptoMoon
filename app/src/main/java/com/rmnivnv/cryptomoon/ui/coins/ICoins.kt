@@ -29,7 +29,6 @@ interface ICoins {
         fun onViewCreated()
         fun onStart()
         fun onStop()
-        fun onDestroy()
         fun onSwipeUpdate()
         fun onCoinClicked(coin: DisplayCoin)
         fun onHoldingsClicked()

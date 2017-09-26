@@ -205,11 +205,8 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         }
     }
 
-    override fun onDestroy() {
-        disposable.clear()
-    }
-
     override fun onStop() {
+        disposable.clear()
         disableSelected()
     }
 
