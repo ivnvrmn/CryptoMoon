@@ -36,8 +36,13 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     override fun onCreate(coins: ArrayList<DisplayCoin>) {
         this.coins = coins
+    }
+
+    override fun onStart() {
         subscribeToObservables()
         getAllCoinsInfo()
+        if (coins.isNotEmpty()) updatePrices()
+        updateHoldings()
     }
 
     private fun subscribeToObservables() {
@@ -64,7 +69,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
                 isFirstStart = false
                 updatePrices()
             }
-            if (holdings.isNotEmpty()) updateHoldings()
+            updateHoldings()
         }
     }
 
@@ -79,7 +84,6 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         if (holdings.isNotEmpty()) {
             this.holdings.clear()
             this.holdings.addAll(holdings)
-            view.enableTotalHoldings()
             updateHoldings()
         } else {
             view.disableTotalHoldings()
@@ -87,9 +91,12 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     }
 
     private fun updateHoldings() {
-        setTotalHoldingValue()
-        setTotalHoldingsChangePercent()
-        setTotalHoldingsChangeValue()
+        if (holdings.isNotEmpty()) {
+            setTotalHoldingValue()
+            setTotalHoldingsChangePercent()
+            setTotalHoldingsChangeValue()
+            view.enableTotalHoldings()
+        }
     }
 
     private fun setTotalHoldingValue() {
@@ -168,10 +175,6 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     }
 
-    override fun onStart() {
-        if (coins.isNotEmpty()) updatePrices()
-    }
-
     private fun updatePrices() {
         val queryMap = createCoinsMapWithCurrencies(coins)
         if (queryMap.isNotEmpty()) {
@@ -208,6 +211,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     override fun onStop() {
         disposable.clear()
         disableSelected()
+        RxBus.publish(CoinsLoadingEvent(false))
     }
 
     override fun onSwipeUpdate() {

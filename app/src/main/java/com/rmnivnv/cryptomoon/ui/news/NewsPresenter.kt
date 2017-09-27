@@ -3,6 +3,7 @@ package com.rmnivnv.cryptomoon.ui.news
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Search
 import com.twitter.sdk.android.core.models.Tweet
+import retrofit2.Call
 import javax.inject.Inject
 
 /**
@@ -13,12 +14,13 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
     private var tweets: ArrayList<Tweet> = ArrayList()
     private var twitterSession: TwitterSession? = null
     private lateinit var twitterApiClient: TwitterApiClient
+    private var call: Call<Search>? = null
 
     override fun onCreate(tweets: ArrayList<Tweet>) {
         this.tweets = tweets
     }
 
-    override fun onViewCreated() {
+    override fun onStart() {
         val activeSession = TwitterCore.getInstance().sessionManager.activeSession
         if (activeSession != null) {
             twitterApiClient = TwitterApiClient(activeSession)
@@ -32,8 +34,8 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
     private fun searchTweets() {
         view.showLoading()
         val searchService = twitterApiClient.searchService
-        val call = searchService.tweets("cryptocurrency", null, null, null, null, null, null, null, null, null)
-        call.enqueue(object : Callback<Search>() {
+        call = searchService.tweets("cryptocurrency", null, null, null, null, null, null, null, null, null)
+        call?.enqueue(object : Callback<Search>() {
             override fun success(result: Result<Search>?) {
                 val resultTweets = result?.data?.tweets
                 if (resultTweets != null) {
@@ -55,5 +57,9 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
         view.hideLoginBtn()
         twitterApiClient = TwitterCore.getInstance().apiClient
         searchTweets()
+    }
+
+    override fun onStop() {
+        call?.cancel()
     }
 }

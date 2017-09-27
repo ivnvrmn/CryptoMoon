@@ -21,7 +21,8 @@ interface INews {
     interface Presenter {
         fun onCreate(tweets: ArrayList<Tweet>)
         fun onSuccessLogin(result: Result<TwitterSession>?)
-        fun onViewCreated()
+        fun onStart()
+        fun onStop()
     }
 
 }

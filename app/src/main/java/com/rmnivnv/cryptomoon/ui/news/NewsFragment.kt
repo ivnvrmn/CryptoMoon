@@ -48,7 +48,16 @@ class NewsFragment : DaggerFragment(), INews.View {
 
             }
         }
-        presenter.onViewCreated()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
     private fun setupRecView() {
