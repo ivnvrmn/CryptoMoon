@@ -15,6 +15,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
     private var twitterSession: TwitterSession? = null
     private lateinit var twitterApiClient: TwitterApiClient
     private var call: Call<Search>? = null
+    private var isSwipeRefreshing = false
 
     override fun onCreate(tweets: ArrayList<Tweet>) {
         this.tweets = tweets
@@ -32,7 +33,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
     }
 
     private fun searchTweets() {
-        view.showLoading()
+        if (!isSwipeRefreshing) view.showLoading()
         val searchService = twitterApiClient.searchService
         call = searchService.tweets("cryptocurrency", null, null, null, null, null, null, null, null, null)
         call?.enqueue(object : Callback<Search>() {
@@ -42,14 +43,24 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
                     tweets.clear()
                     tweets.addAll(resultTweets)
                     view.updateTweets()
-                    view.hideLoading()
-                    view.showRecView()
                 }
+                afterSearch()
             }
 
             override fun failure(exception: TwitterException?) {
+                afterSearch()
             }
         })
+    }
+
+    private fun afterSearch() {
+        if (isSwipeRefreshing) {
+            isSwipeRefreshing = false
+            view.hideSwipeRefreshing()
+        } else {
+            view.hideLoading()
+            view.showRecView()
+        }
     }
 
     override fun onSuccessLogin(result: Result<TwitterSession>?) {
@@ -61,5 +72,10 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
 
     override fun onStop() {
         call?.cancel()
+    }
+
+    override fun onSwipeUpdate() {
+        isSwipeRefreshing = true
+        searchTweets()
     }
 }

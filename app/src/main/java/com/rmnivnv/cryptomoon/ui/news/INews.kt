@@ -16,6 +16,7 @@ interface INews {
         fun updateTweets()
         fun showLoading()
         fun hideLoading()
+        fun hideSwipeRefreshing()
     }
 
     interface Presenter {
@@ -23,6 +24,7 @@ interface INews {
         fun onSuccessLogin(result: Result<TwitterSession>?)
         fun onStart()
         fun onStop()
+        fun onSwipeUpdate()
     }
 
 }

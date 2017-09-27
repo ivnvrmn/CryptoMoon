@@ -48,6 +48,7 @@ class NewsFragment : DaggerFragment(), INews.View {
 
             }
         }
+        news_swipe_refresh.setOnRefreshListener { presenter.onSwipeUpdate() }
     }
 
     override fun onStart() {
@@ -94,5 +95,9 @@ class NewsFragment : DaggerFragment(), INews.View {
 
     override fun hideLoading() {
         news_loading.visibility = View.GONE
+    }
+
+    override fun hideSwipeRefreshing() {
+        news_swipe_refresh.isRefreshing = false
     }
 }

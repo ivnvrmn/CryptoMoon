@@ -57,9 +57,7 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
     }
 
     private fun setupSwipeRefresh() {
-        swipe_refresh.setOnRefreshListener {
-            presenter.onSwipeUpdate()
-        }
+        swipe_refresh.setOnRefreshListener { presenter.onSwipeUpdate() }
     }
 
     override fun onStart() {
