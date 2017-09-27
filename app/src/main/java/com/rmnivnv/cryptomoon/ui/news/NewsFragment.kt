@@ -27,6 +27,7 @@ class NewsFragment : DaggerFragment(), INews.View {
     private var tweets: ArrayList<Tweet> = ArrayList()
     private lateinit var recView: RecyclerView
     private lateinit var adapter: NewsAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,9 +64,15 @@ class NewsFragment : DaggerFragment(), INews.View {
 
     private fun setupRecView() {
         recView = news_rec_view
-        recView.layoutManager = LinearLayoutManager(activity)
+        linearLayoutManager = LinearLayoutManager(activity)
+        recView.layoutManager = linearLayoutManager
         adapter = NewsAdapter(tweets)
         recView.adapter = adapter
+        recView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                presenter.onScrolled(dy, linearLayoutManager)
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
