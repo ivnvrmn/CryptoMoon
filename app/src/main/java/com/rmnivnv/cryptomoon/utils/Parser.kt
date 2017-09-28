@@ -109,3 +109,7 @@ fun formatLongDateToString(date: Long?, format: String): String = SimpleDateForm
 
 fun getNumberSignByValue(value: Double) = if (value >= 0) "+" else "-"
 
+fun getProfitLossText(change: Double, resProvider: ResourceProvider) = if (change >= 0) resProvider.getString(R.string.prf) else  resProvider.getString(R.string.ls)
+
+fun getProfitLossTextBig(change: Double, resProvider: ResourceProvider) = if (change >= 0) resProvider.getString(R.string.profit_b) else  resProvider.getString(R.string.loss_b)
+

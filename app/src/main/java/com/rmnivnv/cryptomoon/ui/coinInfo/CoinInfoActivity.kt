@@ -147,4 +147,48 @@ class CoinInfoActivity : DaggerAppCompatActivity(), ICoinInfo.View {
         intent.putExtra(PRICE, price)
         startActivity(intent)
     }
+
+    override fun setHoldingQuantity(quantity: String) {
+        coin_info_quantity.text = quantity
+    }
+
+    override fun setHoldingValue(value: String) {
+        coin_info_value.text = value
+    }
+
+    override fun setHoldingChangePercent(pct: String) {
+        coin_info_holding_ch_pct.text = pct
+    }
+
+    override fun setHoldingProfitLoss(profitLoss: String) {
+        coin_info_profit_loss.text = profitLoss
+    }
+
+    override fun setHoldingProfitValue(value: String) {
+        coin_info_holding_profit_value.text = value
+    }
+
+    override fun setHoldingTradePrice(price: String) {
+        coin_info_holding_trade_price.text = price
+    }
+
+    override fun setHoldingTradeDate(date: String) {
+        coin_info_holding_trade_date.text = date
+    }
+
+    override fun enableHoldings() {
+        coin_info_holdings_layout.visibility = View.VISIBLE
+    }
+
+    override fun disableHoldings() {
+        coin_info_holdings_layout.visibility = View.GONE
+    }
+
+    override fun setHoldingChangePercentColor(color: Int) {
+        coin_info_holding_ch_pct.setTextColor(resProvider.getColor(color))
+    }
+
+    override fun setHoldingProfitValueColor(color: Int) {
+        coin_info_holding_profit_value.setTextColor(resProvider.getColor(color))
+    }
 }

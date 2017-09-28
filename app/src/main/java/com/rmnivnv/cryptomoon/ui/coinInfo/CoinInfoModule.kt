@@ -4,7 +4,9 @@ import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerActivity
 import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.GraphMaker
+import com.rmnivnv.cryptomoon.model.HoldingsHandler
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
 
@@ -22,7 +24,9 @@ class CoinInfoModule {
                          view: ICoinInfo.View,
                          coinsController: CoinsController,
                          networkRequests: NetworkRequests,
-                         graphMaker: GraphMaker): ICoinInfo.Presenter =
-            CoinInfoPresenter(context, view, coinsController, networkRequests, graphMaker)
+                         graphMaker: GraphMaker,
+                         holdingsHandler: HoldingsHandler,
+                         resourceProvider: ResourceProvider): ICoinInfo.Presenter =
+            CoinInfoPresenter(context, view, coinsController, networkRequests, graphMaker, holdingsHandler, resourceProvider)
 
 }

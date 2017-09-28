@@ -65,7 +65,11 @@
     <string name="ch_pct">CH PCT</string>
     <string name="prf">PRF</string>
     <string name="ls">LS</string>
+    <string name="profit_b">Profit</string>
+    <string name="loss_b">Loss</string>
     <string name="holdings_deleted">Holdings deleted</string>
+    <string name="holdngs_data">HOLDINGS DATA</string>
+    <string name="change_percent">Change percent</string>
 
 
     <string-array name="histo_periods">

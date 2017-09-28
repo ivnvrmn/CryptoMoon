@@ -4,8 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
-import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
-import com.rmnivnv.cryptomoon.utils.logDebug
+import com.rmnivnv.cryptomoon.utils.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -19,7 +18,9 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
                                             private val view: ICoinInfo.View,
                                             private val coinsController: CoinsController,
                                             private val networkRequests: NetworkRequests,
-                                            private val graphMaker: GraphMaker) : ICoinInfo.Presenter {
+                                            private val graphMaker: GraphMaker,
+                                            private val holdingsHandler: HoldingsHandler,
+                                            private val resProvider: ResourceProvider) : ICoinInfo.Presenter {
 
     private val disposable = CompositeDisposable()
     private var coin: DisplayCoin? = null
@@ -48,6 +49,7 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
         view.setMainPrice(coin.PRICE)
         requestHisto(MONTH)
         setCoinInfo()
+        setupHoldings()
     }
 
     private fun requestHisto(period: String) {
@@ -69,6 +71,29 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
         view.setChangePct(coin!!.CHANGEPCT24HOUR)
         view.setSupply(coin!!.SUPPLY)
         view.setMarketCap(coin!!.MKTCAP)
+    }
+
+    private fun setupHoldings() {
+        val holdingData = holdingsHandler.isThereSuchHolding(coin?.from, coin?.to)
+        if (holdingData != null) {
+            view.setHoldingQuantity(holdingData.quantity.toString())
+            view.setHoldingValue("$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holdingData))}")
+
+            val changePercent = holdingsHandler.getChangePercentByHoldingData(holdingData)
+            view.setHoldingChangePercent("${getStringWithTwoDecimalsFromDouble(changePercent)}%")
+            view.setHoldingChangePercentColor(getChangeColor(changePercent))
+
+            view.setHoldingProfitLoss(getProfitLossTextBig(holdingsHandler.getChangeValueByHoldingData(holdingData), resProvider))
+            val changeValue = holdingsHandler.getChangeValueByHoldingData(holdingData)
+            view.setHoldingProfitValue("$${getStringWithTwoDecimalsFromDouble(changeValue)}")
+            view.setHoldingProfitValueColor(getChangeColor(changeValue))
+
+            view.setHoldingTradePrice("$${holdingData.price}")
+            view.setHoldingTradeDate(formatLongDateToString(holdingData.date, DEFAULT_DATE_FORMAT))
+            view.enableHoldings()
+        } else {
+            view.disableHoldings()
+        }
     }
 
     private fun onFindCoinError(throwable: Throwable) {
