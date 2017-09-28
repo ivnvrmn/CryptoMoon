@@ -59,7 +59,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
             }
 
             override fun failure(exception: TwitterException?) {
-                afterSearch()
+
             }
         })
     }

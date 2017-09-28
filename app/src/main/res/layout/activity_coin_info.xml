@@ -271,6 +271,13 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:background="@color/grey_light"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"/>
+
             <LinearLayout
                 android:id="@+id/coin_info_holdings_layout"
                 android:layout_width="match_parent"
@@ -280,13 +287,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
                 android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:background="@color/grey_light"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="3dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
