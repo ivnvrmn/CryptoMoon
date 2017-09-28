@@ -8,10 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.DisplayCoin
-import com.rmnivnv.cryptomoon.model.MultiSelector
-import com.rmnivnv.cryptomoon.model.NAME
-import com.rmnivnv.cryptomoon.model.TO
+import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import com.rmnivnv.cryptomoon.ui.holdings.HoldingsActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
@@ -27,6 +24,7 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
     @Inject lateinit var presenter: ICoins.Presenter
     @Inject lateinit var resProvider: ResourceProvider
     @Inject lateinit var multiSelector: MultiSelector
+    @Inject lateinit var holdingsHandler: HoldingsHandler
 
     private lateinit var recView: RecyclerView
     private lateinit var adapter: CoinsListAdapter
@@ -51,7 +49,7 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
     private fun setupRecView() {
         recView = coins_fragment_rec_view
         recView.layoutManager = LinearLayoutManager(activity)
-        adapter = CoinsListAdapter(coins, resProvider, multiSelector,
+        adapter = CoinsListAdapter(coins, resProvider, multiSelector, holdingsHandler,
                 clickListener = { presenter.onCoinClicked(it) })
         recView.adapter = adapter
     }

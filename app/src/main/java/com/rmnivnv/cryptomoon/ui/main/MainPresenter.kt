@@ -47,6 +47,7 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
 
     override fun onSettingsClicked() {
         //TODO implement on settings clicked
+        view.showToast("There will be SETTINGS")
     }
 
     override fun onDeleteClicked() {

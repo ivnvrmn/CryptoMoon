@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.DisplayCoin
+import com.rmnivnv.cryptomoon.model.HoldingsHandler
 import com.rmnivnv.cryptomoon.model.MultiSelector
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.doubleFromString
 import com.rmnivnv.cryptomoon.utils.getChangeColor
+import com.rmnivnv.cryptomoon.utils.getStringWithTwoDecimalsFromDouble
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.coins_list_item.view.*
 
@@ -21,6 +23,7 @@ import kotlinx.android.synthetic.main.coins_list_item.view.*
 class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
                        private val resProvider: ResourceProvider,
                        private val multiSelector: MultiSelector,
+                       private val holdingsHandler: HoldingsHandler,
                        val clickListener: (DisplayCoin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
@@ -56,6 +59,15 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
                 Picasso.with(context)
                         .load(coin.imgUrl)
                         .into(main_item_market_logo)
+            }
+
+            val holding = holdingsHandler.isThereSuchHolding(coin.from, coin.to)
+            if (holding != null) {
+                main_item_holding_qty.text = getStringWithTwoDecimalsFromDouble(holding.quantity)
+                main_item_holding_value.text = "$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holding))}"
+                main_item_holdings.visibility = View.VISIBLE
+            } else {
+                main_item_holdings.visibility = View.GONE
             }
         }
     }

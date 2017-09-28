@@ -94,4 +94,6 @@ class HoldingsHandler(db: CMDatabase) {
 
     fun getCurrentPriceByHolding(holdingData: HoldingData) = displayCoins.find { it.from == holdingData.from }?.PRICE ?: ""
 
+    fun isThereSuchHolding(from: String?, to: String?) = holdings.find { it.from == from && it.to == to }
+
 }

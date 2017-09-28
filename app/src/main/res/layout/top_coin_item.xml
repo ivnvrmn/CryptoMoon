@@ -20,7 +20,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_toLeftOf="@+id/linearLayout"
+            android:layout_toStartOf="@+id/linearLayout">
 
             <TextView
                 android:id="@+id/top_coin_rank"
@@ -58,7 +60,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_alignBottom="@id/top_coin_name_layout"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:id="@+id/linearLayout">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,13 +86,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 tools:text="+2.73"/>
-
-            <TextView
-                android:id="@+id/top_coin_pct_sign"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey_light"
-                android:text="@string/pct_sign"/>
 
         </LinearLayout>
 

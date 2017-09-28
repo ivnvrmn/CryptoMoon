@@ -9,6 +9,7 @@ interface IMain {
         fun setCoinsLoadingVisibility(isLoading: Boolean)
         fun startAddCoinActivity()
         fun setMenuIconsVisibility(isSelected: Boolean)
+        fun showToast(text: String)
     }
 
     interface Presenter {

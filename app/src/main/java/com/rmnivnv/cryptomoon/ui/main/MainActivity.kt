@@ -22,6 +22,7 @@ import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
 import com.rmnivnv.cryptomoon.ui.news.NewsFragment
 import com.rmnivnv.cryptomoon.ui.topCoins.TopCoinsFragment
+import com.rmnivnv.cryptomoon.utils.toastShort
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -148,5 +149,9 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         newsFragment.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun showToast(text: String) {
+        this.toastShort(text)
     }
 }
