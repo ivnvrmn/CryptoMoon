@@ -42,5 +42,8 @@ class AppModule {
     fun provideGraphMaker(resourceProvider: ResourceProvider) = GraphMaker(resourceProvider)
 
     @Provides @Singleton
+    fun providePieMaker(resourceProvider: ResourceProvider, holdingsHandler: HoldingsHandler) = PieMaker(resourceProvider, holdingsHandler)
+
+    @Provides @Singleton
     fun provideHoldingsHandler(db: CMDatabase) = HoldingsHandler(db)
 }
