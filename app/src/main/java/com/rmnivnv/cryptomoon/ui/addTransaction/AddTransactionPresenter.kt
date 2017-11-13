@@ -63,7 +63,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
 
     private fun onTradingPriceTextChanged(char: CharSequence) {
         val text = char.toString()
-        if (text.isNotEmpty()) tradingPrice = text.toDouble()
+        if (text.isNotEmpty() && text != ".") tradingPrice = text.toDouble()
         else {
             tradingPrice = 0.0
             view.setTotalValue("0.0")
@@ -79,7 +79,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
 
     private fun onQuantityTextChanged(char: CharSequence) {
         val text = char.toString()
-        if (text.isNotEmpty()) quantity = text.toDouble()
+        if (text.isNotEmpty() && text != ".") quantity = text.toDouble()
         else {
             quantity = 0.0
             view.setTotalValue("0.0")
