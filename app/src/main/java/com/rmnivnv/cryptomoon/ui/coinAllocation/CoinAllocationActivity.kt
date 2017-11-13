@@ -41,6 +41,7 @@ class CoinAllocationActivity : DaggerAppCompatActivity(), ICoinAllocation.View {
             data = pieData
             description = Description().apply { text = "Coin % of Holdings" }
             setHoleColor(TRANSPARENT)
+            setUsePercentValues(true)
         }
     }
 
