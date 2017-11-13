@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
+import com.rmnivnv.cryptomoon.ui.coinAllocation.CoinAllocationActivity
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import com.rmnivnv.cryptomoon.ui.holdings.HoldingsActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
@@ -44,6 +45,7 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
         setupSwipeRefresh()
         presenter.onViewCreated()
         coins_fragment_holding_layout.setOnClickListener { presenter.onHoldingsClicked() }
+        coins_fragment_allocations.setOnClickListener { presenter.onAllocationsClicked() }
     }
 
     private fun setupRecView() {
@@ -89,6 +91,10 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
         intent.putExtra(NAME, name)
         intent.putExtra(TO, to)
         activity.startActivity(intent)
+    }
+
+    override fun startAllocationsActivity() {
+        activity.startActivity(Intent(context, CoinAllocationActivity::class.java))
     }
 
     override fun enableTotalHoldings() {

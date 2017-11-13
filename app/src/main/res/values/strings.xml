@@ -70,6 +70,8 @@
     <string name="holdings_deleted">Holdings deleted</string>
     <string name="holdngs_data">HOLDINGS DATA</string>
     <string name="change_percent">Change percent</string>
+    <string name="allocations">Allocations</string>
+    <string name="string_coins">Coins</string>
 
 
     <string-array name="histo_periods">

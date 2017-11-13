@@ -227,4 +227,8 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     override fun onHoldingsClicked() {
         view.startHoldingsActivity()
     }
+
+    override fun onAllocationsClicked() {
+        view.startAllocationsActivity()
+    }
 }
