@@ -33,7 +33,6 @@ class PieMaker(val resProvider: ResourceProvider,
 
     private fun setupChartParams(pieData: PieData) {
         with (pieData) {
-            pieData.
             setValueTextSize(TEXT_SIZE_DP)
         }
     }

@@ -1,9 +1,11 @@
 package com.rmnivnv.cryptomoon.ui.coinAllocation
 
+import android.graphics.Color.TRANSPARENT
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
+import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.PieData
 import com.rmnivnv.cryptomoon.R
@@ -41,7 +43,11 @@ class CoinAllocationActivity : DaggerAppCompatActivity(), ICoinAllocation.View {
     }
 
     override fun drawPieChart(pieData: PieData) {
-        coin_allocation_pie.data = pieData
+        with(coin_allocation_pie) {
+            data = pieData
+            description = Description().apply { text = "Coin % of Holdings" }
+            setHoleColor(TRANSPARENT)
+        }
     }
 
     override fun onDestroy() {
