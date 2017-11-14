@@ -3,10 +3,8 @@ package com.rmnivnv.cryptomoon.model
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import android.support.annotation.NonNull;
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 /**
  * Created by rmnivnv on 02/07/2017.
@@ -22,7 +20,7 @@ data class AllCoinsResponse(
 
 @Entity(tableName = "all_coins")
 data class InfoCoin(
-        @NonNull @PrimaryKey @SerializedName("Id") var coinId: String,
+        @PrimaryKey @SerializedName("Id") var coinId: String,
         @SerializedName("Url") var url: String = "",
         @SerializedName("ImageUrl") var imageUrl: String = "",
         @SerializedName("Name") var name: String = "",
@@ -105,7 +103,7 @@ data class PairData(
 @Entity(tableName = "top_coins")
 data class TopCoinData(
         var id: String? = "",
-        @NonNull @PrimaryKey var name: String,
+        @PrimaryKey var name: String,
         var symbol: String? = "",
         var rank: Int? = 0,
         var price_usd: String? = "",
