@@ -14,7 +14,7 @@ interface DisplayCoinsDao {
     @Query("SELECT * FROM display_coins")
     fun getAllCoins(): Flowable<List<DisplayCoin>>
 
-    @Query("SELECT * FROM display_coins WHERE from_name LIKE :arg0 AND to_name LIKE :arg1 LIMIT 1")
+    @Query("SELECT * FROM display_coins WHERE from_name LIKE :from AND to_name LIKE :currency LIMIT 1")
     fun getDisplayCoin(from: String, currency: String): DisplayCoin
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
