@@ -25,13 +25,13 @@ class PieMaker(val resProvider: ResourceProvider,
                 .also { setupPieData(it) }
     }
 
-    private fun setupPieEntry(it: DisplayCoin, pieEntryList: ArrayList<PieEntry>) {
-        val holding = holdingsHandler.isThereSuchHolding(it.from, it.to)
+    private fun setupPieEntry(displayCoin: DisplayCoin, pieEntryList: ArrayList<PieEntry>) {
+        val holding = holdingsHandler.isThereSuchHolding(displayCoin.from, displayCoin.to)
         if (holding != null) {
             val value = holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holding)
-            pieEntryList.add(PieEntry(value.toFloat(), it.from))
+            pieEntryList.add(PieEntry(value.toFloat(), displayCoin.from))
         } else {
-            println("No holding for $it")
+            println("No holding for $displayCoin")
         }
     }
 
