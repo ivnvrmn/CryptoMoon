@@ -7,7 +7,6 @@ import com.rmnivnv.cryptomoon.model.DisplayCoin
 interface ICoinAllocation {
 
     interface View {
-        fun closeActivity()
         fun drawPieChart(pieData: PieData)
         fun enableGraphLoading()
         fun disableGraphLoading()

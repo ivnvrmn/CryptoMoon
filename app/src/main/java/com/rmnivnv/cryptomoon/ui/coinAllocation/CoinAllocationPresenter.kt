@@ -1,11 +1,8 @@
 package com.rmnivnv.cryptomoon.ui.coinAllocation
 
-import android.content.Context
 import com.rmnivnv.cryptomoon.model.DisplayCoin
-import com.rmnivnv.cryptomoon.model.HoldingsHandler
 import com.rmnivnv.cryptomoon.model.PieMaker
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

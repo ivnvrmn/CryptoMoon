@@ -5,16 +5,17 @@ import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.github.mikephil.charting.utils.ColorTemplate.*
 import com.rmnivnv.cryptomoon.R
 
-private val TEXT_SIZE_DP: Float = 17f
 
 class PieMaker(val resProvider: ResourceProvider,
                val holdingsHandler: HoldingsHandler) {
 
+    companion object {
+        private val TEXT_SIZE_DP: Float = 17f
+    }
 
     fun makeChart(coinList: ArrayList<DisplayCoin>): PieData {
         val pieEntryList: ArrayList<PieEntry> = ArrayList()
         coinList.forEach {
-
             val holding = holdingsHandler.isThereSuchHolding(it.from, it.to)
             if (holding != null) {
                 val value = holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holding)
