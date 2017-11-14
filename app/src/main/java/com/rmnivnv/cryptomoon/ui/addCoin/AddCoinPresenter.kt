@@ -106,7 +106,7 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
         view.updateRecyclerView()
         view.hideKeyboard()
         if (coinSelect) {
-            selectedCoin = DisplayCoin(from = coin.name)
+            selectedCoin = DisplayCoin(from = coin.name, to = "")
             requestPairs(coin)
             coinSelect = false
         } else {
@@ -144,7 +144,7 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
         if (pairs.isNotEmpty()) {
             matches.clear()
             pairs.forEach {
-                matches.add(InfoCoin(name = it.fromSymbol, coinName = """/ ${it.toSymbol}""", imageUrl = ""))
+                matches.add(InfoCoin(name = it.fromSymbol, coinName = """/ ${it.toSymbol}""", imageUrl = "", coinId = ""))
             }
             view.updateRecyclerView()
             context.toastShort(resProvider.getString(R.string.choose_currency))

@@ -134,7 +134,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
     private fun allFieldsAreFilled() = tradingPrice != 0.0 && quantity != 0.0 && transactionDate != null
 
     private fun saveHoldings() {
-        dbController.saveHoldingData(HoldingData(from, to, quantity, tradingPrice, transactionDate?.time))
+        dbController.saveHoldingData(HoldingData(from, to, quantity, tradingPrice, transactionDate!!.time))
         context.toastShort(resourceProvider.getString(R.string.transaction_added))
         view.closeActivity()
     }

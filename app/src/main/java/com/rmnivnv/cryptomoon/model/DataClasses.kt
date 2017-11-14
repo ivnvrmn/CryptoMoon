@@ -5,7 +5,6 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 /**
  * Created by rmnivnv on 02/07/2017.
@@ -21,7 +20,7 @@ data class AllCoinsResponse(
 
 @Entity(tableName = "all_coins")
 data class InfoCoin(
-        @PrimaryKey @SerializedName("Id") var coinId: String = "",
+        @PrimaryKey @SerializedName("Id") var coinId: String,
         @SerializedName("Url") var url: String = "",
         @SerializedName("ImageUrl") var imageUrl: String = "",
         @SerializedName("Name") var name: String = "",
@@ -60,9 +59,9 @@ data class RawCoin(
 @Entity(tableName = "display_coins", primaryKeys = arrayOf("from_name", "to_name"))
 data class DisplayCoin(
         @ColumnInfo(name = "from_name")
-        var from: String? = "",
+        var from: String,
         @ColumnInfo(name = "to_name")
-        var to: String? = "",
+        var to: String,
         var imgUrl: String = "",
         var fullName: String = "",
         var selected: Boolean = false,
@@ -104,7 +103,7 @@ data class PairData(
 @Entity(tableName = "top_coins")
 data class TopCoinData(
         var id: String? = "",
-        @PrimaryKey var name: String? = "",
+        @PrimaryKey var name: String,
         var symbol: String? = "",
         var rank: Int? = 0,
         var price_usd: String? = "",
@@ -121,8 +120,8 @@ data class TopCoinData(
 )
 
 @Entity(tableName = "holdings", primaryKeys = arrayOf("from_coin", "to_currency", "transaction_date"))
-data class HoldingData(@ColumnInfo(name = "from_coin") var from: String = "",
-                       @ColumnInfo(name = "to_currency") var to: String = "",
+data class HoldingData(@ColumnInfo(name = "from_coin") var from: String,
+                       @ColumnInfo(name = "to_currency") var to: String,
                        var quantity: Double = 0.0,
                        var price: Double = 0.0,
-                       @ColumnInfo(name = "transaction_date") var date: Long? = 0L)
+                       @ColumnInfo(name = "transaction_date") var date: Long)

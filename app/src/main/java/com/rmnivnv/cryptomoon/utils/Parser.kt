@@ -36,8 +36,8 @@ fun getCoinDisplayBodyFromJson(jsonObject: JsonObject, map: Map<String, ArrayLis
                     for ((keyFrom, valueFrom) in fromObjectsList) {
                         if (valueFrom.asJsonObject.has(toSymbol)) {
                             val body: DisplayCoin = Gson().fromJson(valueFrom.asJsonObject[toSymbol], DisplayCoin::class.java)
-                            body.from = keyFrom
-                            body.to = toSymbol
+                            body.from = keyFrom!!
+                            body.to = toSymbol!!
                             result.add(body)
                         }
                     }

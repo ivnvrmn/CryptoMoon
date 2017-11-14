@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:focusableInTouchMode="true"
+    tools:context=".ui.addCoin.AddCoinActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/coin_allocation_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ToolbarColoredBackArrow"
+            app:titleTextColor="@color/grey_light"
+            android:background="@color/colorPrimary"/>
+
+    </android.support.design.widget.AppBarLayout>
+    <com.github.mikephil.charting.charts.PieChart
+        android:layout_below="@id/coin_allocation_app_bar"
+        android:id="@+id/coin_allocation_pie"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:background="@color/grey_light" />
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:layout_below="@id/coin_allocation_app_bar"
+        android:id="@+id/coin_allocation_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        style="@style/SpinKitView.Wave"
+        app:SpinKit_Color="@color/yellow"/>
+
+</RelativeLayout>

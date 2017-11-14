@@ -98,7 +98,7 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
 
     private fun onFindCoinError(throwable: Throwable) {
         context.logDebug("getCoinByName error " + throwable.toString())
-        requestCoinInfo(DisplayCoin(from = this.from, to = this.to))
+        requestCoinInfo(DisplayCoin(from = this.from!!, to = this.to!!))
     }
 
     private fun requestCoinInfo(coin: DisplayCoin) {

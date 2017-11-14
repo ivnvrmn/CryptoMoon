@@ -22,6 +22,7 @@ interface ICoins {
         fun setTotalHoldingsChangeValueColor(color: Int)
         fun setAllTimeProfitLossString(text: String)
         fun startHoldingsActivity()
+        fun startAllocationsActivity()
     }
 
     interface Presenter {
@@ -32,5 +33,6 @@ interface ICoins {
         fun onSwipeUpdate()
         fun onCoinClicked(coin: DisplayCoin)
         fun onHoldingsClicked()
+        fun onAllocationsClicked()
     }
 }
