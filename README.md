@@ -1,6 +1,6 @@
 # CryptoMoon
 
-[![CircleCI](https://circleci.com/gh/ebabel/CryptoMoon.svg?style=svg)](https://circleci.com/gh/ebabel/CryptoMoon)
+[![CircleCI](https://circleci.com/gh/ivnvrmn/CryptoMoon.svg?style=svg)](https://circleci.com/gh/ivnvrmn/CryptoMoon)
 
 - tracking prices for crypto currencies
 
