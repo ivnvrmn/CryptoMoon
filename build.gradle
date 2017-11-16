@@ -6,6 +6,7 @@ buildscript {
     ext.room_version = '1.0.0'
     ext.support_version = '26.1.0'
     repositories {
+        google()
         jcenter()
 
     }
@@ -22,6 +23,7 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         maven { url 'http://jcenter.bintray.com/' }
         maven { url 'https://maven.google.com' }
         maven { url 'https://jitpack.io' }
