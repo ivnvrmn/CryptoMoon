@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_item_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/main_item_market_logo"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/ic_btc"
+        app:layout_constraintBottom_toTopOf="@+id/main_item_from"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_item_full_name" />
+
+    <TextView
+        android:id="@+id/main_item_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/grey_light"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/main_item_market_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="BTC" />
+
+    <TextView
+        android:id="@+id/main_item_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_light"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/main_item_from"
+        app:layout_constraintTop_toTopOf="@+id/main_item_from"
+        tools:text="USD" />
+
+    <TextView
+        android:id="@+id/main_item_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_light"
+        app:layout_constraintStart_toStartOf="@+id/main_item_from"
+        app:layout_constraintTop_toBottomOf="@+id/main_item_from"
+        tools:text="Bitcoin" />
+
+    <TextView
+        android:id="@+id/main_item_holding_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/grey_light"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="3.22" />
+
+    <TextView
+        android:id="@+id/main_item_holding_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_light"
+        app:layout_constraintStart_toStartOf="@+id/main_item_holding_qty"
+        app:layout_constraintTop_toBottomOf="@+id/main_item_holding_qty"
+        tools:text="$45697" />
+
+    <TextView
+        android:id="@+id/main_item_last_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_light"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/main_item_price_arrow"
+        app:layout_constraintEnd_toStartOf="@+id/main_item_price_arrow"
+        app:layout_constraintTop_toBottomOf="@+id/main_item_price_arrow"
+        tools:text="2542" />
+
+    <ImageView
+        android:id="@+id/main_item_price_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_arrow_drop_up" />
+
+    <TextView
+        android:id="@+id/main_item_change_in_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/grey_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_item_last_price"
+        tools:text="+101%" />
+
+</android.support.constraint.ConstraintLayout>

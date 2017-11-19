@@ -1,6 +1,6 @@
 package com.rmnivnv.cryptomoon.model
 
-import android.support.v7.widget.CardView
+import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import io.reactivex.Observable
@@ -20,15 +20,15 @@ class MultiSelector(val resProvider: ResourceProvider) {
 
     fun getSelectorObservable(): Observable<Boolean> = subject
 
-    fun onClick(coin: DisplayCoin, card: CardView, coins: ArrayList<DisplayCoin>): Boolean {
+    fun onClick(coin: DisplayCoin, card: ViewGroup, coins: ArrayList<DisplayCoin>): Boolean {
         coin.selected = setBackgroundAndSelected(coin, card)
         atLeastOneIsSelected = coins.find { it.selected } != null
         return true
     }
 
-    private fun setBackgroundAndSelected(coin: DisplayCoin, card: CardView) =
+    private fun setBackgroundAndSelected(coin: DisplayCoin, card: ViewGroup) =
         if (coin.selected) {
-            card.setBackgroundColor(resProvider.getColor(R.color.colorPrimaryDark))
+            card.setBackgroundColor(0)
             false
         } else {
             card.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
