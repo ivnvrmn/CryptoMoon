@@ -14,7 +14,7 @@ import com.rmnivnv.cryptomoon.utils.doubleFromString
 import com.rmnivnv.cryptomoon.utils.getChangeColor
 import com.rmnivnv.cryptomoon.utils.getStringWithTwoDecimalsFromDouble
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.coins_list_item.view.*
+import kotlinx.android.synthetic.main.coins_list_item_refactor.view.*
 
 /**
  * Created by rmnivnv on 02/07/2017.
@@ -27,7 +27,7 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
                        val clickListener: (DisplayCoin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
-            ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false))
+            ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item_refactor, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.bindItems(coins[position], clickListener)
@@ -46,7 +46,6 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
                 multiSelector.onClick(coin, main_item_card, coins)
             }
             if (coin.selected) main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
-            else main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorPrimaryDark))
             main_item_from.text = coin.from
             main_item_to.text = """ / ${coin.to}"""
             main_item_full_name.text = coin.fullName
@@ -65,9 +64,11 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
             if (holding != null) {
                 main_item_holding_qty.text = getStringWithTwoDecimalsFromDouble(holding.quantity)
                 main_item_holding_value.text = "$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holding))}"
-                main_item_holdings.visibility = View.VISIBLE
+                main_item_holding_qty.visibility = View.VISIBLE
+                main_item_holding_value.visibility = View.VISIBLE
             } else {
-                main_item_holdings.visibility = View.GONE
+                main_item_holding_qty.visibility = View.GONE
+                main_item_holding_value.visibility = View.GONE
             }
         }
     }
