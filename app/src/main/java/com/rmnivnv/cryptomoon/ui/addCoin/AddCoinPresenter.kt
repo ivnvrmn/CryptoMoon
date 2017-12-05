@@ -92,11 +92,22 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
     private fun updateCoinsList(list: List<InfoCoin>?) {
         matches.clear()
         if (list != null) {
-            matches.addAll(list)
+            matches.addAll(checkAndRemoveAlreadyAddedCoins(list))
         } else {
             view.setMatchesResultSize("0")
         }
         view.updateRecyclerView()
+    }
+
+    private fun checkAndRemoveAlreadyAddedCoins(list: List<InfoCoin>): List<InfoCoin> {
+        val result: ArrayList<InfoCoin> = arrayListOf()
+        result.addAll(list)
+        list.forEach {
+            if (coinsController.coinAlreadyAdded(it.name)) {
+                result.remove(it)
+            }
+        }
+        return result
     }
 
     override fun onFromItemClicked(coin: InfoCoin) {
@@ -141,13 +152,14 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
     }
 
     private fun onPairsReceived(pairs: ArrayList<PairData>) {
-        if (pairs.isNotEmpty()) {
+        val usdPair = pairs.find { it.toSymbol == USD }
+        if (pairs.isNotEmpty() && usdPair != null) {
             matches.clear()
-            pairs.forEach {
-                matches.add(InfoCoin(name = it.fromSymbol, coinName = """/ ${it.toSymbol}""", imageUrl = "", coinId = ""))
-            }
+            matches.add(InfoCoin(name = usdPair.fromSymbol, coinName = """/ ${usdPair.toSymbol}""", imageUrl = "", coinId = ""))
             view.updateRecyclerView()
             context.toastShort(resProvider.getString(R.string.choose_currency))
+        } else {
+            context.toastShort(resProvider.getString(R.string.coin_not_found))
         }
     }
 
