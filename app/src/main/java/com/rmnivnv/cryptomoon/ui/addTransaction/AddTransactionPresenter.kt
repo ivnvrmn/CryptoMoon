@@ -6,7 +6,6 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.DBController
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import com.rmnivnv.cryptomoon.utils.doubleFromString
 import com.rmnivnv.cryptomoon.utils.formatLongDateToString
 import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.Observable
@@ -49,7 +48,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         if (extras[FROM] != null && extras[TO] != null && extras[PRICE] != null) {
             from = extras.getString(FROM)
             to = extras.getString(TO)
-            price = doubleFromString(extras.getString(PRICE).substring(2))
+            price = extras.getString(PRICE).substring(2).replace(",", "").toDouble()
             view.setTitle("$from / $to", extras.getString(PRICE))
         }
     }

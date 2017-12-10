@@ -6,7 +6,6 @@ import com.google.gson.JsonObject
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import java.text.DecimalFormat
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -89,8 +88,6 @@ fun createCoinsMapWithCurrencies(coinsList: List<DisplayCoin>): HashMap<String, 
     map.put(TSYMS, toList)
     return map
 }
-
-fun doubleFromString(number: String) = NumberFormat.getInstance(Locale.getDefault()).parse(number).toDouble()
 
 fun getChangeColor(change: Double) = when {
     change > 0 -> R.color.green

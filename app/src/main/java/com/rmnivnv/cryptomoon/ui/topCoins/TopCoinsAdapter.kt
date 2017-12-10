@@ -9,7 +9,6 @@ import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.TopCoinData
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.addCommasToStringNumber
-import com.rmnivnv.cryptomoon.utils.doubleFromString
 import com.rmnivnv.cryptomoon.utils.getChangeColor
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.top_coin_item.view.*
@@ -43,7 +42,7 @@ class TopCoinsAdapter @Inject constructor(private val coins: ArrayList<TopCoinDa
             val pctCh24h: String = coin.percent_change_24h ?: ""
             if (pctCh24h.isNotEmpty()) {
                 top_coin_24h_pct.text = "$pctCh24h%"
-                top_coin_24h_pct.setTextColor(resProvider.getColor(getChangeColor(doubleFromString(pctCh24h))))
+                top_coin_24h_pct.setTextColor(resProvider.getColor(getChangeColor(pctCh24h.replace(",", "").toDouble())))
             }
             top_coin_market_cap.text = addCommasToStringNumber(coin.market_cap_usd)
             top_coin_supply.text = addCommasToStringNumber(coin.total_supply)

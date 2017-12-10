@@ -1,7 +1,6 @@
 package com.rmnivnv.cryptomoon.model
 
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
-import com.rmnivnv.cryptomoon.utils.doubleFromString
 import io.reactivex.schedulers.Schedulers
 
 /**
@@ -30,7 +29,7 @@ class HoldingsHandler(db: CMDatabase) {
             val fromList = displayCoins.filter { (from) -> it.from == from }
             fromList.forEach {
                 if (it.to == USD) {
-                    newValue += quantity * doubleFromString(it.PRICE.substring(2))
+                    newValue += quantity * it.PRICE.substring(2).replace(",", "").toDouble()
                 } else {
                     //todo calculate if not USD
                 }
@@ -56,7 +55,7 @@ class HoldingsHandler(db: CMDatabase) {
         holdings.forEach { (from, _, quantity) ->
             val currentPrice = displayCoins.find { it.from == from }?.PRICE
             if (currentPrice != null) {
-                sums.add(quantity * doubleFromString(currentPrice.substring(2)))
+                sums.add(quantity * currentPrice.substring(2).replace(",", "").toDouble())
             }
         }
         return sums.sum()
@@ -65,7 +64,7 @@ class HoldingsHandler(db: CMDatabase) {
     fun getTotalValueWithCurrentPriceByHoldingData(holdingData: HoldingData): Double {
         val currentPrice = displayCoins.find { it.from == holdingData.from && it.to == holdingData.to }?.PRICE
         if (currentPrice != null) {
-            return doubleFromString(currentPrice.substring(2)) * holdingData.quantity
+            return currentPrice.substring(2).replace(",", "").toDouble() * holdingData.quantity
         }
         return 0.0
     }
@@ -74,7 +73,7 @@ class HoldingsHandler(db: CMDatabase) {
         val oldValue = holdingData.price * holdingData.quantity
         val selectedCoin = displayCoins.find { it.from == holdingData.from && it.to == holdingData.to }
         if (selectedCoin != null) {
-            val newValue = doubleFromString(selectedCoin.PRICE.substring(2)) * holdingData.quantity
+            val newValue = selectedCoin.PRICE.substring(2).replace(",", "").toDouble() * holdingData.quantity
             return calculateChangePercent(oldValue, newValue)
         }
         return 0.0
@@ -84,7 +83,7 @@ class HoldingsHandler(db: CMDatabase) {
         val oldValue = holdingData.price * holdingData.quantity
         val selectedCoin = displayCoins.find { it.from == holdingData.from && it.to == holdingData.to }
         if (selectedCoin != null) {
-            val newValue = doubleFromString(selectedCoin.PRICE.substring(2)) * holdingData.quantity
+            val newValue = selectedCoin.PRICE.substring(2).replace(",", "").toDouble() * holdingData.quantity
             return newValue - oldValue
         }
         return 0.0
