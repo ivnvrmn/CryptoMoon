@@ -72,6 +72,9 @@
     <string name="change_percent">Change percent</string>
     <string name="allocations">Allocations</string>
     <string name="string_coins">Coins</string>
+    <string name="enter_hashtag">Enter hashtag</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 
 
     <string-array name="histo_periods">

@@ -1,16 +1,24 @@
 package com.rmnivnv.cryptomoon.ui.news
 
+import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
+import com.rmnivnv.cryptomoon.model.Prefs
+import com.rmnivnv.cryptomoon.model.rxbus.RxBus
+import com.rmnivnv.cryptomoon.model.rxbus.SearchHashTagUpdated
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Search
 import com.twitter.sdk.android.core.models.Tweet
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import javax.inject.Inject
 
 /**
  * Created by ivanov_r on 26.09.2017.
  */
-class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Presenter {
+class NewsPresenter @Inject constructor(private val view: INews.View,
+                                        context: Context) : INews.Presenter {
 
     private var tweets: ArrayList<Tweet> = ArrayList()
     private var twitterSession: TwitterSession? = null
@@ -22,9 +30,20 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
     private var totalItemCount = 0
     private var loading = true
     private var lastId: Long? = null
+    private val prefs = Prefs(context)
+    private val disposable = CompositeDisposable()
 
     override fun onCreate(tweets: ArrayList<Tweet>) {
         this.tweets = tweets
+        disposable.add(RxBus.listen(SearchHashTagUpdated::class.java)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ searchHashTagUpdated() }))
+    }
+
+    private fun searchHashTagUpdated() {
+        tweets.clear()
+        searchTweets()
     }
 
     override fun onStart() {
@@ -45,7 +64,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
     private fun searchTweets() {
         if (!isSwipeRefreshing) view.showLoading()
         val searchService = twitterApiClient.searchService
-        call = searchService.tweets("cryptocurrency", null, null, null, null, null, null, null, lastId, null)
+        call = searchService.tweets(prefs.searchHashTag, null, null, null, null, null, null, null, lastId, null)
         call?.enqueue(object : Callback<Search>() {
             override fun success(result: Result<Search>?) {
                 val resultTweets = result?.data?.tweets
@@ -83,6 +102,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
 
     override fun onStop() {
         call?.cancel()
+        disposable.clear()
     }
 
     override fun onSwipeUpdate() {
@@ -101,5 +121,9 @@ class NewsPresenter @Inject constructor(private val view: INews.View) : INews.Pr
                 searchTweets()
             }
         }
+    }
+
+    override fun onFabClicked() {
+        view.showSearchDialog()
     }
 }

@@ -50,6 +50,7 @@ class NewsFragment : DaggerFragment(), INews.View {
             }
         }
         news_swipe_refresh.setOnRefreshListener { presenter.onSwipeUpdate() }
+        news_fab.setOnClickListener { presenter.onFabClicked() }
     }
 
     override fun onStart() {
@@ -106,5 +107,10 @@ class NewsFragment : DaggerFragment(), INews.View {
 
     override fun hideSwipeRefreshing() {
         news_swipe_refresh.isRefreshing = false
+    }
+
+    override fun showSearchDialog() {
+        val dialog = SearchDialog()
+        dialog.show(childFragmentManager, "searchDialog")
     }
 }

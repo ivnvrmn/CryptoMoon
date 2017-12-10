@@ -9,3 +9,5 @@ class CoinsLoadingEvent(val isLoading: Boolean)
 class OnDeleteCoinsMenuItemClickedEvent
 
 class MainCoinsListUpdatedEvent
+
+class SearchHashTagUpdated

@@ -18,6 +18,7 @@ interface INews {
         fun showLoading()
         fun hideLoading()
         fun hideSwipeRefreshing()
+        fun showSearchDialog()
     }
 
     interface Presenter {
@@ -27,6 +28,7 @@ interface INews {
         fun onStop()
         fun onSwipeUpdate()
         fun onScrolled(dy: Int, linearLayoutManager: LinearLayoutManager)
+        fun onFabClicked()
     }
 
 }

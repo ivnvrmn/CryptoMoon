@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.ui.news
 
+import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerFragment
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,6 @@ class NewsModule {
     fun provideView(newsFragment: NewsFragment): INews.View = newsFragment
 
     @Provides @PerFragment
-    fun providePresenter(view: INews.View): INews.Presenter = NewsPresenter(view)
+    fun providePresenter(view: INews.View, context: Context): INews.Presenter = NewsPresenter(view, context)
 
 }
