@@ -62,6 +62,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
     }
 
     private fun searchTweets() {
+        view.hideEmptyNews()
         if (!isSwipeRefreshing) view.showLoading()
         val searchService = twitterApiClient.searchService
         call = searchService.tweets(prefs.searchHashTag, null, null, null, null, null, null, null, lastId, null)
@@ -90,6 +91,11 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
         } else {
             view.hideLoading()
             view.showRecView()
+        }
+        if (tweets.isEmpty()) {
+            view.showEmptyNews()
+        } else {
+            view.hideEmptyNews()
         }
     }
 

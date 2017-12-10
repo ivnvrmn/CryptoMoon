@@ -113,4 +113,12 @@ class NewsFragment : DaggerFragment(), INews.View {
         val dialog = SearchDialog()
         dialog.show(childFragmentManager, "searchDialog")
     }
+
+    override fun showEmptyNews() {
+        news_empty_text.visibility = View.VISIBLE
+    }
+
+    override fun hideEmptyNews() {
+        news_empty_text.visibility = View.GONE
+    }
 }

@@ -19,6 +19,8 @@ interface INews {
         fun hideLoading()
         fun hideSwipeRefreshing()
         fun showSearchDialog()
+        fun showEmptyNews()
+        fun hideEmptyNews()
     }
 
     interface Presenter {
