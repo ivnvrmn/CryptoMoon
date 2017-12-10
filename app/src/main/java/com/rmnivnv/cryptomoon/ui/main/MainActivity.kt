@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.crashlytics.android.Crashlytics
 import com.rmnivnv.cryptomoon.ui.addCoin.AddCoinActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
@@ -24,6 +25,7 @@ import com.rmnivnv.cryptomoon.ui.news.NewsFragment
 import com.rmnivnv.cryptomoon.ui.topCoins.TopCoinsFragment
 import com.rmnivnv.cryptomoon.utils.toastShort
 import dagger.android.support.DaggerAppCompatActivity
+import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -41,6 +43,7 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Fabric.with(this, Crashlytics())
         presenter.onCreate()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
