@@ -18,11 +18,7 @@
   Twitter
 - feel free to contribute, pull to dev
 
-- some TODOs:
-  - support of other currencies other than USD
-  - custom tag in Twitter news
-  - crash, bug fixes, optimization
-  - better design
+App available on Google Play: https://play.google.com/store/apps/details?id=com.rmnivnv.cryptomoon
 
 ![alt text](artwork/main_coins_upd.png)
 
