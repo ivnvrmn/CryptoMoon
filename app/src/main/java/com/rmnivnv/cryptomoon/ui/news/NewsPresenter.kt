@@ -22,7 +22,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
 
     private var tweets: ArrayList<Tweet> = ArrayList()
     private var twitterSession: TwitterSession? = null
-    private lateinit var twitterApiClient: TwitterApiClient
+    private var twitterApiClient: TwitterApiClient? = null
     private var call: Call<Search>? = null
     private var isSwipeRefreshing = false
     private var pastVisibleItems = 0
@@ -43,29 +43,35 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
 
     private fun searchHashTagUpdated() {
         tweets.clear()
-        searchTweets()
+        initTwitterAndSearchTweets()
     }
 
     override fun onStart() {
         if (tweets.isNotEmpty()) {
             view.showRecView()
         } else {
-            val activeSession = TwitterCore.getInstance().sessionManager.activeSession
-            if (activeSession != null) {
-                twitterApiClient = TwitterApiClient(activeSession)
-                TwitterCore.getInstance().addApiClient(activeSession, twitterApiClient)
-                searchTweets()
-            } else {
-                view.showLoginBtn()
-            }
+            initTwitterAndSearchTweets()
         }
     }
+
+    private fun initTwitterAndSearchTweets() {
+        val session = initTwitterSession()
+        if (session != null) {
+            twitterApiClient = TwitterApiClient(session)
+            TwitterCore.getInstance().addApiClient(session, twitterApiClient)
+            searchTweets()
+        } else {
+            view.showLoginBtn()
+        }
+    }
+
+    private fun initTwitterSession() = TwitterCore.getInstance().sessionManager.activeSession ?: null
 
     private fun searchTweets() {
         view.hideEmptyNews()
         if (!isSwipeRefreshing) view.showLoading()
-        val searchService = twitterApiClient.searchService
-        call = searchService.tweets(prefs.searchHashTag, null, null, null, null, null, null, null, lastId, null)
+        val searchService = twitterApiClient?.searchService
+        call = searchService?.tweets(prefs.searchHashTag, null, null, null, null, null, null, null, lastId, null)
         call?.enqueue(object : Callback<Search>() {
             override fun success(result: Result<Search>?) {
                 val resultTweets = result?.data?.tweets
@@ -113,7 +119,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
 
     override fun onSwipeUpdate() {
         isSwipeRefreshing = true
-        searchTweets()
+        initTwitterAndSearchTweets()
     }
 
     override fun onScrolled(dy: Int, linearLayoutManager: LinearLayoutManager) {
