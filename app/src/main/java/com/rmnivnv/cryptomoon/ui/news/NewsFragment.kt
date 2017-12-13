@@ -121,4 +121,12 @@ class NewsFragment : DaggerFragment(), INews.View {
     override fun hideEmptyNews() {
         news_empty_text.visibility = View.GONE
     }
+
+    override fun showFab() {
+        news_fab.visibility = View.VISIBLE
+    }
+
+    override fun hideFab() {
+        news_fab.visibility = View.GONE
+    }
 }

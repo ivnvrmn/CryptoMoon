@@ -35,6 +35,14 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
 
     override fun onCreate(tweets: ArrayList<Tweet>) {
         this.tweets = tweets
+    }
+
+    override fun onStart() {
+        if (tweets.isNotEmpty()) {
+            view.showRecView()
+        } else {
+            initTwitterAndSearchTweets()
+        }
         disposable.add(RxBus.listen(SearchHashTagUpdated::class.java)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -46,14 +54,6 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
         initTwitterAndSearchTweets()
     }
 
-    override fun onStart() {
-        if (tweets.isNotEmpty()) {
-            view.showRecView()
-        } else {
-            initTwitterAndSearchTweets()
-        }
-    }
-
     private fun initTwitterAndSearchTweets() {
         val session = initTwitterSession()
         if (session != null) {
@@ -62,6 +62,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
             searchTweets()
         } else {
             view.showLoginBtn()
+            view.hideFab()
         }
     }
 
@@ -108,6 +109,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
     override fun onSuccessLogin(result: Result<TwitterSession>?) {
         twitterSession = result?.data
         view.hideLoginBtn()
+        view.showFab()
         twitterApiClient = TwitterCore.getInstance().apiClient
         searchTweets()
     }

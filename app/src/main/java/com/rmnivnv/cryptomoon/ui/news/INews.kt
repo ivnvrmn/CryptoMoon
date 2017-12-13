@@ -21,6 +21,8 @@ interface INews {
         fun showSearchDialog()
         fun showEmptyNews()
         fun hideEmptyNews()
+        fun showFab()
+        fun hideFab()
     }
 
     interface Presenter {
