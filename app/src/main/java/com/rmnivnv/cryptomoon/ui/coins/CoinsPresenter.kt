@@ -70,6 +70,9 @@ class CoinsPresenter @Inject constructor(private val context: Context,
                 updatePrices()
             }
             updateHoldings()
+        } else {
+            coins.clear()
+            view.updateRecyclerView()
         }
     }
 
@@ -132,12 +135,11 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     private fun onDeleteClicked() {
         val coinsToDelete = coins.filter { it.selected }
         if (coinsToDelete.isNotEmpty()) {
-            val toast = if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)
-            else resProvider.getString(R.string.coin_deleted)
+            disableSelected()
             coinsController.deleteDisplayCoins(coinsToDelete)
-            context.toastShort(toast)
-            multiSelector.atLeastOneIsSelected = false
             RxBus.publish(MainCoinsListUpdatedEvent())
+            context.toastShort(if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)
+                               else resProvider.getString(R.string.coin_deleted))
         }
     }
 

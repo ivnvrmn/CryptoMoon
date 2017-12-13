@@ -36,15 +36,19 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
         fun bindItems(coin: DisplayCoin, listener: (DisplayCoin) -> Unit) = with(itemView) {
             setOnClickListener {
                 if (multiSelector.atLeastOneIsSelected) {
-                    multiSelector.onClick(coin, main_item_card, coins)
+                    multiSelector.onClick(coin, main_item_layout, coins)
                 } else {
                     listener(coin)
                 }
             }
             setOnLongClickListener {
-                multiSelector.onClick(coin, main_item_card, coins)
+                multiSelector.onClick(coin, main_item_layout, coins)
             }
-            if (coin.selected) main_item_card.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
+            if (coin.selected) {
+                main_item_layout.setBackgroundColor(resProvider.getColor(R.color.colorAccent))
+            } else {
+                main_item_layout.setBackgroundResource(0)
+            }
             main_item_from.text = coin.from
             main_item_to.text = """ / ${coin.to}"""
             main_item_full_name.text = coin.fullName
