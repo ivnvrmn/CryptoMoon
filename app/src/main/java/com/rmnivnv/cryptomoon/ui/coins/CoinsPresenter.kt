@@ -1,6 +1,7 @@
 package com.rmnivnv.cryptomoon.ui.coins
 
 import android.content.Context
+import android.util.Log
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
@@ -166,7 +167,8 @@ class CoinsPresenter @Inject constructor(private val context: Context,
 
     private fun getAllCoinsInfo() {
         disposable.add(networkRequests.getAllCoins()
-                .subscribe(this::onAllCoinsReceived))
+                .subscribe({ onAllCoinsReceived(it) },
+                        { Log.e("getAllCoinsInfo", it.toString()) }))
     }
 
     private fun onAllCoinsReceived(list: ArrayList<InfoCoin>) {

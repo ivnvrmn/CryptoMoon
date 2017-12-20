@@ -2,6 +2,7 @@ package com.rmnivnv.cryptomoon.ui.coinInfo
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.*
@@ -104,7 +105,7 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
     private fun requestCoinInfo(coin: DisplayCoin) {
         disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onPriceUpdated(it) }, {  }))
+                .subscribe({ onPriceUpdated(it) }, { Log.e("requestCoinInfo", it.toString()) }))
     }
 
     private fun onPriceUpdated(list: ArrayList<DisplayCoin>) {

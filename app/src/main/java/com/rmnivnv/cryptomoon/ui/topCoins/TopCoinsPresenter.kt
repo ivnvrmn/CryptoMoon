@@ -1,6 +1,7 @@
 package com.rmnivnv.cryptomoon.ui.topCoins
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
@@ -87,7 +88,8 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
     private fun updateTopCoins() {
         disposable.add(networkRequests.getTopCoins()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onTopCoinsReceived))
+                .subscribe({ onTopCoinsReceived(it) },
+                        { Log.e("updateTopCoins", it.toString()) }))
     }
 
     private fun onTopCoinsReceived(coins: List<TopCoinData>) {
