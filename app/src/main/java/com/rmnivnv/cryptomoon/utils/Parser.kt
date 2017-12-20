@@ -37,6 +37,8 @@ fun getCoinDisplayBodyFromJson(jsonObject: JsonObject, map: Map<String, ArrayLis
                             val body: DisplayCoin = Gson().fromJson(valueFrom.asJsonObject[toSymbol], DisplayCoin::class.java)
                             body.from = keyFrom!!
                             body.to = toSymbol!!
+                            body.imgUrl = ""
+                            body.fullName = ""
                             result.add(body)
                         }
                     }
