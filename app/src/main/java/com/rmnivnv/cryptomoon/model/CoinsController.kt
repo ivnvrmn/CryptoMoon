@@ -76,4 +76,6 @@ class CoinsController(private val dbController: DBController, db: CMDatabase) {
     }
 
     fun coinAlreadyAdded(coin: String) = allDisplayCoins.find { it.from == coin } != null
+
+    fun allCoinsIsEmpty() = allCoins.isEmpty()
 }

@@ -43,6 +43,10 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onCoinsUpdated(it) }))
+        disposable.add(db.allCoinsDao().getAllCoins()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onAllCoinsUpdated(it) }))
         disposable.add(RxBus.listen(MainCoinsListUpdatedEvent::class.java)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,6 +60,12 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
             coins.addAll(list)
             coins.sortBy { it.rank }
             view.updateRecyclerView()
+        }
+    }
+
+    private fun onAllCoinsUpdated(list: List<InfoCoin>) {
+        if (list.isNotEmpty()) {
+            updateTopCoins()
         }
     }
 
@@ -79,6 +89,7 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
 
     override fun onStart() {
         updateTopCoins()
+        updateAllCoins()
     }
 
     override fun onDestroy() {
@@ -102,6 +113,22 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
         }
     }
 
+    private fun updateAllCoins() {
+        if (coinsController.allCoinsIsEmpty()) {
+            disposable.add(networkRequests.getAllCoins()
+                    .subscribe({ onAllCoinsReceived(it) },
+                            { Log.e("getAllCoinsInfo", it.toString()) }))
+        } else {
+            updateTopCoins()
+        }
+    }
+
+    private fun onAllCoinsReceived(list: ArrayList<InfoCoin>) {
+        if (list.isNotEmpty()) {
+            coinsController.saveAllCoinsInfo(list)
+        }
+    }
+
     override fun onCoinClicked(coin: TopCoinData) {
         view.startCoinInfoActivity(coin.symbol)
     }
@@ -117,10 +144,10 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
         val displayCoin = DisplayCoin(from = coin.symbol!!, to = USD)
         disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(displayCoin)))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onPriceUpdated(it, itemView) }, { onError(itemView) }))
+                .subscribe({ onCoinAdded(it, itemView) }, { onError(itemView) }))
     }
 
-    private fun onPriceUpdated(list: ArrayList<DisplayCoin>, itemView: View) {
+    private fun onCoinAdded(list: ArrayList<DisplayCoin>, itemView: View) {
         if (list.isNotEmpty()) {
             coinsController.saveDisplayCoinList(list)
             itemView.top_coin_add_icon.setImageDrawable(resProvider.getDrawable(R.drawable.ic_done))

@@ -172,7 +172,10 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     }
 
     private fun onAllCoinsReceived(list: ArrayList<InfoCoin>) {
-        if (list.isNotEmpty()) coinsController.saveAllCoinsInfo(list)
+        if (list.isNotEmpty()) {
+            coinsController.saveAllCoinsInfo(list)
+            updatePrices()
+        }
     }
 
     override fun onViewCreated() {
