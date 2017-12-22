@@ -33,10 +33,10 @@ class TopCoinsFragment : DaggerFragment(), ITopCoins.View {
         presenter.onCreate(coins)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflater?.inflate(R.layout.top_coins_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflater.inflate(R.layout.top_coins_fragment, container, false)!!
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecView()
         setupSwipeRefresh()
@@ -78,6 +78,6 @@ class TopCoinsFragment : DaggerFragment(), ITopCoins.View {
         val intent = Intent(context, CoinInfoActivity::class.java)
         intent.putExtra(NAME, name)
         intent.putExtra(TO, USD)
-        activity.startActivity(intent)
+        activity?.startActivity(intent)
     }
 }

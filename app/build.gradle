@@ -5,12 +5,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.rmnivnv.cryptomoon"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion 21
+        targetSdkVersion 27
         versionCode 5
         versionName "1.04"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

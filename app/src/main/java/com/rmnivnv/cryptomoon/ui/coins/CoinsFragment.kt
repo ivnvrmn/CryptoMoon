@@ -36,10 +36,10 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
         presenter.onCreate(coins)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?) =
-            inflater?.inflate(R.layout.coins_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+            inflater.inflate(R.layout.coins_fragment, container, false)!!
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecView()
         setupSwipeRefresh()
@@ -90,11 +90,11 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
         val intent = Intent(context, CoinInfoActivity::class.java)
         intent.putExtra(NAME, name)
         intent.putExtra(TO, to)
-        activity.startActivity(intent)
+        activity?.startActivity(intent)
     }
 
     override fun startAllocationsActivity() {
-        activity.startActivity(Intent(context, CoinAllocationActivity::class.java))
+        activity?.startActivity(Intent(context, CoinAllocationActivity::class.java))
     }
 
     override fun enableTotalHoldings() {

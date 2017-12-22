@@ -11,7 +11,7 @@ class ResourceProvider(val context: Context) {
 
     fun getString(id: Int): String = context.getString(id)
 
-    fun getDrawable(id: Int): Drawable = ContextCompat.getDrawable(context, id)
+    fun getDrawable(id: Int): Drawable? = ContextCompat.getDrawable(context, id)
 
     fun getColor(id: Int) = ContextCompat.getColor(context, id)
 
