@@ -86,10 +86,10 @@ class CoinsPresenter @Inject constructor(private val context: Context,
                 .subscribe({ onHoldingsUpdate(it) }))
     }
 
-    private fun onHoldingsUpdate(holdings: List<HoldingData>) {
-        if (holdings.isNotEmpty()) {
-            this.holdings.clear()
-            this.holdings.addAll(holdings)
+    private fun onHoldingsUpdate(updatedHoldings: List<HoldingData>) {
+        holdings.clear()
+        if (updatedHoldings.isNotEmpty()) {
+            holdings.addAll(updatedHoldings)
             updateHoldings()
         } else {
             view.disableTotalHoldings()
@@ -139,6 +139,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         val coinsToDelete = coins.filter { it.selected }
         if (coinsToDelete.isNotEmpty()) {
             disableSelected()
+            holdingsHandler.removeHoldings(coinsToDelete)
             coinsController.deleteDisplayCoins(coinsToDelete)
             RxBus.publish(MainCoinsListUpdatedEvent())
             context.toastShort(if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)

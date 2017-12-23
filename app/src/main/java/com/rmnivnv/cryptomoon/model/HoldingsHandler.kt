@@ -1,12 +1,13 @@
 package com.rmnivnv.cryptomoon.model
 
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by rmnivnv on 09/09/2017.
  */
-class HoldingsHandler(db: CMDatabase) {
+class HoldingsHandler(private val db: CMDatabase) {
 
     init {
         db.displayCoinsDao().getAllCoins()
@@ -94,5 +95,16 @@ class HoldingsHandler(db: CMDatabase) {
     fun getCurrentPriceByHolding(holdingData: HoldingData) = displayCoins.find { it.from == holdingData.from }?.PRICE ?: ""
 
     fun isThereSuchHolding(from: String?, to: String?) = holdings.find { it.from == from && it.to == to }
+
+    fun removeHoldings(coins: List<DisplayCoin>) {
+        coins.forEach { displayCoin ->
+            val holding = holdings.find { it.from == displayCoin.from }
+            if (holding != null) {
+                Single.fromCallable { db.holdingsDao().deleteHolding(holding) }
+                        .subscribeOn(Schedulers.io())
+                        .subscribe()
+            }
+        }
+    }
 
 }
