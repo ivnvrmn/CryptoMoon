@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/main_item_market_logo"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
-        android:layout_marginStart="8dp"
         android:src="@drawable/ic_btc"
         app:layout_constraintBottom_toTopOf="@+id/main_item_from"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_item_full_name" />
 
     <TextView
@@ -22,10 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
         android:textColor="@color/grey_light"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/main_item_market_logo"
+        app:layout_constraintLeft_toRightOf="@+id/main_item_market_logo"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="BTC" />
 
@@ -35,7 +33,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/grey_light"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/main_item_from"
+        app:layout_constraintLeft_toRightOf="@+id/main_item_from"
         app:layout_constraintTop_toTopOf="@+id/main_item_from"
         tools:text="USD" />
 
@@ -44,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/grey_light"
-        app:layout_constraintStart_toStartOf="@+id/main_item_from"
+        app:layout_constraintLeft_toLeftOf="@+id/main_item_from"
         app:layout_constraintTop_toBottomOf="@+id/main_item_from"
         tools:text="Bitcoin" />
 
@@ -52,13 +50,10 @@
         android:id="@+id/main_item_holding_qty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
         android:textColor="@color/grey_light"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/main_item_from"
         tools:text="3.22" />
 
     <TextView
@@ -66,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/grey_light"
-        app:layout_constraintStart_toStartOf="@+id/main_item_holding_qty"
+        app:layout_constraintLeft_toLeftOf="@+id/main_item_holding_qty"
         app:layout_constraintTop_toBottomOf="@+id/main_item_holding_qty"
         tools:text="$45697" />
 
@@ -77,7 +72,7 @@
         android:textColor="@color/grey_light"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/main_item_price_arrow"
-        app:layout_constraintEnd_toStartOf="@+id/main_item_price_arrow"
+        app:layout_constraintRight_toLeftOf="@+id/main_item_price_arrow"
         app:layout_constraintTop_toBottomOf="@+id/main_item_price_arrow"
         tools:text="2542" />
 
@@ -85,9 +80,7 @@
         android:id="@+id/main_item_price_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_arrow_drop_up" />
 
@@ -95,9 +88,8 @@
         android:id="@+id/main_item_change_in_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:textColor="@color/grey_light"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_item_last_price"
         tools:text="+101%" />
 
