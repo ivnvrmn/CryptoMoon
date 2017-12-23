@@ -134,4 +134,12 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
     override fun setAllTimeProfitLossString(text: String) {
         coins_fragment_all_time_profit_loss.text = text
     }
+
+    override fun enableEmptyText() {
+        coins_fragment_empty_text.visibility = View.VISIBLE
+    }
+
+    override fun disableEmptyText() {
+        coins_fragment_empty_text.visibility = View.GONE
+    }
 }

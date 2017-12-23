@@ -23,6 +23,8 @@ interface ICoins {
         fun setAllTimeProfitLossString(text: String)
         fun startHoldingsActivity()
         fun startAllocationsActivity()
+        fun enableEmptyText()
+        fun disableEmptyText()
     }
 
     interface Presenter {

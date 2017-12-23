@@ -65,6 +65,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
             coins.clear()
             coins.addAll(list)
             coins.sortBy { it.from }
+            view.disableEmptyText()
             view.updateRecyclerView()
             if (isFirstStart) {
                 isFirstStart = false
@@ -73,6 +74,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
             updateHoldings()
         } else {
             coins.clear()
+            view.enableEmptyText()
             view.updateRecyclerView()
         }
     }

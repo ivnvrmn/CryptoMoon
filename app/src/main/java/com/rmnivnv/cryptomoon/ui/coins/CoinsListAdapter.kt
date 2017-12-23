@@ -13,7 +13,7 @@ import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.getChangeColor
 import com.rmnivnv.cryptomoon.utils.getStringWithTwoDecimalsFromDouble
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.coins_list_item_refactor.view.*
+import kotlinx.android.synthetic.main.coins_list_item.view.*
 
 /**
  * Created by rmnivnv on 02/07/2017.
@@ -26,7 +26,7 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
                        val clickListener: (DisplayCoin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
-            ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item_refactor, parent, false))
+            ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.bindItems(coins[position], clickListener)

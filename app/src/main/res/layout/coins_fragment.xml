@@ -1,134 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/coins_fragment_holding_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:visibility="gone"
-            tools:visibility="visible"
-            android:padding="8dp">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/total_holdings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_centerVertical="true">
+                android:text="@string/total_holdings"
+                android:textColor="@color/grey_light"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/grey_light"
-                    android:text="@string/total_holdings"/>
-
-                <TextView
-                    android:id="@+id/coins_fragment_total_holdings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/grey_light"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    tools:text="$ 123213"/>
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/coins_fragment_total_holdings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/total_holdings"
+                tools:text="$ 123213" />
 
             <TextView
                 android:id="@+id/coins_fragment_allocations"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:layout_centerInParent="true"
+                android:text="@string/allocations"
                 android:textColor="@color/grey_light"
-                android:text="@string/allocations"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/all_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:gravity="end">
+                android:layout_marginEnd="3dp"
+                android:text="@string/all_time"
+                android:textColor="@color/grey_light"
+                app:layout_constraintRight_toLeftOf="@id/coins_fragment_all_time_profit_loss"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/coins_fragment_all_time_profit_loss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="profit" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/grey_light"
-                        android:text="@string/all_time"
-                        android:layout_marginRight="3dp"
-                        android:layout_marginEnd="3dp"/>
+            <TextView
+                android:id="@+id/coins_fragment_holdings_change_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:textSize="16sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/all_time"
+                tools:text="+123%" />
 
-                    <TextView
-                        android:id="@+id/coins_fragment_all_time_profit_loss"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/grey_light"/>
+            <TextView
+                android:id="@+id/coins_fragment_holdings_change_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_light"
+                android:textSize="16sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coins_fragment_holdings_change_percent"
+                tools:text="$1544" />
 
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/coins_fragment_holdings_change_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/grey_light"
-                    android:textSize="16sp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginEnd="5dp"
-                    tools:text="+123%"/>
-
-                <TextView
-                    android:id="@+id/coins_fragment_holdings_change_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/grey_light"
-                    android:textSize="16sp"
-                    tools:text="$1544"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textColor="@color/grey_light"
-                    android:text="@string/holdings_24h"/>
-
-                <TextView
-                    android:id="@+id/coins_fragment_24h_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textColor="@color/grey_light"
-                    tools:text="+12%"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
         <View
             android:id="@+id/coins_fragment_holdings_line"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="2dp"
+            android:background="@color/colorAccent"
             android:visibility="gone"
-            tools:visibility="visible"
-            android:background="@color/colorAccent"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coins_fragment_holding_layout"
+            tools:visibility="visible" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/coins_fragment_rec_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coins_fragment_holdings_line" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/coins_fragment_empty_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/empty_coins"
+            android:textColor="@color/grey_light"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>
