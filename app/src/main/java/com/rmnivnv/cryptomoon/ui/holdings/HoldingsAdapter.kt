@@ -29,18 +29,23 @@ class HoldingsAdapter(private val holdings: ArrayList<HoldingData>,
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(holdingData: HoldingData) = with(itemView) {
-            holdings_item_from_to.text = "${holdingData.from} / ${holdingData.to}"
-            holdings_item_trade_price.text = "$${holdingData.price}"
+            val fromTo = "${holdingData.from} / ${holdingData.to}"
+            holdings_item_from_to.text = fromTo
+            val price = "$${holdingData.price}"
+            holdings_item_trade_price.text = price
             holdings_item_trade_date.text = formatLongDateToString(holdingData.date, DEFAULT_DATE_FORMAT)
             holdings_item_quantity.text = holdingData.quantity.toString()
-            holdings_item_current_total.text = "$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holdingData))}"
+            val total = "$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holdingData))}"
+            holdings_item_current_total.text = total
 
             val changePercent = holdingsHandler.getChangePercentByHoldingData(holdingData)
-            holdings_item_change_percent.text = "${getStringWithTwoDecimalsFromDouble(changePercent)}%"
+            val chPct = "${getStringWithTwoDecimalsFromDouble(changePercent)}%"
+            holdings_item_change_percent.text = chPct
             holdings_item_change_percent.setTextColor(resProvider.getColor(getChangeColor(changePercent)))
 
             val changeValue = holdingsHandler.getChangeValueByHoldingData(holdingData)
-            holdings_item_change_value.text = "$${getStringWithTwoDecimalsFromDouble(changeValue)}"
+            val chValue = "$${getStringWithTwoDecimalsFromDouble(changeValue)}"
+            holdings_item_change_value.text = chValue
             holdings_item_change_value.setTextColor(resProvider.getColor(getChangeColor(changeValue)))
 
             if (holdingsHandler.getImageUrlByHolding(holdingData).isNotEmpty()) {

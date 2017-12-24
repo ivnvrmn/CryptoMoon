@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.ui.main
 
+import com.rmnivnv.cryptomoon.model.COINS_FRAGMENT_PAGE_POSITION
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
 import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
@@ -35,6 +36,14 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
                 .subscribe {
                     view.setMenuIconsVisibility(it)
                 })
+        disposable.add(pageController.getPageObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { onPageChanged(it) })
+    }
+
+    private fun onPageChanged(position: Int) {
+        view.setSortVisible(position == COINS_FRAGMENT_PAGE_POSITION)
     }
 
     override fun onDestroy() {
@@ -43,6 +52,10 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
 
     override fun onAddCoinClicked() {
         view.startAddCoinActivity()
+    }
+
+    override fun onSortClicked() {
+        view.showCoinsSortDialog()
     }
 
     override fun onSettingsClicked() {

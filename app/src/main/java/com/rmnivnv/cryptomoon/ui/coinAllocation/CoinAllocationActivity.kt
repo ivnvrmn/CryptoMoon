@@ -7,7 +7,6 @@ import android.view.View
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.PieData
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.DisplayCoin
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_coin_allocation.*
@@ -18,13 +17,11 @@ class CoinAllocationActivity : DaggerAppCompatActivity(), ICoinAllocation.View {
     @Inject lateinit var presenter: ICoinAllocation.Presenter
     @Inject lateinit var resProvider: ResourceProvider
 
-    private var coins: ArrayList<DisplayCoin> = ArrayList()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coin_allocation)
         setupToolbar()
-        presenter.onCreate(coins)
+        presenter.onCreate()
     }
 
     private fun setupToolbar() {

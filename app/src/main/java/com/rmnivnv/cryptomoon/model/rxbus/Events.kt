@@ -11,3 +11,5 @@ class OnDeleteCoinsMenuItemClickedEvent
 class MainCoinsListUpdatedEvent
 
 class SearchHashTagUpdated
+
+class CoinsSortMethodUpdated

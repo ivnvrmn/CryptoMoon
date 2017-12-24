@@ -21,7 +21,10 @@ class AppModule {
     fun provideAppContext(application: Application): Context = application
 
     @Provides @Singleton
-    fun provideDatabase(application: Application): CMDatabase = Room.databaseBuilder(application, CMDatabase::class.java, DATABASE_NAME).build()
+    fun provideDatabase(application: Application): CMDatabase =
+            Room.databaseBuilder(application, CMDatabase::class.java, DATABASE_NAME)
+                    .fallbackToDestructiveMigration()
+                    .build()
 
     @Provides @Singleton
     fun provideDBController(db: CMDatabase) = DBController(db)

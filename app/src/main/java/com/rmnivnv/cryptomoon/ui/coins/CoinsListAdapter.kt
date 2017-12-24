@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.DisplayCoin
+import com.rmnivnv.cryptomoon.model.Coin
 import com.rmnivnv.cryptomoon.model.HoldingsHandler
 import com.rmnivnv.cryptomoon.model.MultiSelector
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
@@ -19,11 +19,11 @@ import kotlinx.android.synthetic.main.coins_list_item.view.*
  * Created by rmnivnv on 02/07/2017.
  */
 
-class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
+class CoinsListAdapter(private val coins: ArrayList<Coin>,
                        private val resProvider: ResourceProvider,
                        private val multiSelector: MultiSelector,
                        private val holdingsHandler: HoldingsHandler,
-                       val clickListener: (DisplayCoin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
+                       val clickListener: (Coin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
             ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false))
@@ -33,7 +33,7 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(coin: DisplayCoin, listener: (DisplayCoin) -> Unit) = with(itemView) {
+        fun bindItems(coin: Coin, listener: (Coin) -> Unit) = with(itemView) {
             setOnClickListener {
                 if (multiSelector.atLeastOneIsSelected) {
                     multiSelector.onClick(coin, main_item_layout, coins)
@@ -50,13 +50,15 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
                 main_item_layout.setBackgroundResource(0)
             }
             main_item_from.text = coin.from
-            main_item_to.text = """ / ${coin.to}"""
+            val to = " / ${coin.to}"
+            main_item_to.text = to
             main_item_full_name.text = coin.fullName
-            main_item_last_price.text = coin.PRICE
-            main_item_change_in_24.text = """${coin.CHANGEPCT24HOUR}%"""
-            main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.replace(",", "").toDouble())))
-            main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.CHANGEPCT24HOUR.replace(",", "").toDouble())))
-            DrawableCompat.setTint(main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(coin.CHANGEPCT24HOUR.replace(",", "").toDouble())))
+            main_item_last_price.text = coin.price
+            val chPct24h = "${coin.changePct24h}%"
+            main_item_change_in_24.text = chPct24h
+            main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.changePct24hRaw)))
+            main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.changePct24hRaw)))
+            DrawableCompat.setTint(main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(coin.changePct24hRaw)))
             if (coin.imgUrl.isNotEmpty()) {
                 Picasso.with(context)
                         .load(coin.imgUrl)
@@ -66,7 +68,8 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
             val holding = holdingsHandler.isThereSuchHolding(coin.from, coin.to)
             if (holding != null) {
                 main_item_holding_qty.text = getStringWithTwoDecimalsFromDouble(holding.quantity)
-                main_item_holding_value.text = "$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holding))}"
+                val value = "$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holding))}"
+                main_item_holding_value.text = value
                 main_item_holding_qty.visibility = View.VISIBLE
                 main_item_holding_value.visibility = View.VISIBLE
             } else {
@@ -76,9 +79,9 @@ class CoinsListAdapter(private val coins: ArrayList<DisplayCoin>,
         }
     }
 
-    private fun getChangeArrowDrawable(change: Double) = when {
+    private fun getChangeArrowDrawable(change: Float) = when {
         change > 0 -> R.drawable.ic_arrow_drop_up
-        change == 0.0 -> R.drawable.ic_remove
+        change == 0f -> R.drawable.ic_remove
         else -> R.drawable.ic_arrow_drop_down
     }
 

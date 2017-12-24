@@ -12,70 +12,70 @@ class CoinsController(private val dbController: DBController, db: CMDatabase) {
     init {
         db.allCoinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
-                .subscribe({ allCoins = it })
-        db.displayCoinsDao().getAllCoins()
+                .subscribe({ allInfoCoins = it })
+        db.coinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
-                .subscribe({ allDisplayCoins = it })
+                .subscribe({ allCoins = it })
     }
 
-    private var allCoins: List<InfoCoin> = mutableListOf()
-    private var allDisplayCoins: List<DisplayCoin> = mutableListOf()
+    private var allInfoCoins: List<InfoCoin> = mutableListOf()
+    private var allCoins: List<Coin> = mutableListOf()
 
-    fun saveDisplayCoin(coin: DisplayCoin) {
-        if (allCoins.isNotEmpty()) {
-            addAdditionalInfo(coin)
+    fun saveCoin(coin: Coin) {
+        if (allInfoCoins.isNotEmpty()) {
+            addAdditionalInfoToCoin(coin)
         }
-        dbController.saveDisplayCoin(coin)
+        dbController.saveCoin(coin)
     }
 
-    fun addAdditionalInfo(coin: DisplayCoin) {
+    fun addAdditionalInfoToCoin(coin: Coin) {
         addImageUrlToCoin(coin)
         addFullNameToCoin(coin)
     }
 
-    private fun addImageUrlToCoin(coin: DisplayCoin) {
-        coin.imgUrl = allCoins.find { it.name == coin.from }?.imageUrl ?: ""
+    private fun addImageUrlToCoin(coin: Coin) {
+        coin.imgUrl = allInfoCoins.find { it.name == coin.from }?.imageUrl ?: ""
     }
 
-    private fun addFullNameToCoin(coin: DisplayCoin) {
-        coin.fullName = allCoins.find { it.name == coin.from }?.coinName ?: ""
+    private fun addFullNameToCoin(coin: Coin) {
+        coin.fullName = allInfoCoins.find { it.name == coin.from }?.coinName ?: ""
     }
 
-    fun saveDisplayCoinList(list: List<DisplayCoin>) {
-        if (list.isNotEmpty() && allCoins.isNotEmpty()) {
+    fun saveCoinsList(list: List<Coin>) {
+        if (list.isNotEmpty() && allInfoCoins.isNotEmpty()) {
             list.forEach {
-                addAdditionalInfo(it)
+                addAdditionalInfoToCoin(it)
             }
         }
-        dbController.saveDisplayCoinsList(list)
+        dbController.saveCoinsList(list)
     }
 
-    fun deleteDisplayCoin(coin: DisplayCoin) = dbController.deleteDisplayCoin(coin)
+    fun deleteCoin(coin: Coin) = dbController.deleteCoin(coin)
 
-    fun deleteDisplayCoins(coins: List<DisplayCoin>) = dbController.deleteDisplayCoins(coins)
+    fun deleteCoins(coins: List<Coin>) = dbController.deleteCoins(coins)
 
     fun saveAllCoinsInfo(allCoins: List<InfoCoin>) {
         dbController.saveAllCoinsInfo(allCoins)
     }
 
-    fun getDisplayCoin(from: String, to: String) = dbController.getDisplayCoin(from, to)
+    fun getCoin(from: String, to: String) = dbController.getCoin(from, to)
 
     fun saveTopCoinsList(list: List<TopCoinData>) {
         list.forEach {
             val coin = it
-            it.imgUrl = allCoins.find { it.name == coin.symbol }?.imageUrl ?: ""
+            it.imgUrl = allInfoCoins.find { it.name == coin.symbol }?.imageUrl ?: ""
         }
         dbController.saveTopCoinsList(list)
     }
 
     fun coinIsAdded(coin: TopCoinData): Boolean {
-        if (allDisplayCoins.isNotEmpty()) {
-            return allDisplayCoins.find { it.from == coin.symbol && it.to == USD } != null
+        if (allCoins.isNotEmpty()) {
+            return allCoins.find { it.from == coin.symbol && it.to == USD } != null
         }
         return false
     }
 
-    fun coinAlreadyAdded(coin: String) = allDisplayCoins.find { it.from == coin } != null
+    fun coinAlreadyAdded(coin: String) = allCoins.find { it.from == coin } != null
 
-    fun allCoinsIsEmpty() = allCoins.isEmpty()
+    fun allInfoCoinsIsEmpty() = allInfoCoins.isEmpty()
 }

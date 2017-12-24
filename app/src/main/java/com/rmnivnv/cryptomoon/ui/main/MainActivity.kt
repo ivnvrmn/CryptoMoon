@@ -37,6 +37,7 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
     private lateinit var coinsLoading: ProgressBar
     private var deleteMenuItem: MenuItem? = null
     private var addMenuItem: MenuItem? = null
+    private var sortMenuItem: MenuItem? = null
     private var settingsMenuItem: MenuItem? = null
     private lateinit var newsFragment: Fragment
 
@@ -100,6 +101,7 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
         menuInflater.inflate(R.menu.main_menu, menu)
         deleteMenuItem = menu?.findItem(R.id.main_menu_delete)
         addMenuItem = menu?.findItem(R.id.main_menu_add_coin)
+        sortMenuItem = menu?.findItem(R.id.main_menu_sort)
         settingsMenuItem = menu?.findItem(R.id.main_menu_settings)
         return super.onCreateOptionsMenu(menu)
     }
@@ -107,6 +109,7 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.main_menu_add_coin -> presenter.onAddCoinClicked()
+            R.id.main_menu_sort -> presenter.onSortClicked()
             R.id.main_menu_settings -> presenter.onSettingsClicked()
             R.id.main_menu_delete -> presenter.onDeleteClicked()
         }
@@ -117,6 +120,7 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
         deleteMenuItem?.isVisible = isSelected
         addMenuItem?.isVisible = !isSelected
         settingsMenuItem?.isVisible = !isSelected
+        sortMenuItem?.isVisible = !isSelected
     }
 
     internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
@@ -156,5 +160,14 @@ class MainActivity : DaggerAppCompatActivity(), IMain.View {
 
     override fun showToast(text: String) {
         this.toastShort(text)
+    }
+
+    override fun setSortVisible(isVisible: Boolean) {
+        sortMenuItem?.isVisible = isVisible
+    }
+
+    override fun showCoinsSortDialog() {
+        val dialog = SortDialog()
+        dialog.show(supportFragmentManager, "sortDialog")
     }
 }

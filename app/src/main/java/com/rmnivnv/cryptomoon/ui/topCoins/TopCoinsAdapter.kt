@@ -42,7 +42,7 @@ class TopCoinsAdapter @Inject constructor(private val coins: ArrayList<TopCoinDa
             val pctCh24h: String = coin.percent_change_24h ?: ""
             if (pctCh24h.isNotEmpty()) {
                 top_coin_24h_pct.text = "$pctCh24h%"
-                top_coin_24h_pct.setTextColor(resProvider.getColor(getChangeColor(pctCh24h.replace(",", "").toDouble())))
+                top_coin_24h_pct.setTextColor(resProvider.getColor(getChangeColor(pctCh24h.replace(",", "").toFloat())))
             }
             top_coin_market_cap.text = addCommasToStringNumber(coin.market_cap_usd)
             top_coin_supply.text = addCommasToStringNumber(coin.total_supply)

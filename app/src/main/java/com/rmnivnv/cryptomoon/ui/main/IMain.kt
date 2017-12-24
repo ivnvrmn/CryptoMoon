@@ -10,6 +10,8 @@ interface IMain {
         fun startAddCoinActivity()
         fun setMenuIconsVisibility(isSelected: Boolean)
         fun showToast(text: String)
+        fun setSortVisible(isVisible: Boolean)
+        fun showCoinsSortDialog()
     }
 
     interface Presenter {
@@ -19,5 +21,6 @@ interface IMain {
         fun onSettingsClicked()
         fun onDeleteClicked()
         fun onPageSelected(position: Int)
+        fun onSortClicked()
     }
 }

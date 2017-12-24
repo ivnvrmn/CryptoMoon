@@ -62,8 +62,4 @@ class HoldingsActivity : DaggerAppCompatActivity(), IHoldings.View {
     override fun updateRecyclerView() {
         adapter.notifyDataSetChanged()
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

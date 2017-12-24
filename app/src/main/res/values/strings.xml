@@ -11,6 +11,15 @@
     <string name="top100">Top 100</string>
     <string name="news">News</string>
     <string name="add_coin">Add coin</string>
+    <string name="sort">Sort</string>
+    <string name="sort_by">Sort by</string>
+    <string name="name">Name</string>
+    <string name="price">Price</string>
+    <string name="price_increase">Price increase</string>
+    <string name="price_decrease">Price decrease</string>
+    <string name="price_changed_24h">24h price</string>
+    <string name="price_changed_24h_increase">24h price increase</string>
+    <string name="price_changed_24h_decrease">24h price decrease</string>
     <string name="enter_coin_name">Enter coin name</string>
     <string name="add_coin_from_hint">Enter coin name</string>
     <string name="add_coin_to_hint">To here</string>

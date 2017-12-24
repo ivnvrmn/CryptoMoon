@@ -16,4 +16,9 @@
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
+    <style name="MyRadioButton" >
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/grey_light</item>
+    </style>
 </resources>

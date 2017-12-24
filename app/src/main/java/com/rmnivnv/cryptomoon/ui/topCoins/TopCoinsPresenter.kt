@@ -114,7 +114,7 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
     }
 
     private fun updateAllCoins() {
-        if (coinsController.allCoinsIsEmpty()) {
+        if (coinsController.allInfoCoinsIsEmpty()) {
             disposable.add(networkRequests.getAllCoins()
                     .subscribe({ onAllCoinsReceived(it) },
                             { Log.e("getAllCoinsInfo", it.toString()) }))
@@ -141,15 +141,15 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
     override fun onAddCoinClicked(coin: TopCoinData, itemView: View) {
         itemView.top_coin_add_loading.visibility = View.VISIBLE
         itemView.top_coin_add_icon.visibility = View.GONE
-        val displayCoin = DisplayCoin(from = coin.symbol!!, to = USD)
-        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(displayCoin)))
+        val coinFrom = Coin(from = coin.symbol!!, to = USD)
+        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coinFrom)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onCoinAdded(it, itemView) }, { onError(itemView) }))
     }
 
-    private fun onCoinAdded(list: ArrayList<DisplayCoin>, itemView: View) {
+    private fun onCoinAdded(list: ArrayList<Coin>, itemView: View) {
         if (list.isNotEmpty()) {
-            coinsController.saveDisplayCoinList(list)
+            coinsController.saveCoinsList(list)
             itemView.top_coin_add_icon.setImageDrawable(resProvider.getDrawable(R.drawable.ic_done))
             context.toastShort(resProvider.getString(R.string.coin_added))
         } else {

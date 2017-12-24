@@ -24,9 +24,9 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
 
     private val disposable = CompositeDisposable()
     private var allCoins: List<InfoCoin> = mutableListOf()
-    private var coins: ArrayList<DisplayCoin> = ArrayList()
+    private var coins: ArrayList<Coin> = ArrayList()
     private lateinit var matches: ArrayList<InfoCoin>
-    private var selectedCoin: DisplayCoin? = null
+    private var selectedCoin: Coin? = null
     private var coinSelect = true
 
     override fun onCreate( matches: ArrayList<InfoCoin>) {
@@ -48,13 +48,13 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
     }
 
     private fun addCoinsChangesObservable() {
-        disposable.add(db.displayCoinsDao().getAllCoins()
+        disposable.add(db.coinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onCoinsFromDbUpdates(it) }))
     }
 
-    private fun onCoinsFromDbUpdates(list: List<DisplayCoin>) {
+    private fun onCoinsFromDbUpdates(list: List<Coin>) {
         if (list.isNotEmpty()) {
             coins.clear()
             coins.addAll(list)
@@ -117,7 +117,7 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
         view.updateRecyclerView()
         view.hideKeyboard()
         if (coinSelect) {
-            selectedCoin = DisplayCoin(from = coin.name, to = "")
+            selectedCoin = Coin(from = coin.name, to = "")
             requestPairs(coin)
             coinSelect = false
         } else {
@@ -163,16 +163,16 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
         }
     }
 
-    private fun requestCoinInfo(coin: DisplayCoin) {
+    private fun requestCoinInfo(coin: Coin) {
         view.enableLoadingLayout()
         disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onPriceUpdated(it) }, { coinNotFound() }))
     }
 
-    private fun onPriceUpdated(list: ArrayList<DisplayCoin>) {
+    private fun onPriceUpdated(list: ArrayList<Coin>) {
         if (list.isNotEmpty()) {
-            coinsController.saveDisplayCoinList(list)
+            coinsController.saveCoinsList(list)
             coinSuccessfullyAdded()
         } else {
             coinNotFound()

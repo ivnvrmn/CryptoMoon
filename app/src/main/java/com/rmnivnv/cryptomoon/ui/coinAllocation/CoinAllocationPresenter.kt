@@ -1,6 +1,6 @@
 package com.rmnivnv.cryptomoon.ui.coinAllocation
 
-import com.rmnivnv.cryptomoon.model.DisplayCoin
+import com.rmnivnv.cryptomoon.model.Coin
 import com.rmnivnv.cryptomoon.model.PieMaker
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,20 +14,20 @@ class CoinAllocationPresenter @Inject constructor(private val view: ICoinAllocat
                                                   private val db: CMDatabase): ICoinAllocation.Presenter {
 
     private val disposable = CompositeDisposable()
-    private var coins: ArrayList<DisplayCoin> = ArrayList()
+    private var coins: ArrayList<Coin> = ArrayList()
 
-    override fun onCreate(coins: List<DisplayCoin>) {
+    override fun onCreate() {
         addCoinsChangesObservable()
     }
 
     private fun addCoinsChangesObservable() {
-        disposable.add(db.displayCoinsDao().getAllCoins()
+        disposable.add(db.coinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onCoinsFromDbUpdates(it) }))
     }
 
-    private fun onCoinsFromDbUpdates(list: List<DisplayCoin>) {
+    private fun onCoinsFromDbUpdates(list: List<Coin>) {
         if (list.isNotEmpty()) {
             coins.clear()
             coins.addAll(list)

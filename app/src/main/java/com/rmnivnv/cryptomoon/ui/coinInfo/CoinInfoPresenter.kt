@@ -24,7 +24,7 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
                                             private val resProvider: ResourceProvider) : ICoinInfo.Presenter {
 
     private val disposable = CompositeDisposable()
-    private var coin: DisplayCoin? = null
+    private var coin: Coin? = null
     private var from: String? = null
     private var to: String? = null
 
@@ -37,17 +37,17 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
     }
 
     private fun getCoinByName(from: String?, to: String?) {
-        disposable.add(Single.fromCallable { coinsController.getDisplayCoin(from!!, to!!) }
+        disposable.add(Single.fromCallable { coinsController.getCoin(from!!, to!!) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onCoinArrived(it) }, { onFindCoinError(it) }))
     }
 
-    private fun onCoinArrived(coin: DisplayCoin) {
+    private fun onCoinArrived(coin: Coin) {
         this.coin = coin
         view.setTitle(coin.fullName)
         view.setLogo(coin.imgUrl)
-        view.setMainPrice(coin.PRICE)
+        view.setMainPrice(coin.price)
         requestHisto(MONTH)
         setCoinInfo()
         setupHoldings()
@@ -65,13 +65,13 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
     }
 
     private fun setCoinInfo() {
-        view.setOpen(coin!!.OPEN24HOUR)
-        view.setHigh(coin!!.HIGH24HOUR)
-        view.setLow(coin!!.LOW24HOUR)
-        view.setChange(coin!!.CHANGE24HOUR)
-        view.setChangePct(coin!!.CHANGEPCT24HOUR)
-        view.setSupply(coin!!.SUPPLY)
-        view.setMarketCap(coin!!.MKTCAP)
+        view.setOpen(coin!!.open24h)
+        view.setHigh(coin!!.high24h)
+        view.setLow(coin!!.low24h)
+        view.setChange(coin!!.change24h)
+        view.setChangePct(coin!!.changePct24h)
+        view.setSupply(coin!!.supply)
+        view.setMarketCap(coin!!.mktCap)
     }
 
     private fun setupHoldings() {
@@ -99,19 +99,19 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
 
     private fun onFindCoinError(throwable: Throwable) {
         context.logDebug("getCoinByName error " + throwable.toString())
-        requestCoinInfo(DisplayCoin(from = this.from!!, to = this.to!!))
+        requestCoinInfo(Coin(from = this.from!!, to = this.to!!))
     }
 
-    private fun requestCoinInfo(coin: DisplayCoin) {
+    private fun requestCoinInfo(coin: Coin) {
         disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onPriceUpdated(it) }, { Log.e("requestCoinInfo", it.toString()) }))
     }
 
-    private fun onPriceUpdated(list: ArrayList<DisplayCoin>) {
+    private fun onPriceUpdated(list: ArrayList<Coin>) {
         if (list.isNotEmpty()) {
             val arrivedCoin = list[0]
-            coinsController.addAdditionalInfo(arrivedCoin)
+            coinsController.addAdditionalInfoToCoin(arrivedCoin)
             onCoinArrived(arrivedCoin)
         }
     }
@@ -128,6 +128,6 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
     }
 
     override fun onAddTransactionClicked() {
-        view.startAddTransactionActivity(coin?.from, coin?.to, coin?.PRICE)
+        view.startAddTransactionActivity(coin?.from, coin?.to, coin?.price)
     }
 }

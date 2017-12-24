@@ -29,7 +29,7 @@ class CoinsFragment : DaggerFragment(), ICoins.View {
 
     private lateinit var recView: RecyclerView
     private lateinit var adapter: CoinsListAdapter
-    private var coins: ArrayList<DisplayCoin> = ArrayList()
+    private var coins: ArrayList<Coin> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

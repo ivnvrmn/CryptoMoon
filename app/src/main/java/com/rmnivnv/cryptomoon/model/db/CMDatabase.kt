@@ -2,21 +2,21 @@ package com.rmnivnv.cryptomoon.model.db
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
-import com.rmnivnv.cryptomoon.model.InfoCoin
-import com.rmnivnv.cryptomoon.model.DisplayCoin
-import com.rmnivnv.cryptomoon.model.HoldingData
-import com.rmnivnv.cryptomoon.model.TopCoinData
+import com.rmnivnv.cryptomoon.model.*
+
+
 
 /**
  * Created by rmnivnv on 22/07/2017.
  */
-@Database(entities = arrayOf(DisplayCoin::class,
+@Database(entities = [
+        Coin::class,
         InfoCoin::class,
         TopCoinData::class,
-        HoldingData::class), version = 1)
+        HoldingData::class], version = 2)
 abstract class CMDatabase : RoomDatabase() {
 
-    abstract fun displayCoinsDao(): DisplayCoinsDao
+    abstract fun coinsDao(): CoinsDao
 
     abstract fun allCoinsDao(): AllCoinsDao
 

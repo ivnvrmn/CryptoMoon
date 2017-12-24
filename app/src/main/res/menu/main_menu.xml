@@ -3,17 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/main_menu_delete"
-        android:title="@string/remove_coin"
         android:icon="@drawable/ic_delete"
+        android:title="@string/remove_coin"
         android:visible="false"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/main_menu_add_coin"
-        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_add"
-        android:title="@string/add_coin" />
+        android:title="@string/add_coin"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/main_menu_sort"
+        android:icon="@drawable/ic_sort"
+        android:title="@string/sort"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/main_menu_settings"
-        app:showAsAction="never"
-        android:title="@string/settings" />
+        android:title="@string/settings"
+        app:showAsAction="never" />
 </menu>

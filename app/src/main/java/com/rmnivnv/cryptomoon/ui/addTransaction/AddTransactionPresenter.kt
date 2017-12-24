@@ -27,19 +27,19 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
     private var price = 0.0
     private var transactionDate: Date? = null
     private val disposable = CompositeDisposable()
-    private var tradingPrice: Double = 0.0
+    private var tradingPrice: Float = 0f
         set(value) {
             field = value
             calculateTotalValue()
         }
-    private var quantity: Double = 0.0
+    private var quantity: Float = 0f
         set(value) {
             field = value
             calculateTotalValue()
         }
 
     private fun calculateTotalValue() {
-        if (tradingPrice != 0.0 && quantity != 0.0) {
+        if (tradingPrice != 0f && quantity != 0f) {
             view.setTotalValue((tradingPrice * quantity).toString())
         }
     }
@@ -62,9 +62,9 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
 
     private fun onTradingPriceTextChanged(char: CharSequence) {
         val text = char.toString()
-        if (text.isNotEmpty() && text != ".") tradingPrice = text.toDouble()
+        if (text.isNotEmpty() && text != ".") tradingPrice = text.toFloat()
         else {
-            tradingPrice = 0.0
+            tradingPrice = 0f
             view.setTotalValue("0.0")
         }
     }
@@ -78,9 +78,9 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
 
     private fun onQuantityTextChanged(char: CharSequence) {
         val text = char.toString()
-        if (text.isNotEmpty() && text != ".") quantity = text.toDouble()
+        if (text.isNotEmpty() && text != ".") quantity = text.toFloat()
         else {
-            quantity = 0.0
+            quantity = 0f
             view.setTotalValue("0.0")
         }
     }
@@ -119,18 +119,18 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
     private fun onConfirmClicked() {
         if (allFieldsAreFilled()) {
             saveHoldings()
-        } else if (tradingPrice == 0.0 && quantity == 0.0 && transactionDate == null) {
+        } else if (tradingPrice == 0f && quantity == 0f && transactionDate == null) {
             context.toastShort(resourceProvider.getString(R.string.add_trans_fill_all_fields))
         } else if (transactionDate == null) {
             context.toastShort(resourceProvider.getString(R.string.add_trans_fill_date))
-        } else if (tradingPrice == 0.0) {
+        } else if (tradingPrice == 0f) {
             context.toastShort(resourceProvider.getString(R.string.add_trans_fill_price))
         } else {
             context.toastShort(resourceProvider.getString(R.string.add_trans_fill_quantity))
         }
     }
 
-    private fun allFieldsAreFilled() = tradingPrice != 0.0 && quantity != 0.0 && transactionDate != null
+    private fun allFieldsAreFilled() = tradingPrice != 0f && quantity != 0f && transactionDate != null
 
     private fun saveHoldings() {
         dbController.saveHoldingData(HoldingData(from, to, quantity, tradingPrice, transactionDate!!.time))

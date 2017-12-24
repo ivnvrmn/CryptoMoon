@@ -13,35 +13,59 @@ import java.util.*
  * Created by rmnivnv on 12/07/2017.
  */
 
-fun getCoinDisplayBodyFromJson(jsonObject: JsonObject, map: Map<String, ArrayList<String?>>): ArrayList<DisplayCoin> {
-    val result: ArrayList<DisplayCoin> = ArrayList()
-    val display: JsonElement
-    val fromObjectsList: HashMap<String?, JsonElement> = HashMap()
-    if (jsonObject.has(DISPLAY)) {
-        display = jsonObject[DISPLAY]
-        for ((key, value) in map) {
-            if (key == FSYMS) {
-                value.forEach {
-                    if (display.asJsonObject.has(it)) {
-                        fromObjectsList.put(it, display.asJsonObject[it])
-                    }
-                }
-            }
-
-        }
-        for ((key, value) in map) {
-            if (key == TSYMS) {
-                value.forEach { toSymbol ->
-                    for ((keyFrom, valueFrom) in fromObjectsList) {
-                        if (valueFrom.asJsonObject.has(toSymbol)) {
-                            val body: DisplayCoin = Gson().fromJson(valueFrom.asJsonObject[toSymbol], DisplayCoin::class.java)
-                            body.from = keyFrom!!
-                            body.to = toSymbol!!
-                            body.imgUrl = ""
-                            body.fullName = ""
-                            result.add(body)
-                        }
-                    }
+fun getCoinsFromJson(jsonObject: JsonObject, map: Map<String, ArrayList<String?>>): ArrayList<Coin> {
+    val result: ArrayList<Coin> = ArrayList()
+    var displayJson: JsonElement? = null
+    if (jsonObject.has(DISPLAY)) displayJson = jsonObject[DISPLAY]
+    var rawJson: JsonElement? = null
+    if (jsonObject.has(RAW)) rawJson = jsonObject[RAW]
+    if (displayJson != null && rawJson != null) {
+        map[FSYMS]?.forEach {
+            if (it != null) {
+                try {
+                    val displayCoin: DisplayCoin = Gson().fromJson(displayJson.asJsonObject[it].asJsonObject[USD],
+                            DisplayCoin::class.java)
+                    val rawCoin: RawCoin = Gson().fromJson(rawJson.asJsonObject[it].asJsonObject[USD],
+                            RawCoin::class.java)
+                    val coin = Coin(
+                            from = it,
+                            to = USD,
+                            fromSymbol = displayCoin.FROMSYMBOL,
+                            toSymbol = displayCoin.TOSYMBOL,
+                            market = displayCoin.MARKET,
+                            price = displayCoin.PRICE,
+                            priceRaw = rawCoin.PRICE,
+                            lastUpdate = displayCoin.LASTUPDATE,
+                            lastUpdateRaw = rawCoin.LASTUPDATE,
+                            lastVolume = displayCoin.LASTVOLUME,
+                            lastVolumeRaw = rawCoin.LASTVOLUME,
+                            lastVolumeTo = displayCoin.LASTVOLUMETO,
+                            lastVolumeToRaw = rawCoin.LASTVOLUMETO,
+                            lastTradeId = rawCoin.LASTTRADEID,
+                            volume24h = displayCoin.VOLUME24HOUR,
+                            volume24hRaw = rawCoin.VOLUME24HOUR,
+                            volume24hTo = displayCoin.VOLUME24HOURTO,
+                            volume24hToRaw = rawCoin.VOLUME24HOURTO,
+                            open24h = displayCoin.OPEN24HOUR,
+                            open24hRaw = rawCoin.OPEN24HOUR,
+                            high24h = displayCoin.HIGH24HOUR,
+                            high24hRaw = rawCoin.HIGH24HOUR,
+                            low24h = displayCoin.LOW24HOUR,
+                            low24hRaw = rawCoin.LOW24HOUR,
+                            lastMarket = displayCoin.LASTMARKET,
+                            change24h = displayCoin.CHANGE24HOUR,
+                            change24hRaw = rawCoin.CHANGE24HOUR,
+                            changePct24h = displayCoin.CHANGEPCT24HOUR,
+                            changePct24hRaw = rawCoin.CHANGEPCT24HOUR,
+                            supply = displayCoin.SUPPLY,
+                            supplyRaw = rawCoin.SUPPLY,
+                            mktCap = displayCoin.MKTCAP,
+                            mktCapRaw = rawCoin.MKTCAP,
+                            flags = rawCoin.FLAGS)
+                    result.add(coin)
+                } catch (ex: Exception) {
+                    println(ex)
+                    return result
                 }
             }
         }
@@ -80,7 +104,7 @@ fun getPairsListFromJson(jsonObject: JsonObject): ArrayList<PairData> {
     return result
 }
 
-fun createCoinsMapWithCurrencies(coinsList: List<DisplayCoin>): HashMap<String, ArrayList<String?>> {
+fun createCoinsMapWithCurrencies(coinsList: List<Coin>): HashMap<String, ArrayList<String?>> {
     val map: HashMap<String, ArrayList<String?>> = HashMap()
     val fromList: ArrayList<String?> = ArrayList()
     coinsList.forEach { fromList.add(it.from) }
@@ -91,9 +115,9 @@ fun createCoinsMapWithCurrencies(coinsList: List<DisplayCoin>): HashMap<String, 
     return map
 }
 
-fun getChangeColor(change: Double) = when {
+fun getChangeColor(change: Float) = when {
     change > 0 -> R.color.green
-    change == 0.0 -> R.color.orange_dark
+    change == 0f -> R.color.orange_dark
     else -> R.color.red
 }
 
@@ -102,13 +126,15 @@ fun addCommasToStringNumber(number: String?): String {
     return formatter.format(number?.toDouble())
 }
 
-fun getStringWithTwoDecimalsFromDouble(value: Double) = (Math.round(value * 100.0) / 100.0).toString()
+fun getStringWithTwoDecimalsFromDouble(value: Float) = (Math.round(value * 100.0) / 100.0).toString()
 
 fun formatLongDateToString(date: Long?, format: String): String = SimpleDateFormat(format, Locale.getDefault()).format(date)
 
 fun getNumberSignByValue(value: Double) = if (value >= 0) "+" else "-"
 
-fun getProfitLossText(change: Double, resProvider: ResourceProvider) = if (change >= 0) resProvider.getString(R.string.prf) else  resProvider.getString(R.string.ls)
+fun getProfitLossText(change: Float, resProvider: ResourceProvider) = if (change >= 0) resProvider.getString(R.string.prf) else  resProvider.getString(R.string.ls)
 
-fun getProfitLossTextBig(change: Double, resProvider: ResourceProvider) = if (change >= 0) resProvider.getString(R.string.profit_b) else  resProvider.getString(R.string.loss_b)
+fun getProfitLossTextBig(change: Float, resProvider: ResourceProvider) =
+        if (change >= 0) resProvider.getString(R.string.profit_b)
+        else  resProvider.getString(R.string.loss_b)
 

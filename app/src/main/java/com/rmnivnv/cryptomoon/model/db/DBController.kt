@@ -1,9 +1,6 @@
 package com.rmnivnv.cryptomoon.model.db
 
-import com.rmnivnv.cryptomoon.model.InfoCoin
-import com.rmnivnv.cryptomoon.model.DisplayCoin
-import com.rmnivnv.cryptomoon.model.HoldingData
-import com.rmnivnv.cryptomoon.model.TopCoinData
+import com.rmnivnv.cryptomoon.model.*
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
@@ -12,28 +9,28 @@ import io.reactivex.schedulers.Schedulers
  */
 class DBController(val db: CMDatabase) {
 
-    fun saveDisplayCoin(coin: DisplayCoin) {
-        Single.fromCallable { db.displayCoinsDao().insert(coin) }
+    fun saveCoin(coin: Coin) {
+        Single.fromCallable { db.coinsDao().insert(coin) }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
     }
 
-    fun saveDisplayCoinsList(list: List<DisplayCoin>) {
-        Single.fromCallable { db.displayCoinsDao().insertList(list) }
+    fun saveCoinsList(list: List<Coin>) {
+        Single.fromCallable { db.coinsDao().insertList(list) }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
     }
 
-    fun getDisplayCoin(from: String, to: String) = db.displayCoinsDao().getDisplayCoin(from, to)
+    fun getCoin(from: String, to: String) = db.coinsDao().getCoin(from, to)
 
-    fun deleteDisplayCoin(coin: DisplayCoin) {
-        Single.fromCallable { db.displayCoinsDao().deleteCoin(coin) }
+    fun deleteCoin(coin: Coin) {
+        Single.fromCallable { db.coinsDao().deleteCoin(coin) }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
     }
 
-    fun deleteDisplayCoins(coins: List<DisplayCoin>) {
-        Single.fromCallable { db.displayCoinsDao().deleteCoins(coins) }
+    fun deleteCoins(coins: List<Coin>) {
+        Single.fromCallable { db.coinsDao().deleteCoins(coins) }
                 .subscribeOn(Schedulers.io())
                 .subscribe()
     }

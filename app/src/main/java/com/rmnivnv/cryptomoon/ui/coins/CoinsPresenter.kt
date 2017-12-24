@@ -5,11 +5,9 @@ import android.util.Log
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
-import com.rmnivnv.cryptomoon.model.rxbus.CoinsLoadingEvent
-import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
-import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
-import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.rxbus.*
+import com.rmnivnv.cryptomoon.ui.main.SortDialog
 import com.rmnivnv.cryptomoon.utils.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -29,13 +27,14 @@ class CoinsPresenter @Inject constructor(private val context: Context,
                                          private val multiSelector: MultiSelector,
                                          private val holdingsHandler: HoldingsHandler) : ICoins.Presenter {
 
+    private val prefs = Prefs(context)
     private val disposable = CompositeDisposable()
-    private var coins: ArrayList<DisplayCoin> = ArrayList()
+    private var coins: ArrayList<Coin> = ArrayList()
     private var holdings: ArrayList<HoldingData> = ArrayList()
     private var isRefreshing = false
     private var isFirstStart = true
 
-    override fun onCreate(coins: ArrayList<DisplayCoin>) {
+    override fun onCreate(coins: ArrayList<Coin>) {
         this.coins = coins
     }
 
@@ -54,17 +53,17 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     }
 
     private fun addCoinsChangesObservable() {
-        disposable.add(db.displayCoinsDao().getAllCoins()
+        disposable.add(db.coinsDao().getAllCoins()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onCoinsFromDbUpdates(it) }))
     }
 
-    private fun onCoinsFromDbUpdates(list: List<DisplayCoin>) {
+    private fun onCoinsFromDbUpdates(list: List<Coin>) {
         if (list.isNotEmpty()) {
             coins.clear()
             coins.addAll(list)
-            coins.sortBy { it.from }
+            sortCoinsBySelectedSortMethod()
             view.disableEmptyText()
             view.updateRecyclerView()
             if (isFirstStart) {
@@ -122,17 +121,21 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         setAllTimeProfitLossString(totalChangeValue)
     }
 
-    private fun setAllTimeProfitLossString(change: Double) {
+    private fun setAllTimeProfitLossString(change: Float) {
         view.setAllTimeProfitLossString(getProfitLossText(change))
     }
 
-    private fun getProfitLossText(change: Double) = if (change >= 0) resProvider.getString(R.string.profit) else  resProvider.getString(R.string.loss)
+    private fun getProfitLossText(change: Float) = if (change >= 0) resProvider.getString(R.string.profit) else  resProvider.getString(R.string.loss)
 
     private fun setupRxBusEventsListeners() {
         disposable.add(RxBus.listen(OnDeleteCoinsMenuItemClickedEvent::class.java)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { onDeleteClicked() })
+        disposable.add(RxBus.listen(CoinsSortMethodUpdated::class.java)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { onSortMethodUpdated() })
     }
 
     private fun onDeleteClicked() {
@@ -140,11 +143,28 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         if (coinsToDelete.isNotEmpty()) {
             disableSelected()
             holdingsHandler.removeHoldings(coinsToDelete)
-            coinsController.deleteDisplayCoins(coinsToDelete)
+            coinsController.deleteCoins(coinsToDelete)
             RxBus.publish(MainCoinsListUpdatedEvent())
             context.toastShort(if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)
                                else resProvider.getString(R.string.coin_deleted))
         }
+    }
+
+    private fun onSortMethodUpdated() {
+        if (coins.isNotEmpty() && coins.size > 1) {
+            sortCoinsBySelectedSortMethod()
+        }
+    }
+
+    private fun sortCoinsBySelectedSortMethod() {
+        when (prefs.sortBy) {
+            SortDialog.SORT_BY_NAME -> coins.sortBy { it.from }
+            SortDialog.SORT_BY_PRICE_INCREASE -> coins.sortBy { it.priceRaw }
+            SortDialog.SORT_BY_PRICE_DECREASE -> coins.sortByDescending { it.priceRaw }
+            SortDialog.SORT_BY_24H_PRICE_INCREASE -> coins.sortBy { it.changePct24hRaw }
+            SortDialog.SORT_BY_24H_PRICE_DECREASE -> coins.sortByDescending { it.changePct24hRaw }
+        }
+        view.updateRecyclerView()
     }
 
     private fun addOnPageChangedObservable() {
@@ -195,13 +215,13 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         }
     }
 
-    private fun onPriceUpdated(list: ArrayList<DisplayCoin>) {
-        if (list.isNotEmpty()) coinsController.saveDisplayCoinList(filterList(list))
+    private fun onPriceUpdated(list: ArrayList<Coin>) {
+        if (list.isNotEmpty()) coinsController.saveCoinsList(filterList(list))
         afterRefreshing()
     }
 
-    private fun filterList(coinsInfoList: ArrayList<DisplayCoin>): ArrayList<DisplayCoin> {
-        val result: ArrayList<DisplayCoin> = ArrayList()
+    private fun filterList(coinsInfoList: ArrayList<Coin>): ArrayList<Coin> {
+        val result: ArrayList<Coin> = ArrayList()
         coins.forEach { (from, to) ->
             val find = coinsInfoList.find { it.from == from && it.to == to }
             if (find != null) result.add(find)
@@ -230,7 +250,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         updatePrices()
     }
 
-    override fun onCoinClicked(coin: DisplayCoin) {
+    override fun onCoinClicked(coin: Coin) {
         view.startCoinInfoActivity(coin.from, coin.to)
     }
 

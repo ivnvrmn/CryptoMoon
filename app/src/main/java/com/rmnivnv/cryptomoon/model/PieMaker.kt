@@ -14,7 +14,7 @@ class PieMaker(val resProvider: ResourceProvider,
         private val TEXT_SIZE_DP: Float = 17f
     }
 
-    fun makeChart(coinList: ArrayList<DisplayCoin>): PieData {
+    fun makeChart(coinList: ArrayList<Coin>): PieData {
         val pieEntryList: ArrayList<PieEntry> = ArrayList()
         coinList.forEach { setupPieEntry(it, pieEntryList) }
 
@@ -25,13 +25,13 @@ class PieMaker(val resProvider: ResourceProvider,
                 .also { setupPieData(it) }
     }
 
-    private fun setupPieEntry(displayCoin: DisplayCoin, pieEntryList: ArrayList<PieEntry>) {
-        val holding = holdingsHandler.isThereSuchHolding(displayCoin.from, displayCoin.to)
+    private fun setupPieEntry(coin: Coin, pieEntryList: ArrayList<PieEntry>) {
+        val holding = holdingsHandler.isThereSuchHolding(coin.from, coin.to)
         if (holding != null) {
             val value = holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holding)
-            pieEntryList.add(PieEntry(value.toFloat(), displayCoin.from))
+            pieEntryList.add(PieEntry(value.toFloat(), coin.from))
         } else {
-            println("No holding for $displayCoin")
+            println("No holding for $coin")
         }
     }
 

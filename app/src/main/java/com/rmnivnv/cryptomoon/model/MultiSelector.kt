@@ -20,13 +20,13 @@ class MultiSelector(val resProvider: ResourceProvider) {
 
     fun getSelectorObservable(): Observable<Boolean> = subject
 
-    fun onClick(coin: DisplayCoin, card: ViewGroup, coins: ArrayList<DisplayCoin>): Boolean {
+    fun onClick(coin: Coin, card: ViewGroup, coins: ArrayList<Coin>): Boolean {
         coin.selected = setBackgroundAndSelected(coin, card)
         atLeastOneIsSelected = coins.find { it.selected } != null
         return true
     }
 
-    private fun setBackgroundAndSelected(coin: DisplayCoin, card: ViewGroup) =
+    private fun setBackgroundAndSelected(coin: Coin, card: ViewGroup) =
         if (coin.selected) {
             card.setBackgroundColor(0)
             false
