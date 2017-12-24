@@ -37,9 +37,9 @@ data class InfoCoin(
 @Entity(tableName = "coins", primaryKeys = ["from_name", "to_name"])
 data class Coin(
         @ColumnInfo(name = "from_name")
-        var from: String = "",
+        var from: String,
         @ColumnInfo(name = "to_name")
-        var to: String = "",
+        var to: String,
         var imgUrl: String = "",
         var fullName: String = "",
         var selected: Boolean = false,
@@ -98,11 +98,8 @@ data class RawCoin(
         val SUPPLY: Float,
         val MKTCAP: Float)
 
-@Entity(tableName = "display_coins", primaryKeys = arrayOf("from_name", "to_name"))
 data class DisplayCoin(
-        @ColumnInfo(name = "from_name")
         var from: String,
-        @ColumnInfo(name = "to_name")
         var to: String,
         var imgUrl: String = "",
         var fullName: String = "",
