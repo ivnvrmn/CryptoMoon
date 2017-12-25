@@ -1,6 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.coins
 
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +22,7 @@ class CoinsListAdapter(private val coins: ArrayList<Coin>,
                        private val resProvider: ResourceProvider,
                        private val multiSelector: MultiSelector,
                        private val holdingsHandler: HoldingsHandler,
-                       val clickListener: (Coin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>()
-{
+                       val clickListener: (Coin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
             ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false))
 
@@ -58,7 +56,6 @@ class CoinsListAdapter(private val coins: ArrayList<Coin>,
             main_item_change_in_24.text = chPct24h
             main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.changePct24hRaw)))
             main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.changePct24hRaw)))
-            DrawableCompat.setTint(main_item_price_arrow.drawable, resProvider.getColor(getChangeColor(coin.changePct24hRaw)))
             if (coin.imgUrl.isNotEmpty()) {
                 Picasso.with(context)
                         .load(coin.imgUrl)
@@ -80,9 +77,9 @@ class CoinsListAdapter(private val coins: ArrayList<Coin>,
     }
 
     private fun getChangeArrowDrawable(change: Float) = when {
-        change > 0 -> R.drawable.ic_arrow_drop_up
-        change == 0f -> R.drawable.ic_remove
-        else -> R.drawable.ic_arrow_drop_down
+        change > 0 -> R.drawable.ic_arrow_drop_up_green
+        change == 0f -> R.drawable.ic_remove_orange
+        else -> R.drawable.ic_arrow_drop_down_red
     }
 
     override fun getItemCount() = coins.size

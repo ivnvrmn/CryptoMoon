@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_arrow_drop_up" />
+        tools:src="@drawable/ic_arrow_drop_up_green" />
 
     <TextView
         android:id="@+id/main_item_change_in_24"

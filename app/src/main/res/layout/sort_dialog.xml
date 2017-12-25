@@ -39,28 +39,32 @@
             style="@style/MyRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/price_increase" />
+            android:drawableStart="@drawable/ic_arrow_drop_up_green"
+            android:text="@string/price" />
 
         <RadioButton
             android:id="@+id/sort_dialog_by_price_decrease"
             style="@style/MyRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/price_decrease" />
+            android:drawableStart="@drawable/ic_arrow_drop_down_red"
+            android:text="@string/price" />
 
         <RadioButton
             android:id="@+id/sort_dialog_by_24h_price_increase"
             style="@style/MyRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/price_changed_24h_increase" />
+            android:drawableStart="@drawable/ic_arrow_drop_up_green"
+            android:text="@string/price_changed_24h" />
 
         <RadioButton
             android:id="@+id/sort_dialog_by_24h_price_decrease"
             style="@style/MyRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/price_changed_24h_decrease" />
+            android:drawableStart="@drawable/ic_arrow_drop_down_red"
+            android:text="@string/price_changed_24h" />
 
     </RadioGroup>
 
