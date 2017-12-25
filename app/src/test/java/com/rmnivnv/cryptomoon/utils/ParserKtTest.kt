@@ -11,11 +11,11 @@ import org.junit.Test
 class ParserKtTest {
 
     @Test
-    fun `Given positive double When getChangeColor Then return green color`() = getChangeColor(32.0) `should equal to` R.color.green
+    fun `Given positive double When getChangeColor Then return green color`() = getChangeColor(32.0f) `should equal to` R.color.green
 
     @Test
-    fun `Given negative double When getChangeColor Then return red color`() = getChangeColor(-32.0) `should equal to` R.color.red
+    fun `Given negative double When getChangeColor Then return red color`() = getChangeColor(-32.0f) `should equal to` R.color.red
 
     @Test
-    fun `Given zero double When getChangeColor Then return orange dark color`() = getChangeColor(0.0) `should equal to` R.color.orange_dark
+    fun `Given zero double When getChangeColor Then return orange dark color`() = getChangeColor(0.0f) `should equal to` R.color.orange_dark
 }
