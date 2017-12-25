@@ -93,8 +93,8 @@ class NewsFragment : DaggerFragment(), INews.View {
         news_rec_view.visibility = View.VISIBLE
     }
 
-    override fun updateTweets() {
-        adapter.notifyDataSetChanged()
+    override fun updateInsertedTweets(startPos: Int, count: Int) {
+        adapter.notifyItemRangeInserted(startPos, count)
     }
 
     override fun showLoading() {

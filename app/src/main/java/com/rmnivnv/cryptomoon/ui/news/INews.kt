@@ -14,7 +14,7 @@ interface INews {
         fun hideLoginBtn()
         fun showLoginBtn()
         fun showRecView()
-        fun updateTweets()
+        fun updateInsertedTweets(startPos: Int, count: Int)
         fun showLoading()
         fun hideLoading()
         fun hideSwipeRefreshing()

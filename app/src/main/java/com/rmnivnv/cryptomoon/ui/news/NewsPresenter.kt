@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.rmnivnv.cryptomoon.model.Prefs
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.rxbus.SearchHashTagUpdated
+import com.rmnivnv.cryptomoon.utils.logDebug
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Search
 import com.twitter.sdk.android.core.models.Tweet
@@ -18,7 +19,7 @@ import javax.inject.Inject
  * Created by ivanov_r on 26.09.2017.
  */
 class NewsPresenter @Inject constructor(private val view: INews.View,
-                                        context: Context) : INews.Presenter {
+                                        private val context: Context) : INews.Presenter {
 
     private var tweets: ArrayList<Tweet> = ArrayList()
     private var twitterSession: TwitterSession? = null
@@ -30,8 +31,10 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
     private var totalItemCount = 0
     private var loading = true
     private var lastId: Long? = null
+    private var newTweetsStartPosition: Int = 0
     private val prefs = Prefs(context)
     private val disposable = CompositeDisposable()
+    private var isFooterLoading = false
 
     override fun onCreate(tweets: ArrayList<Tweet>) {
         this.tweets = tweets
@@ -51,6 +54,8 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
 
     private fun searchHashTagUpdated() {
         tweets.clear()
+        newTweetsStartPosition = 0
+        isFooterLoading = false
         initTwitterAndSearchTweets()
     }
 
@@ -70,23 +75,33 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
 
     private fun searchTweets() {
         view.hideEmptyNews()
-        if (!isSwipeRefreshing) view.showLoading()
+        if (!isSwipeRefreshing && !isFooterLoading) view.showLoading()
         val searchService = twitterApiClient?.searchService
-        call = searchService?.tweets(prefs.searchHashTag, null, null, null, null, null, null, null, lastId, null)
+        call = searchService?.tweets(
+                prefs.searchHashTag,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                lastId,
+                null)
         call?.enqueue(object : Callback<Search>() {
             override fun success(result: Result<Search>?) {
                 val resultTweets = result?.data?.tweets
                 if (resultTweets != null) {
                     tweets.addAll(resultTweets)
                     if (lastId != null) tweets.remove(tweets.find { it.id == lastId })
-                    view.updateTweets()
+                    view.updateInsertedTweets(newTweetsStartPosition, 15)
                     loading = true
                 }
                 afterSearch()
             }
 
             override fun failure(exception: TwitterException?) {
-
+                context.logDebug("searchTweets exception = " + exception.toString())
             }
         })
     }
@@ -121,6 +136,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
 
     override fun onSwipeUpdate() {
         isSwipeRefreshing = true
+        isFooterLoading = false
         initTwitterAndSearchTweets()
     }
 
@@ -132,6 +148,8 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
             if (loading && (visibleItemCount + pastVisibleItems) >= totalItemCount) {
                 loading = false
                 lastId = tweets.last().id
+                newTweetsStartPosition = tweets.size + 1
+                isFooterLoading = true
                 searchTweets()
             }
         }
