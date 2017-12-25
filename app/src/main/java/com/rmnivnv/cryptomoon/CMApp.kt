@@ -3,6 +3,7 @@ package com.rmnivnv.cryptomoon
 import android.app.Activity
 import android.app.Application
 import com.rmnivnv.cryptomoon.di.DaggerAppComponent
+import com.squareup.leakcanary.LeakCanary
 import com.twitter.sdk.android.core.Twitter
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -19,10 +20,14 @@ class CMApp : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+        if (LeakCanary.isInAnalyzerProcess(this)) return
+        LeakCanary.install(this)
+
         DaggerAppComponent.builder()
                 .application(this)
                 .build()
                 .inject(this)
+
         Twitter.initialize(this)
     }
 
