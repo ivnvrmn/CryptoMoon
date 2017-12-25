@@ -145,7 +145,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
             visibleItemCount = linearLayoutManager.childCount
             totalItemCount = linearLayoutManager.itemCount
             pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition()
-            if (loading && (visibleItemCount + pastVisibleItems) >= totalItemCount) {
+            if (loading && (visibleItemCount + pastVisibleItems) >= totalItemCount - 3) {
                 loading = false
                 lastId = tweets.last().id
                 newTweetsStartPosition = tweets.size + 1
