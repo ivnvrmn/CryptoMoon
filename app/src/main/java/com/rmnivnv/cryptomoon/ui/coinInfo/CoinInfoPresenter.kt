@@ -116,10 +116,22 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
         }
     }
 
-    override fun onSpinnerItemClicked(selectedItem: String) {
+    override fun onSpinnerItemClicked(position: Int) {
         if (coin != null) {
             view.enableGraphLoading()
-            requestHisto(selectedItem)
+            var period = ""
+            when (position) {
+                0 -> period = "1 hour"
+                1 -> period = "12 hours"
+                2 -> period = "24 hours"
+                3 -> period = "3 days"
+                4 -> period = "1 week"
+                5 -> period = "1 month"
+                6 -> period = "3 months"
+                7 -> period = "6 months"
+                8 -> period = "1 year"
+            }
+            requestHisto(period)
         }
     }
 

@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.rmnivnv.cryptomoon.model.Prefs
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.rxbus.SearchHashTagUpdated
-import com.rmnivnv.cryptomoon.utils.logDebug
+import com.rmnivnv.cryptomoon.utils.logError
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Search
 import com.twitter.sdk.android.core.models.Tweet
@@ -101,7 +101,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
             }
 
             override fun failure(exception: TwitterException?) {
-                context.logDebug("searchTweets exception = " + exception.toString())
+                context.logError("searchTweets exception = " + exception.toString())
             }
         })
     }

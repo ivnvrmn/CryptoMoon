@@ -1,31 +1,21 @@
 <resources >
-    <string name="app_name">CryptoMoon</string>
-    <string name="com.twitter.sdk.android.CONSUMER_KEY">riCBLpP9iH2s7MFnpGl1e4WTE</string>
-    <string name="com.twitter.sdk.android.CONSUMER_SECRET">81jDscHIH4cZ6EBGvkyPyleX2IldRLCPheOTscEactc2knw6dd</string>
+    <string name="app_name" translatable="false">CryptoMoon</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">riCBLpP9iH2s7MFnpGl1e4WTE</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false">81jDscHIH4cZ6EBGvkyPyleX2IldRLCPheOTscEactc2knw6dd</string>
 
-    <string name="market">Market</string>
-    <string name="last_price">Last price</string>
-    <string name="change_24h">Change 24h</string>
+    <!--Translatable-->
     <string name="coins">Coins</string>
-    <string name="ico">ICO</string>
     <string name="top100">Top 100</string>
+    <string name="market">Market</string>
     <string name="news">News</string>
-    <string name="add_coin">Add coin</string>
-    <string name="sort">Sort</string>
     <string name="sort_by">Sort by</string>
-    <string name="name">Name</string>
+    <string name="coin_name">Name</string>
+    <string name="add_coin">Add coin</string>
     <string name="price">Price</string>
-    <string name="price_increase">Price increase</string>
-    <string name="price_decrease">Price decrease</string>
     <string name="price_changed_24h">24h price</string>
-    <string name="price_changed_24h_increase">24h price increase</string>
-    <string name="price_changed_24h_decrease">24h price decrease</string>
-    <string name="enter_coin_name">Enter coin name</string>
     <string name="add_coin_from_hint">Enter coin name</string>
-    <string name="add_coin_to_hint">To here</string>
-    <string name="from">From:</string>
-    <string name="to">To:</string>
     <string name="matches_found">matches found</string>
+    <string name="sort_menu_title">Sort</string>
     <string name="searching_info">Searching for coin info, please wait</string>
     <string name="coin_not_found">Coin not found</string>
     <string name="coin_added">Coin added</string>
@@ -34,7 +24,6 @@
     <string name="remove_coin">Remove coin</string>
     <string name="coins_deleted">Coins deleted</string>
     <string name="coin_deleted">Coin deleted</string>
-    <string name="coin_logo_transition_name">coinLogo</string>
     <string name="twenty_four_hours">24H DATA</string>
     <string name="open">OPEN</string>
     <string name="high">HIGH</string>
@@ -45,8 +34,6 @@
     <string name="cap">Market cap</string>
     <string name="choose_currency">Choose currency</string>
     <string name="volume_24h">Volume 24h</string>
-    <string name="dollar_sign">$</string>
-    <string name="pct_sign">%</string>
     <string name="error">Error</string>
     <string name="current_price">Current price</string>
     <string name="trading_price">Trade price</string>
@@ -67,7 +54,6 @@
     <string name="holdings_24h">24H</string>
     <string name="holdings">Holdings</string>
     <string name="transaction_added">Transaction added</string>
-    <string name="current_total">Current total</string>
     <string name="current">Current</string>
     <string name="qty">QTY</string>
     <string name="val">VAL</string>
@@ -77,16 +63,14 @@
     <string name="profit_b">Profit</string>
     <string name="loss_b">Loss</string>
     <string name="holdings_deleted">Holdings deleted</string>
-    <string name="holdngs_data">HOLDINGS DATA</string>
+    <string name="holdings_data">HOLDINGS DATA</string>
     <string name="change_percent">Change percent</string>
     <string name="allocations">Allocations</string>
     <string name="string_coins">Coins</string>
     <string name="enter_hashtag">Enter hashtag</string>
     <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
     <string name="empty_text">No news found</string>
     <string name="empty_coins">Oops, it seems you do not have any coins. You can add them through a plus sign or in the top coins</string>
-
 
     <string-array name="histo_periods">
         <item>1 hour</item>
@@ -99,4 +83,10 @@
         <item>6 months</item>
         <item>1 year</item>
     </string-array>
+
+    <!--Non-translatable-->
+    <string name="coin_logo_transition_name" translatable="false">coinLogo</string>
+    <string name="dollar_sign" translatable="false">$</string>
+    <string name="pct_sign" translatable="false">%</string>
+    <string name="ok" translatable="false">OK</string>
 </resources>

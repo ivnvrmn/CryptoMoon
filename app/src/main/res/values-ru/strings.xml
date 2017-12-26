@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="coins">Монеты</string>
+    <string name="top100">Топ 100</string>
+    <string name="market">Рынок</string>
+    <string name="news">Новости</string>
+    <string name="sort_by">Сортировать по</string>
+    <string name="coin_name">Название</string>
+    <string name="add_coin">Добавить монету</string>
+    <string name="price">Цена</string>
+    <string name="price_changed_24h">Цена за 24ч</string>
+    <string name="add_coin_from_hint">Введите название монеты</string>
+    <string name="matches_found">совпадений найдено</string>
+    <string name="sort_menu_title">Сортировка</string>
+    <string name="searching_info">Поиск информации о монете, подождите пожайлуйста</string>
+    <string name="coin_not_found">Монета не найдена</string>
+    <string name="coin_added">Монета добавлена</string>
+    <string name="coin_already_added">Монета уже добавлена</string>
+    <string name="settings">Настройки</string>
+    <string name="remove_coin">Удалить монету</string>
+    <string name="coins_deleted">Монеты удалены</string>
+    <string name="coin_deleted">Монета удалена</string>
+    <string name="twenty_four_hours">Информация за 24ч</string>
+    <string name="open">ОТКРЫТИЕ</string>
+    <string name="high">НАИВЫСШАЯ</string>
+    <string name="low">НАИМЕНЬШАЯ</string>
+    <string name="change">ИЗМЕНЕНИЕ</string>
+    <string name="change_pct">ИЗМЕНЕНИЕ В %</string>
+    <string name="supply">Оборот</string>
+    <string name="cap">Рыночная капитализация</string>
+    <string name="choose_currency">Выберите валюту</string>
+    <string name="volume_24h">Объем 24ч</string>
+    <string name="error">Ошибка</string>
+    <string name="current_price">Текущая цена</string>
+    <string name="trading_price">Цена при покупке</string>
+    <string name="quantity">Количество</string>
+    <string name="trade_date">Дата обмена</string>
+    <string name="total_value">Общая сумма</string>
+    <string name="confirm_transaction">Подтвердить транзакцию</string>
+    <string name="add_transaction">Добавить транзакцию</string>
+    <string name="add_trans_fill_all_fields">Заполните все поля</string>
+    <string name="add_trans_fill_date">Выберите дату транзакции</string>
+    <string name="add_trans_fill_price">Заполните поле цены</string>
+    <string name="add_trans_fill_quantity">Заполните поле количества</string>
+    <string name="total_holdings">Сумма вкладов</string>
+    <string name="total_holdings_change">Изменение за все время</string>
+    <string name="all_time">За все время</string>
+    <string name="profit">прибыль</string>
+    <string name="loss">убыток</string>
+    <string name="holdings_24h">24Ч</string>
+    <string name="holdings">Вклады</string>
+    <string name="transaction_added">Транзакция добавлена</string>
+    <string name="current">Текущие</string>
+    <string name="qty">КОЛ</string>
+    <string name="val">СУМ</string>
+    <string name="ch_pct">ПЦТ ИЗМ</string>
+    <string name="prf">ПРИБ</string>
+    <string name="ls">УБЫТ</string>
+    <string name="profit_b">Прибыль</string>
+    <string name="loss_b">Убыток</string>
+    <string name="holdings_deleted">Вклад удален</string>
+    <string name="holdings_data">ИНФОРМАЦИЯ ПО ВКЛАДУ</string>
+    <string name="change_percent">Процент изменения</string>
+    <string name="allocations">Распределение</string>
+    <string name="string_coins">Монеты</string>
+    <string name="enter_hashtag">Введите хэштег</string>
+    <string name="cancel">Отмена</string>
+    <string name="empty_text">Новости не найдены</string>
+    <string name="empty_coins">Упс, кажется у вас нет монет. Вы можете добавить их через знак "плюс" или через топ 100 монет</string>
+
+    <string-array name="histo_periods">
+        <item>1 час</item>
+        <item>12 часов</item>
+        <item>24 часа</item>
+        <item>3 дня</item>
+        <item>1 неделя</item>
+        <item>1 месяц</item>
+        <item>3 месяца</item>
+        <item>6 месяцев</item>
+        <item>1 год</item>
+    </string-array>
+</resources>

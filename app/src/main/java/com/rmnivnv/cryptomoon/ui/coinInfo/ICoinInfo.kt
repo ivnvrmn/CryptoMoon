@@ -39,7 +39,7 @@ interface ICoinInfo {
     interface Presenter {
         fun onCreate(extras: Bundle)
         fun onDestroy()
-        fun onSpinnerItemClicked(selectedItem: String)
+        fun onSpinnerItemClicked(position: Int)
         fun onAddTransactionClicked()
     }
 }

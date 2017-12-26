@@ -51,8 +51,7 @@ class CoinInfoActivity : DaggerAppCompatActivity(), ICoinInfo.View {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                presenter.onSpinnerItemClicked(coin_info_graph_periods.selectedItem.toString())
-
+                presenter.onSpinnerItemClicked(p2)
             }
         }
     }
