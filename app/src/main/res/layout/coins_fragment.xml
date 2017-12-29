@@ -27,8 +27,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/total_holdings"
                 android:textColor="@color/grey_light"
+                app:layout_constraintBottom_toTopOf="@+id/coins_fragment_total_holdings"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/coins_fragment_total_holdings"
@@ -37,8 +39,9 @@
                 android:textColor="@color/grey_light"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/total_holdings"
+                app:layout_constraintTop_toBottomOf="@+id/total_holdings"
                 tools:text="$ 123213" />
 
             <TextView

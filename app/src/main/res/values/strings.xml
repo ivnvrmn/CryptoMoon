@@ -71,6 +71,9 @@
     <string name="cancel">Cancel</string>
     <string name="empty_text">No news found</string>
     <string name="empty_coins">Oops, it seems you do not have any coins. You can add them through a plus sign or in the top coins</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="russian">Russian</string>
 
     <string-array name="histo_periods">
         <item>1 hour</item>

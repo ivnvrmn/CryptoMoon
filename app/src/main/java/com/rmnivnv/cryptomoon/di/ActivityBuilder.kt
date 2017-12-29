@@ -13,6 +13,8 @@ import com.rmnivnv.cryptomoon.ui.holdings.HoldingsModule
 import com.rmnivnv.cryptomoon.ui.main.MainActivity
 import com.rmnivnv.cryptomoon.ui.main.MainFragmentProvider
 import com.rmnivnv.cryptomoon.ui.main.MainModule
+import com.rmnivnv.cryptomoon.ui.settings.SettingsActivity
+import com.rmnivnv.cryptomoon.ui.settings.SettingsModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -45,4 +47,8 @@ abstract class ActivityBuilder {
     @PerActivity
     @ContributesAndroidInjector(modules = arrayOf(HoldingsModule::class))
     abstract fun bindHoldingsActivity(): HoldingsActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [SettingsModule::class])
+    abstract fun bindSettingsActivity(): SettingsActivity
 }

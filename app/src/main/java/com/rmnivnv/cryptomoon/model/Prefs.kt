@@ -14,7 +14,10 @@ class Prefs(context: Context) {
         val SEARCH_HASH_TAG_DEFAULT = "cryptocurrency"
         val SORT_BY = "coins_sort_by"
         val SORT_BY_DEFAULT = SortDialog.SORT_BY_NAME
+        val SELECTED_LANGUAGE = "selected_language"
+        val SELECTED_LANGUAGE_DEFAULT = ""
     }
+
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     var searchHashTag: String
@@ -24,5 +27,9 @@ class Prefs(context: Context) {
     var sortBy: String
         get() = prefs.getString(SORT_BY, SORT_BY_DEFAULT)
         set(value) = prefs.edit().putString(SORT_BY, value).apply()
+
+    var language: String
+        get() = prefs.getString(SELECTED_LANGUAGE, SELECTED_LANGUAGE_DEFAULT)
+        set(value) = prefs.edit().putString(SELECTED_LANGUAGE, value).apply()
 
 }

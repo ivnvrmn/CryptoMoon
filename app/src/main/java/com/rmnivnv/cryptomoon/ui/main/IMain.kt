@@ -12,6 +12,7 @@ interface IMain {
         fun showToast(text: String)
         fun setSortVisible(isVisible: Boolean)
         fun showCoinsSortDialog()
+        fun openSettings()
     }
 
     interface Presenter {

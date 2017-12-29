@@ -25,7 +25,8 @@
         <activity android:name=".ui.coinInfo.CoinInfoActivity" />
         <activity android:name=".ui.coinAllocation.CoinAllocationActivity" />
         <activity android:name=".ui.addTransaction.AddTransactionActivity" />
-        <activity android:name=".ui.holdings.HoldingsActivity"/>
+        <activity android:name=".ui.holdings.HoldingsActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="4615563d0895ce49806b192cb9f65a94a8f79455" />
