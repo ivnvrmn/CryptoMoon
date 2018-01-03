@@ -3,13 +3,13 @@ package com.rmnivnv.cryptomoon.ui.settings
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.ui.settings.dialogs.LanguageDialog
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 
-class SettingsActivity : DaggerAppCompatActivity(), Settings.View {
+class SettingsActivity : BaseActivity(), Settings.View {
 
     @Inject lateinit var presenter: Settings.Presenter
     @Inject lateinit var resProvider: ResourceProvider
@@ -19,8 +19,7 @@ class SettingsActivity : DaggerAppCompatActivity(), Settings.View {
         setContentView(R.layout.activity_settings)
         setupToolbar()
         presenter.onCreate()
-
-        language_title.setOnClickListener { presenter.onLanguageClicked() }
+        language_layout.setOnClickListener { presenter.onLanguageClicked() }
     }
 
     private fun setupToolbar() {

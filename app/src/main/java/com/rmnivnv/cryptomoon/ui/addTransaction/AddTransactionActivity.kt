@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.textChanges
-
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_transaction.*
 import java.util.*
 import javax.inject.Inject
 
-class AddTransactionActivity : DaggerAppCompatActivity(), IAddTransaction.View {
+class AddTransactionActivity : BaseActivity(), IAddTransaction.View {
 
     @Inject lateinit var presenter: IAddTransaction.Presenter
     @Inject lateinit var resProvider: ResourceProvider

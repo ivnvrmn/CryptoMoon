@@ -67,9 +67,7 @@
     <string name="cancel">Отмена</string>
     <string name="empty_text">Новости не найдены</string>
     <string name="empty_coins">Упс, кажется у вас нет монет. Вы можете добавить их через знак "плюс" или через топ 100 монет</string>
-    <string name="language">Язык</string>
-    <string name="english">Английский</string>
-    <string name="russian">Русский</string>
+    <string name="language">Язык</string>]
 
     <string-array name="histo_periods">
         <item>1 час</item>

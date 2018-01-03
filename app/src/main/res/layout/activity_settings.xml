@@ -25,49 +25,61 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/language_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_language"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_layout" />
-
-    <TextView
-        android:id="@+id/language_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="@string/language"
-        android:textColor="@color/grey_light"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/settings_language"
-        app:layout_constraintStart_toEndOf="@id/language_icon"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/settings_language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/grey_light"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/line_bottom_of_lang"
-        app:layout_constraintStart_toEndOf="@id/language_icon"
-        app:layout_constraintTop_toBottomOf="@+id/language_title"
-        tools:text="English" />
-
-    <View
-        android:id="@+id/line_bottom_of_lang"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/language_layout"
         android:layout_width="0dp"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/grey_light"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/language_icon" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
+
+        <ImageView
+            android:id="@+id/language_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_language"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/language_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/language"
+            android:textColor="@color/grey_light"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/settings_language"
+            app:layout_constraintStart_toEndOf="@id/language_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/settings_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/grey_light"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/line_bottom_of_lang"
+            app:layout_constraintStart_toEndOf="@id/language_icon"
+            app:layout_constraintTop_toBottomOf="@+id/language_title"
+            tools:text="English" />
+
+        <View
+            android:id="@+id/line_bottom_of_lang"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/grey_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/language_icon" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

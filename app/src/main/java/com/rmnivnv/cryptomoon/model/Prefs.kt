@@ -30,6 +30,10 @@ class Prefs(context: Context) {
 
     var language: String
         get() = prefs.getString(SELECTED_LANGUAGE, SELECTED_LANGUAGE_DEFAULT)
-        set(value) = prefs.edit().putString(SELECTED_LANGUAGE, value).apply()
+        set(value) = setLang(value)
+
+    private fun setLang(value: String) {
+        prefs.edit().putString(SELECTED_LANGUAGE, value).commit()
+    }
 
 }

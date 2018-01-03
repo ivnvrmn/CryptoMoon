@@ -5,16 +5,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.support.v7.widget.helper.ItemTouchHelper
-
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.model.HoldingData
 import com.rmnivnv.cryptomoon.model.HoldingsHandler
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_holdings.*
 import javax.inject.Inject
 
-class HoldingsActivity : DaggerAppCompatActivity(), IHoldings.View {
+class HoldingsActivity : BaseActivity(), IHoldings.View {
 
     @Inject lateinit var presenter: IHoldings.Presenter
     @Inject lateinit var resProvider: ResourceProvider

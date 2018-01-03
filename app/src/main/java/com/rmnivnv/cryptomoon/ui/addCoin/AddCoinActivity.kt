@@ -8,15 +8,14 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.jakewharton.rxbinding2.widget.textChanges
-
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.model.InfoCoin
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_coin.*
 import javax.inject.Inject
 
-class AddCoinActivity : DaggerAppCompatActivity(), IAddCoin.View {
+class AddCoinActivity : BaseActivity(), IAddCoin.View {
 
     @Inject lateinit var presenter: IAddCoin.Presenter
     @Inject lateinit var resProvider: ResourceProvider

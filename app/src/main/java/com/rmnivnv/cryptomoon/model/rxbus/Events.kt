@@ -14,4 +14,4 @@ class SearchHashTagUpdated
 
 class CoinsSortMethodUpdated
 
-class LanguageChanged(val language: String)
+class LanguageChanged

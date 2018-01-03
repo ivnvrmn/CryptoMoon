@@ -7,12 +7,12 @@ import android.view.View
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.PieData
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_coin_allocation.*
 import javax.inject.Inject
 
-class CoinAllocationActivity : DaggerAppCompatActivity(), ICoinAllocation.View {
+class CoinAllocationActivity : BaseActivity(), ICoinAllocation.View {
 
     @Inject lateinit var presenter: ICoinAllocation.Presenter
     @Inject lateinit var resProvider: ResourceProvider

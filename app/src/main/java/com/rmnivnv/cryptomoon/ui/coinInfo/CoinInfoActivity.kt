@@ -10,19 +10,18 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.CandleData
-
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.model.FROM
 import com.rmnivnv.cryptomoon.model.PRICE
 import com.rmnivnv.cryptomoon.model.TO
 import com.rmnivnv.cryptomoon.ui.addTransaction.AddTransactionActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.squareup.picasso.Picasso
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_coin_info.*
 import javax.inject.Inject
 
-class CoinInfoActivity : DaggerAppCompatActivity(), ICoinInfo.View {
+class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
 
     @Inject lateinit var presenter: ICoinInfo.Presenter
     @Inject lateinit var resProvider: ResourceProvider
