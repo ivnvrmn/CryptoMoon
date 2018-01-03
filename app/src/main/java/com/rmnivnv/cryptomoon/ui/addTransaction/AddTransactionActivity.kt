@@ -70,8 +70,8 @@ class AddTransactionActivity : BaseActivity(), IAddTransaction.View {
         finish()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 }

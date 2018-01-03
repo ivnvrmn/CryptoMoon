@@ -65,9 +65,9 @@ class TopCoinsFragment : DaggerFragment(), ITopCoins.View {
         presenter.onStart()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
     override fun hideRefreshing() {

@@ -43,7 +43,7 @@ class HoldingsPresenter @Inject constructor(private val view: IHoldings.View,
         }
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         disposable.clear()
     }
 

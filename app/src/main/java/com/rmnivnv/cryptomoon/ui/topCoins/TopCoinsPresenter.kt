@@ -92,7 +92,7 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
         updateAllCoins()
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         disposable.clear()
     }
 

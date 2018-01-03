@@ -13,6 +13,6 @@ interface ICoinAllocation {
 
     interface Presenter {
         fun onCreate()
-        fun onDestroy()
+        fun onStop()
     }
 }

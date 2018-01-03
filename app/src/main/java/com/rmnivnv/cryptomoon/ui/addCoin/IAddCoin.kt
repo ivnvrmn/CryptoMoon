@@ -22,8 +22,8 @@ interface IAddCoin {
 
     interface Presenter {
         fun onCreate(matches: ArrayList<InfoCoin>)
-        fun onDestroy()
         fun onFromItemClicked(coin: InfoCoin)
         fun observeFromText(observable: Observable<CharSequence>)
+        fun onStop()
     }
 }

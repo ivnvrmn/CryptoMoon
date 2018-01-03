@@ -37,7 +37,7 @@ class CoinAllocationPresenter @Inject constructor(private val view: ICoinAllocat
         }
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         disposable.clear()
     }
 

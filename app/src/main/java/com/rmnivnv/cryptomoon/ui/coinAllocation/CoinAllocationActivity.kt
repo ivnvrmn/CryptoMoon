@@ -42,9 +42,9 @@ class CoinAllocationActivity : BaseActivity(), ICoinAllocation.View {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
     override fun enableGraphLoading() {

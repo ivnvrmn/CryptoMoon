@@ -71,9 +71,9 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
         coin_info_main_price.text = price
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

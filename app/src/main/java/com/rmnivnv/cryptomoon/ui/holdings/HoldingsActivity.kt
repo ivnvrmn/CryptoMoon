@@ -61,4 +61,9 @@ class HoldingsActivity : BaseActivity(), IHoldings.View {
     override fun updateRecyclerView() {
         adapter.notifyDataSetChanged()
     }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
+    }
 }

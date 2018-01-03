@@ -138,7 +138,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         view.closeActivity()
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         disposable.clear()
     }
 }

@@ -51,9 +51,9 @@ class AddCoinActivity : BaseActivity(), IAddCoin.View {
         recView.adapter = adapter
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
     override fun updateRecyclerView() {

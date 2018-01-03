@@ -19,6 +19,6 @@ interface ITopCoins {
         fun onSwipeUpdate()
         fun onStart()
         fun onAddCoinClicked(coin: TopCoinData, itemView: android.view.View)
-        fun onDestroy()
+        fun onStop()
     }
 }

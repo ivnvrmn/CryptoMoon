@@ -24,6 +24,6 @@ interface IAddTransaction {
         fun observeConfirmClicks(observable: Observable<Unit>)
         fun onDatePicked(year: Int, month: Int, day: Int)
         fun onDatePickerDialogCancelled()
-        fun onDestroy()
+        fun onStop()
     }
 }
