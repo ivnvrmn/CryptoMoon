@@ -20,8 +20,10 @@
 
 App available on Google Play: https://play.google.com/store/apps/details?id=com.rmnivnv.cryptomoon
 
-![alt text](artwork/main_coins_upd.png)
+![alt text](artwork/coins_en.png)
+![alt text](artwork/top_coins_en.png)
+![alt text](artwork/news_en.png)
 
-![alt text](artwork/main_top.png)
-![alt text](artwork/bitcoin_info.png)
-![alt text](artwork/allocations.png)
+![alt text](artwork/chart_en.png)
+![alt text](artwork/holdings_en.png)
+![alt text](artwork/add_coin_en.png)
