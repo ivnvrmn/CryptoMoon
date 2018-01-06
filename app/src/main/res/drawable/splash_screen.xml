@@ -7,7 +7,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ic_monetization_on"/>
+            android:src="@drawable/ic_logo"/>
     </item>
 
 </layer-list>

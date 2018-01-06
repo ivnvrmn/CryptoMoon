@@ -41,7 +41,7 @@
                     android:id="@+id/coin_info_logo"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    tools:src="@drawable/ic_btc"/>
+                    tools:src="@drawable/ic_logo"/>
 
                 <TextView
                     android:id="@+id/coin_info_main_price"

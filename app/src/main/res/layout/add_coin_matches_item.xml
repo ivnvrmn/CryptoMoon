@@ -18,7 +18,7 @@
             android:id="@+id/add_coin_icon"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
-            tools:src="@drawable/ic_btc"
+            tools:src="@drawable/ic_logo"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"/>
 

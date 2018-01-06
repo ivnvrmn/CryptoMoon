@@ -11,7 +11,7 @@
         android:id="@+id/main_item_market_logo"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
-        android:src="@drawable/ic_btc"
+        android:src="@drawable/ic_logo"
         app:layout_constraintBottom_toTopOf="@+id/main_item_from"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_item_full_name" />
