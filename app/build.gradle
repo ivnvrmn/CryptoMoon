@@ -11,8 +11,8 @@ android {
         applicationId "com.rmnivnv.cryptomoon"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 8
-        versionName "1.07"
+        versionCode 9
+        versionName "1.08"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
