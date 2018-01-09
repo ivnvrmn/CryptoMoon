@@ -2,6 +2,7 @@ package com.rmnivnv.cryptomoon.ui.settings
 
 import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerActivity
+import com.rmnivnv.cryptomoon.model.Preferences
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
@@ -18,5 +19,6 @@ class SettingsModule {
     @Provides @PerActivity
     fun providePresenter(view: Settings.View,
                          context: Context,
-                         resourceProvider: ResourceProvider): Settings.Presenter = SettingsPresenter(view, context, resourceProvider)
+                         resourceProvider: ResourceProvider,
+                         preferences: Preferences): Settings.Presenter = SettingsPresenter(view, context, resourceProvider, preferences)
 }

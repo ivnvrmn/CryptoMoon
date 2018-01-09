@@ -11,6 +11,8 @@ import java.util.*
 /**
  * Created by rmnivnv on 02/01/2018.
  */
+
+//todo refactor this with injected Preferences and Context
 class LocaleManager {
 
     companion object {
@@ -26,13 +28,13 @@ class LocaleManager {
         }
 
         private fun getLanguage(context: Context): String {
-            val prefs = Prefs(context)
+            val prefs = Preferences(context)
             return prefs.language
         }
 
         @SuppressLint("ApplySharedPref")
         private fun persistLanguage(context: Context, language: String) {
-            val prefs = Prefs(context)
+            val prefs = Preferences(context)
             prefs.language = language
         }
 

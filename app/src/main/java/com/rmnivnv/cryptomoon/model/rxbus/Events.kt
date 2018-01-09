@@ -10,8 +10,8 @@ class OnDeleteCoinsMenuItemClickedEvent
 
 class MainCoinsListUpdatedEvent
 
-class SearchHashTagUpdated
+class SearchHashTagUpdated(val hashTag: String)
 
-class CoinsSortMethodUpdated
+class CoinsSortMethodUpdated(val sort: String?)
 
-class LanguageChanged
+class LanguageChanged(val language: String)

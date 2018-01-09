@@ -3,7 +3,7 @@ package com.rmnivnv.cryptomoon.ui.settings
 import android.content.Context
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.LocaleManager
-import com.rmnivnv.cryptomoon.model.Prefs
+import com.rmnivnv.cryptomoon.model.Preferences
 import com.rmnivnv.cryptomoon.model.rxbus.LanguageChanged
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
@@ -18,9 +18,9 @@ import javax.inject.Inject
 class SettingsPresenter @Inject constructor(
         private val view: Settings.View,
         private val context: Context,
-        private val resourceProvider: ResourceProvider) : Settings.Presenter {
+        private val resourceProvider: ResourceProvider,
+        private val preferences: Preferences) : Settings.Presenter {
 
-    private val prefs = Prefs(context)
     private val disposable = CompositeDisposable()
 
     override fun onCreate() {
@@ -29,11 +29,11 @@ class SettingsPresenter @Inject constructor(
     }
 
     private fun initLanguage() {
-        if (prefs.language.isEmpty()) prefs.language = LocaleManager.getLocale(context.resources).language
+        if (preferences.language.isEmpty()) preferences.language = LocaleManager.getLocale(context.resources).language
         view.setLanguage(getLanguageFromPrefs())
     }
 
-    private fun getLanguageFromPrefs() = when (prefs.language) {
+    private fun getLanguageFromPrefs() = when (preferences.language) {
         LocaleManager.RUSSIAN -> resourceProvider.getString(R.string.russian)
         else -> resourceProvider.getString(R.string.english)
     }
@@ -42,16 +42,17 @@ class SettingsPresenter @Inject constructor(
         disposable.add(RxBus.listen(LanguageChanged::class.java)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { onLanguageChanged() })
+                .subscribe { onLanguageChanged(it.language) })
     }
 
-    private fun onLanguageChanged() {
-        LocaleManager.setNewLocale(context, prefs.language)
+    private fun onLanguageChanged(language: String?) {
+        if (language != null) preferences.language = language
+        LocaleManager.setNewLocale(context, preferences.language)
         System.exit(0)
     }
 
     override fun onLanguageClicked() {
-        view.showLanguageDialog()
+        view.showLanguageDialog(preferences.language)
     }
 
     override fun onStop() {

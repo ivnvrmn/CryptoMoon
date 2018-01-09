@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.Prefs
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.rxbus.SearchHashTagUpdated
 import kotlinx.android.synthetic.main.search_dialog.*
@@ -16,11 +15,11 @@ import kotlinx.android.synthetic.main.search_dialog.*
  */
 class SearchDialog : DialogFragment() {
 
-    private lateinit var prefs: Prefs
+    private var hashTag: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = Prefs(activity?.applicationContext!!)
+        hashTag = arguments?.getString("query")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
@@ -30,13 +29,12 @@ class SearchDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         search_cancel.setOnClickListener { dismiss() }
         search_ok.setOnClickListener { onOkClicked() }
-        search_text.setText(prefs.searchHashTag)
+        search_text.setText(hashTag)
         search_text.setSelection(search_text.text.length)
     }
 
     private fun onOkClicked() {
-        prefs.searchHashTag =  search_text.text.toString()
-        RxBus.publish(SearchHashTagUpdated())
+        RxBus.publish(SearchHashTagUpdated(search_text.text.toString()))
         dismiss()
     }
 }

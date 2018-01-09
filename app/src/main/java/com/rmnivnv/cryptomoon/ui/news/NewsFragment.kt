@@ -71,7 +71,7 @@ class NewsFragment : DaggerFragment(), INews.View {
         recView.adapter = adapter
         recView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                presenter.onScrolled(dy, linearLayoutManager)
+                presenter.onScrolled(dy, linearLayoutManager.childCount, linearLayoutManager.itemCount, linearLayoutManager.findFirstVisibleItemPosition())
             }
         })
     }
@@ -109,8 +109,11 @@ class NewsFragment : DaggerFragment(), INews.View {
         news_swipe_refresh.isRefreshing = false
     }
 
-    override fun showSearchDialog() {
+    override fun showSearchDialog(query: String) {
         val dialog = SearchDialog()
+        val bundle = Bundle()
+        bundle.putString("query", query)
+        dialog.arguments = bundle
         dialog.show(childFragmentManager, "searchDialog")
     }
 

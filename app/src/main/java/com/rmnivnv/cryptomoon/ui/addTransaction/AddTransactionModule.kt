@@ -1,9 +1,9 @@
 package com.rmnivnv.cryptomoon.ui.addTransaction
 
-import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerActivity
 import com.rmnivnv.cryptomoon.model.db.DBController
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.Toaster
 import dagger.Module
 import dagger.Provides
 
@@ -18,8 +18,8 @@ class AddTransactionModule {
 
     @Provides @PerActivity
     fun providePresenter(view: IAddTransaction.View,
-                         context: Context,
                          resourceProvider: ResourceProvider,
-                         dbController: DBController): IAddTransaction.Presenter =
-            AddTransactionPresenter(view, context, resourceProvider, dbController)
+                         dbController: DBController,
+                         toaster: Toaster): IAddTransaction.Presenter =
+            AddTransactionPresenter(view, resourceProvider, dbController, toaster)
 }

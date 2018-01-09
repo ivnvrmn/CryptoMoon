@@ -1,11 +1,11 @@
 package com.rmnivnv.cryptomoon.ui.coinInfo
 
-import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerActivity
 import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.GraphMaker
 import com.rmnivnv.cryptomoon.model.HoldingsHandler
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
+import com.rmnivnv.cryptomoon.utils.Logger
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
@@ -20,13 +20,13 @@ class CoinInfoModule {
     fun provideView(coinInfoActivity: CoinInfoActivity): ICoinInfo.View = coinInfoActivity
 
     @Provides @PerActivity
-    fun providePresenter(context: Context,
-                         view: ICoinInfo.View,
+    fun providePresenter(view: ICoinInfo.View,
                          coinsController: CoinsController,
                          networkRequests: NetworkRequests,
                          graphMaker: GraphMaker,
                          holdingsHandler: HoldingsHandler,
-                         resourceProvider: ResourceProvider): ICoinInfo.Presenter =
-            CoinInfoPresenter(context, view, coinsController, networkRequests, graphMaker, holdingsHandler, resourceProvider)
+                         resourceProvider: ResourceProvider,
+                         logger: Logger): ICoinInfo.Presenter =
+            CoinInfoPresenter(view, coinsController, networkRequests, graphMaker, holdingsHandler, resourceProvider, logger)
 
 }
