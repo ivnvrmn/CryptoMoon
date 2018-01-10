@@ -26,8 +26,6 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
     private var allCoins: List<InfoCoin> = mutableListOf()
     private var coins: ArrayList<Coin> = ArrayList()
     private lateinit var matches: ArrayList<InfoCoin>
-    private var selectedCoin: Coin? = null
-    private var coinSelect = true
 
     override fun onCreate( matches: ArrayList<InfoCoin>) {
         this.matches = matches
@@ -79,23 +77,19 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
             val matchesList = allCoins.filter { (it.coinName.contains(text, true)) ||
                     (it.name.contains(text, true)) }.reversed()
             if (matchesList.isNotEmpty()) {
-                view.setMatchesResultSize(matchesList.size.toString())
-                updateCoinsList(matchesList)
+                matches.clear()
+                matches.addAll(checkAndRemoveAlreadyAddedCoins(matchesList))
+                updateCoinsList()
             } else {
-                updateCoinsList(null)
+                updateCoinsList()
             }
         } else {
-            updateCoinsList(null)
+            updateCoinsList()
         }
     }
 
-    private fun updateCoinsList(list: List<InfoCoin>?) {
-        matches.clear()
-        if (list != null) {
-            matches.addAll(checkAndRemoveAlreadyAddedCoins(list))
-        } else {
-            view.setMatchesResultSize("0")
-        }
+    private fun updateCoinsList() {
+        view.setMatchesResultSize(if (matches.size > 0) matches.size.toString() else "0")
         view.updateRecyclerView()
     }
 
@@ -116,51 +110,7 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
         matches.add(coin)
         view.updateRecyclerView()
         view.hideKeyboard()
-        if (coinSelect) {
-            selectedCoin = Coin(from = coin.name, to = "")
-            requestPairs(coin)
-            coinSelect = false
-        } else {
-            if (selectedCoin != null) {
-                selectedCoin?.to = coin.coinName.replace("/ ", "")
-                if (coins.isNotEmpty() && coins.find { it.from == selectedCoin?.from &&
-                        it.to == selectedCoin?.to} != null) {
-                    context.toastShort(resProvider.getString(R.string.coin_already_added))
-                    matches.clear()
-                    view.updateRecyclerView()
-                    coinSelect = true
-                    view.clearFromEdt()
-                } else {
-                    requestCoinInfo(selectedCoin!!)
-                }
-            }
-        }
-    }
-
-    private fun requestPairs(coin: InfoCoin) {
-        if (!coin.name.isEmpty()) {
-            view.enableLoadingLayout()
-            disposable.add(networkRequests.getPairs(coin.name)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ onPairsArrived(it) }, { view.disableLoadingLayout() }))
-        }
-    }
-
-    private fun onPairsArrived(pairs: ArrayList<PairData>) {
-        view.disableLoadingLayout()
-        onPairsReceived(pairs)
-    }
-
-    private fun onPairsReceived(pairs: ArrayList<PairData>) {
-        val usdPair = pairs.find { it.toSymbol == USD }
-        if (pairs.isNotEmpty() && usdPair != null) {
-            matches.clear()
-            matches.add(InfoCoin(name = usdPair.fromSymbol, coinName = """/ ${usdPair.toSymbol}""", imageUrl = "", coinId = ""))
-            view.updateRecyclerView()
-            context.toastShort(resProvider.getString(R.string.choose_currency))
-        } else {
-            context.toastShort(resProvider.getString(R.string.coin_not_found))
-        }
+        requestCoinInfo(Coin(from = coin.name, to = USD))
     }
 
     private fun requestCoinInfo(coin: Coin) {
