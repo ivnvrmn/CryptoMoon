@@ -1,8 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.coinInfo
 
-import android.content.Context
-import android.os.Bundle
-import android.util.Log
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.*
@@ -15,25 +12,23 @@ import javax.inject.Inject
 /**
  * Created by ivanov_r on 17.08.2017.
  */
-class CoinInfoPresenter @Inject constructor(private val context: Context,
-                                            private val view: ICoinInfo.View,
+class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
                                             private val coinsController: CoinsController,
                                             private val networkRequests: NetworkRequests,
                                             private val graphMaker: GraphMaker,
                                             private val holdingsHandler: HoldingsHandler,
-                                            private val resProvider: ResourceProvider) : ICoinInfo.Presenter {
+                                            private val resProvider: ResourceProvider,
+                                            private val logger: Logger) : ICoinInfo.Presenter {
 
     private val disposable = CompositeDisposable()
     private var coin: Coin? = null
-    private var from: String? = null
-    private var to: String? = null
+    private lateinit var from: String
+    private lateinit var to: String
 
-    override fun onCreate(extras: Bundle) {
-        if (extras[NAME] != null && extras[TO] != null) {
-            from = extras.getString(NAME)
-            to = extras.getString(TO)
-            getCoinByName(from, to)
-        }
+    override fun onCreate(fromArg: String, toArg: String) {
+        from = fromArg
+        to = toArg
+        getCoinByName(from, to)
     }
 
     private fun getCoinByName(from: String?, to: String?) {
@@ -98,14 +93,14 @@ class CoinInfoPresenter @Inject constructor(private val context: Context,
     }
 
     private fun onFindCoinError(throwable: Throwable) {
-        context.logDebug("getCoinByName error " + throwable.toString())
-        requestCoinInfo(Coin(from = this.from!!, to = this.to!!))
+        logger.logDebug("getCoinByName error " + throwable.toString())
+        requestCoinInfo(Coin(from = this.from, to = this.to))
     }
 
     private fun requestCoinInfo(coin: Coin) {
         disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coin)))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onPriceUpdated(it) }, { Log.e("requestCoinInfo", it.toString()) }))
+                .subscribe({ onPriceUpdated(it) }, { logger.logError("requestCoinInfo $it") }))
     }
 
     private fun onPriceUpdated(list: ArrayList<Coin>) {

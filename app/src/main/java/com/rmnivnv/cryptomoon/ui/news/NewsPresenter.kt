@@ -1,11 +1,9 @@
 package com.rmnivnv.cryptomoon.ui.news
 
-import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import com.rmnivnv.cryptomoon.model.Prefs
+import com.rmnivnv.cryptomoon.model.Preferences
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.rxbus.SearchHashTagUpdated
-import com.rmnivnv.cryptomoon.utils.logError
+import com.rmnivnv.cryptomoon.utils.Logger
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.models.Search
 import com.twitter.sdk.android.core.models.Tweet
@@ -19,7 +17,8 @@ import javax.inject.Inject
  * Created by ivanov_r on 26.09.2017.
  */
 class NewsPresenter @Inject constructor(private val view: INews.View,
-                                        private val context: Context) : INews.Presenter {
+                                        private val preferences: Preferences,
+                                        private val logger: Logger) : INews.Presenter {
 
     private var tweets: ArrayList<Tweet> = ArrayList()
     private var twitterSession: TwitterSession? = null
@@ -32,7 +31,6 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
     private var loading = true
     private var lastId: Long? = null
     private var newTweetsStartPosition: Int = 0
-    private val prefs = Prefs(context)
     private val disposable = CompositeDisposable()
     private var isFooterLoading = false
 
@@ -49,10 +47,11 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
         disposable.add(RxBus.listen(SearchHashTagUpdated::class.java)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ searchHashTagUpdated() }))
+                .subscribe({ searchHashTagUpdated(it.hashTag) }))
     }
 
-    private fun searchHashTagUpdated() {
+    private fun searchHashTagUpdated(hashTag: String) {
+        preferences.searchHashTag = hashTag
         tweets.clear()
         newTweetsStartPosition = 0
         isFooterLoading = false
@@ -78,7 +77,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
         if (!isSwipeRefreshing && !isFooterLoading) view.showLoading()
         val searchService = twitterApiClient?.searchService
         call = searchService?.tweets(
-                prefs.searchHashTag,
+                preferences.searchHashTag,
                 null,
                 null,
                 null,
@@ -101,7 +100,7 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
             }
 
             override fun failure(exception: TwitterException?) {
-                context.logError("searchTweets exception = " + exception.toString())
+                logger.logError("searchTweets exception = " + exception.toString())
             }
         })
     }
@@ -140,11 +139,11 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
         initTwitterAndSearchTweets()
     }
 
-    override fun onScrolled(dy: Int, linearLayoutManager: LinearLayoutManager) {
+    override fun onScrolled(dy: Int, childCount: Int, itemCount: Int, firstVisiblePosition: Int) {
         if (dy > 0) {
-            visibleItemCount = linearLayoutManager.childCount
-            totalItemCount = linearLayoutManager.itemCount
-            pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition()
+            visibleItemCount = childCount
+            totalItemCount = itemCount
+            pastVisibleItems = firstVisiblePosition
             if (loading && (visibleItemCount + pastVisibleItems) >= totalItemCount - 3) {
                 loading = false
                 lastId = tweets.last().id
@@ -156,6 +155,6 @@ class NewsPresenter @Inject constructor(private val view: INews.View,
     }
 
     override fun onFabClicked() {
-        view.showSearchDialog()
+        view.showSearchDialog(preferences.searchHashTag)
     }
 }

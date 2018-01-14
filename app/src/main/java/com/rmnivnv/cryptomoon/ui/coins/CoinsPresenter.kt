@@ -1,7 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.coins
 
-import android.content.Context
-import android.util.Log
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
@@ -17,17 +15,18 @@ import javax.inject.Inject
 /**
  * Created by rmnivnv on 11/07/2017.
  */
-class CoinsPresenter @Inject constructor(private val context: Context,
-                                         private val view: ICoins.View,
+class CoinsPresenter @Inject constructor(private val view: ICoins.View,
                                          private val networkRequests: NetworkRequests,
                                          private val coinsController: CoinsController,
                                          private val db: CMDatabase,
                                          private val resProvider: ResourceProvider,
                                          private val pageController: PageController,
                                          private val multiSelector: MultiSelector,
-                                         private val holdingsHandler: HoldingsHandler) : ICoins.Presenter {
+                                         private val holdingsHandler: HoldingsHandler,
+                                         private val logger: Logger,
+                                         private val toaster: Toaster,
+                                         private val preferences: Preferences) : ICoins.Presenter {
 
-    private val prefs = Prefs(context)
     private val disposable = CompositeDisposable()
     private var coins: ArrayList<Coin> = ArrayList()
     private var holdings: ArrayList<HoldingData> = ArrayList()
@@ -135,7 +134,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
         disposable.add(RxBus.listen(CoinsSortMethodUpdated::class.java)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { onSortMethodUpdated() })
+                .subscribe { onSortMethodUpdated(it.sort) })
     }
 
     private fun onDeleteClicked() {
@@ -145,19 +144,20 @@ class CoinsPresenter @Inject constructor(private val context: Context,
             holdingsHandler.removeHoldings(coinsToDelete)
             coinsController.deleteCoins(coinsToDelete)
             RxBus.publish(MainCoinsListUpdatedEvent())
-            context.toastShort(if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)
+            toaster.toastShort(if (coinsToDelete.size > 1) resProvider.getString(R.string.coins_deleted)
                                else resProvider.getString(R.string.coin_deleted))
         }
     }
 
-    private fun onSortMethodUpdated() {
+    private fun onSortMethodUpdated(sort: String?) {
+        if (sort != null) preferences.sortBy = sort
         if (coins.isNotEmpty() && coins.size > 1) {
             sortCoinsBySelectedSortMethod()
         }
     }
 
     private fun sortCoinsBySelectedSortMethod() {
-        when (prefs.sortBy) {
+        when (preferences.sortBy) {
             SortDialog.SORT_BY_NAME -> coins.sortBy { it.from }
             SortDialog.SORT_BY_PRICE_INCREASE -> coins.sortBy { it.priceRaw }
             SortDialog.SORT_BY_PRICE_DECREASE -> coins.sortByDescending { it.priceRaw }
@@ -191,7 +191,7 @@ class CoinsPresenter @Inject constructor(private val context: Context,
     private fun getAllCoinsInfo() {
         disposable.add(networkRequests.getAllCoins()
                 .subscribe({ onAllCoinsReceived(it) },
-                        { Log.e("getAllCoinsInfo", it.toString()) }))
+                        { logger.logError("getAllCoinsInfo $it") }))
     }
 
     private fun onAllCoinsReceived(list: ArrayList<InfoCoin>) {

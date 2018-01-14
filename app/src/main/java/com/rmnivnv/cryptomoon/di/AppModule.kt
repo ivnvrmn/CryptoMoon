@@ -6,7 +6,9 @@ import android.content.Context
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.db.DBController
+import com.rmnivnv.cryptomoon.utils.Logger
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.Toaster
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -49,4 +51,13 @@ class AppModule {
 
     @Provides @Singleton
     fun provideHoldingsHandler(db: CMDatabase) = HoldingsHandler(db)
+
+    @Provides @Singleton
+    fun provideLogger(context: Context) = Logger(context)
+
+    @Provides @Singleton
+    fun provideToaster(context: Context) = Toaster(context)
+
+    @Provides @Singleton
+    fun providePreferences(context: Context) = Preferences(context)
 }

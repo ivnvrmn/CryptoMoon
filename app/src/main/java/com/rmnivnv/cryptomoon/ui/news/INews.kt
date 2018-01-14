@@ -1,6 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.news
 
-import android.support.v7.widget.LinearLayoutManager
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterSession
 import com.twitter.sdk.android.core.models.Tweet
@@ -18,7 +17,7 @@ interface INews {
         fun showLoading()
         fun hideLoading()
         fun hideSwipeRefreshing()
-        fun showSearchDialog()
+        fun showSearchDialog(query: String)
         fun showEmptyNews()
         fun hideEmptyNews()
         fun showFab()
@@ -31,7 +30,7 @@ interface INews {
         fun onStart()
         fun onStop()
         fun onSwipeUpdate()
-        fun onScrolled(dy: Int, linearLayoutManager: LinearLayoutManager)
+        fun onScrolled(dy: Int, childCount: Int, itemCount: Int, firstVisiblePosition: Int)
         fun onFabClicked()
     }
 

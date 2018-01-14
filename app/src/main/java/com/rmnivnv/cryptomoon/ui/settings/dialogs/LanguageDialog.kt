@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.LocaleManager
-import com.rmnivnv.cryptomoon.model.Prefs
 import com.rmnivnv.cryptomoon.model.rxbus.LanguageChanged
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import kotlinx.android.synthetic.main.language_dialog.*
@@ -18,13 +17,11 @@ import kotlinx.android.synthetic.main.language_dialog.*
  */
 class LanguageDialog : DialogFragment() {
 
-    private lateinit var prefs: Prefs
-    private lateinit var selectedLang: String
+    private var selectedLang: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = Prefs(activity?.applicationContext!!)
-        selectedLang = prefs.language
+        selectedLang = arguments?.getString("lang")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
@@ -48,15 +45,14 @@ class LanguageDialog : DialogFragment() {
     }
 
     private fun setCheckedBtn() {
-        when (prefs.language) {
+        when (selectedLang) {
             LocaleManager.ENGLISH -> lang_dialog_english.isChecked = true
             LocaleManager.RUSSIAN -> lang_dialog_russian.isChecked = true
         }
     }
 
     private fun onLanguageSelected(language: String) {
-        prefs.language = language
-        RxBus.publish(LanguageChanged())
+        RxBus.publish(LanguageChanged(language))
         dismiss()
     }
 

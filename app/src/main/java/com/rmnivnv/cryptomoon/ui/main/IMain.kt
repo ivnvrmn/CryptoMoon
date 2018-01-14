@@ -11,7 +11,7 @@ interface IMain {
         fun setMenuIconsVisibility(isSelected: Boolean)
         fun showToast(text: String)
         fun setSortVisible(isVisible: Boolean)
-        fun showCoinsSortDialog()
+        fun showCoinsSortDialog(sort: String)
         fun openSettings()
     }
 

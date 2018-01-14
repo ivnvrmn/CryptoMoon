@@ -6,6 +6,7 @@ import com.rmnivnv.cryptomoon.model.rxbus.OnDeleteCoinsMenuItemClickedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.MultiSelector
 import com.rmnivnv.cryptomoon.model.PageController
+import com.rmnivnv.cryptomoon.model.Preferences
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,7 +17,8 @@ import javax.inject.Inject
  */
 class MainPresenter @Inject constructor(private val view: IMain.View,
                                         private val multiSelector: MultiSelector,
-                                        private val pageController: PageController) : IMain.Presenter {
+                                        private val pageController: PageController,
+                                        private val preferences: Preferences) : IMain.Presenter {
     private val disposable = CompositeDisposable()
 
     override fun onCreate() {
@@ -55,7 +57,7 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
     }
 
     override fun onSortClicked() {
-        view.showCoinsSortDialog()
+        view.showCoinsSortDialog(preferences.sortBy)
     }
 
     override fun onSettingsClicked() {

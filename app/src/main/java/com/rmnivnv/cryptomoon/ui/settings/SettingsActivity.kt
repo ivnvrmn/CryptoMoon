@@ -40,8 +40,11 @@ class SettingsActivity : BaseActivity(), Settings.View {
         presenter.onStop()
     }
 
-    override fun showLanguageDialog() {
+    override fun showLanguageDialog(language: String) {
         val dialog = LanguageDialog()
+        val bundle = Bundle()
+        bundle.putString("lang", language)
+        dialog.arguments = bundle
         dialog.show(supportFragmentManager, "languageDialog")
     }
 }

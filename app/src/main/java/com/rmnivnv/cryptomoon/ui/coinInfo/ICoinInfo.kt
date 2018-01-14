@@ -1,6 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.coinInfo
 
-import android.os.Bundle
 import com.github.mikephil.charting.data.CandleData
 
 /**
@@ -37,7 +36,7 @@ interface ICoinInfo {
     }
 
     interface Presenter {
-        fun onCreate(extras: Bundle)
+        fun onCreate(fromArg: String, toArg: String)
         fun onSpinnerItemClicked(position: Int)
         fun onAddTransactionClicked()
         fun onStop()

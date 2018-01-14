@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.CandleData
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.model.FROM
+import com.rmnivnv.cryptomoon.model.NAME
 import com.rmnivnv.cryptomoon.model.PRICE
 import com.rmnivnv.cryptomoon.model.TO
 import com.rmnivnv.cryptomoon.ui.addTransaction.AddTransactionActivity
@@ -31,7 +32,7 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
         setContentView(R.layout.activity_coin_info)
         setupToolbar()
         setupSpinner()
-        presenter.onCreate(intent.extras)
+        presenter.onCreate(intent.extras.getString(NAME), intent.extras.getString(TO))
     }
 
     private fun setupToolbar() {

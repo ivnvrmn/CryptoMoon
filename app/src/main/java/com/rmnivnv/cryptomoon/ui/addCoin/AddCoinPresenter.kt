@@ -1,6 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.addCoin
 
-import android.content.Context
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
@@ -15,12 +14,12 @@ import javax.inject.Inject
 /**
  * Created by rmnivnv on 27/07/2017.
  */
-class AddCoinPresenter @Inject constructor(private val context: Context,
-                                           private val view: IAddCoin.View,
+class AddCoinPresenter @Inject constructor(private val view: IAddCoin.View,
                                            private val coinsController: CoinsController,
                                            private val networkRequests: NetworkRequests,
                                            private val resProvider: ResourceProvider,
-                                           private val db: CMDatabase): IAddCoin.Presenter {
+                                           private val db: CMDatabase,
+                                           private val toaster: Toaster): IAddCoin.Presenter {
 
     private val disposable = CompositeDisposable()
     private var allCoins: List<InfoCoin> = mutableListOf()
@@ -131,11 +130,11 @@ class AddCoinPresenter @Inject constructor(private val context: Context,
 
     private fun coinNotFound() {
         view.disableLoadingLayout()
-        context.toastShort(resProvider.getString(R.string.coin_not_found))
+        toaster.toastShort(resProvider.getString(R.string.coin_not_found))
     }
 
     private fun coinSuccessfullyAdded() {
-        context.toastShort(resProvider.getString(R.string.coin_added))
+        toaster.toastShort(resProvider.getString(R.string.coin_added))
         view.finishActivity()
     }
 }

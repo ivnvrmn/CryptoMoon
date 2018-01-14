@@ -167,8 +167,11 @@ class MainActivity : BaseActivity(), IMain.View {
         sortMenuItem?.isVisible = isVisible
     }
 
-    override fun showCoinsSortDialog() {
+    override fun showCoinsSortDialog(sort: String) {
         val dialog = SortDialog()
+        val bundle = Bundle()
+        bundle.putString("sort", sort)
+        dialog.arguments = bundle
         dialog.show(supportFragmentManager, "sortDialog")
     }
 

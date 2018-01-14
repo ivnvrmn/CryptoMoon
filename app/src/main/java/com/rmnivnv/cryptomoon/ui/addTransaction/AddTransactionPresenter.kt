@@ -1,13 +1,12 @@
 package com.rmnivnv.cryptomoon.ui.addTransaction
 
-import android.content.Context
 import android.os.Bundle
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.DBController
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.Toaster
 import com.rmnivnv.cryptomoon.utils.formatLongDateToString
-import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -19,9 +18,9 @@ import javax.inject.Inject
  * Created by rmnivnv on 06/09/2017.
  */
 class AddTransactionPresenter @Inject constructor(private val view: IAddTransaction.View,
-                                                  private val context: Context,
                                                   private val resourceProvider: ResourceProvider,
-                                                  private val dbController: DBController) : IAddTransaction.Presenter {
+                                                  private val dbController: DBController,
+                                                  private val toaster: Toaster) : IAddTransaction.Presenter {
     private var from = ""
     private var to = ""
     private var price = 0.0
@@ -120,13 +119,13 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
         if (allFieldsAreFilled()) {
             saveHoldings()
         } else if (tradingPrice == 0f && quantity == 0f && transactionDate == null) {
-            context.toastShort(resourceProvider.getString(R.string.add_trans_fill_all_fields))
+            toaster.toastShort(resourceProvider.getString(R.string.add_trans_fill_all_fields))
         } else if (transactionDate == null) {
-            context.toastShort(resourceProvider.getString(R.string.add_trans_fill_date))
+            toaster.toastShort(resourceProvider.getString(R.string.add_trans_fill_date))
         } else if (tradingPrice == 0f) {
-            context.toastShort(resourceProvider.getString(R.string.add_trans_fill_price))
+            toaster.toastShort(resourceProvider.getString(R.string.add_trans_fill_price))
         } else {
-            context.toastShort(resourceProvider.getString(R.string.add_trans_fill_quantity))
+            toaster.toastShort(resourceProvider.getString(R.string.add_trans_fill_quantity))
         }
     }
 
@@ -134,7 +133,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
 
     private fun saveHoldings() {
         dbController.saveHoldingData(HoldingData(from, to, quantity, tradingPrice, transactionDate!!.time))
-        context.toastShort(resourceProvider.getString(R.string.transaction_added))
+        toaster.toastShort(resourceProvider.getString(R.string.transaction_added))
         view.closeActivity()
     }
 

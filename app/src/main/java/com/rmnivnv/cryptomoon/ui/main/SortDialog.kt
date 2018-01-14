@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.Prefs
 import com.rmnivnv.cryptomoon.model.rxbus.CoinsSortMethodUpdated
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import kotlinx.android.synthetic.main.sort_dialog.*
@@ -21,18 +20,15 @@ class SortDialog : DialogFragment() {
         val SORT_BY_NAME = "name"
         val SORT_BY_PRICE_INCREASE = "price_decrease"
         val SORT_BY_PRICE_DECREASE = "price_increase"
-        val SORT_BY_HOLDINGS = "holdings"
         val SORT_BY_24H_PRICE_INCREASE = "24h_price_increase"
         val SORT_BY_24H_PRICE_DECREASE = "24h_price_decrease"
     }
 
-    private lateinit var prefs: Prefs
-    private lateinit var selectedSort: String
+    private var selectedSort: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = Prefs(activity?.applicationContext!!)
-        selectedSort = prefs.sortBy
+        selectedSort = arguments?.getString("sort")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
@@ -56,8 +52,7 @@ class SortDialog : DialogFragment() {
     }
 
     private fun onOkClicked() {
-        prefs.sortBy = selectedSort
-        RxBus.publish(CoinsSortMethodUpdated())
+        RxBus.publish(CoinsSortMethodUpdated(selectedSort))
         dismiss()
     }
 

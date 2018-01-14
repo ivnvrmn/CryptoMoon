@@ -1,11 +1,11 @@
 package com.rmnivnv.cryptomoon.ui.addCoin
 
-import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerActivity
 import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.Toaster
 import dagger.Module
 import dagger.Provides
 
@@ -19,11 +19,11 @@ class AddCoinModule {
     fun provideView(addCoinActivity: AddCoinActivity): IAddCoin.View = addCoinActivity
 
     @Provides @PerActivity
-    fun providePresenter(context: Context,
-                                   view: IAddCoin.View,
-                                   coinsController: CoinsController,
-                                   networkRequests: NetworkRequests,
-                                   resProvider: ResourceProvider,
-                                   db: CMDatabase): IAddCoin.Presenter =
-            AddCoinPresenter(context, view, coinsController, networkRequests, resProvider, db)
+    fun providePresenter(view: IAddCoin.View,
+                         coinsController: CoinsController,
+                         networkRequests: NetworkRequests,
+                         resProvider: ResourceProvider,
+                         db: CMDatabase,
+                         toaster: Toaster): IAddCoin.Presenter =
+            AddCoinPresenter(view, coinsController, networkRequests, resProvider, db, toaster)
 }

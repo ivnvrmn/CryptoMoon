@@ -7,7 +7,7 @@ interface Settings {
 
     interface View {
         fun setLanguage(language: String)
-        fun showLanguageDialog()
+        fun showLanguageDialog(language: String)
     }
 
     interface Presenter {

@@ -6,7 +6,7 @@ import com.rmnivnv.cryptomoon.ui.main.SortDialog
 /**
  * Created by rmnivnv on 10/12/2017.
  */
-class Prefs(context: Context) {
+class Preferences(context: Context) {
 
     companion object {
         val PREFS_NAME = "com.rmnivnv.cryptomoon"

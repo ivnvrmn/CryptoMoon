@@ -1,7 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.topCoins
 
-import android.content.Context
-import android.util.Log
 import android.view.View
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
@@ -9,9 +7,10 @@ import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
+import com.rmnivnv.cryptomoon.utils.Logger
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.Toaster
 import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
-import com.rmnivnv.cryptomoon.utils.toastShort
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -21,13 +20,15 @@ import javax.inject.Inject
 /**
  * Created by rmnivnv on 02/09/2017.
  */
-class TopCoinsPresenter @Inject constructor(private val context: Context,
-                                            private val view: ITopCoins.View,
+class TopCoinsPresenter @Inject constructor(private val view: ITopCoins.View,
                                             private val db: CMDatabase,
                                             private val networkRequests: NetworkRequests,
                                             private val coinsController: CoinsController,
                                             private val resProvider: ResourceProvider,
-                                            private val pageController: PageController) : ITopCoins.Presenter {
+                                            private val pageController: PageController,
+                                            private val toaster: Toaster,
+                                            private val logger: Logger) : ITopCoins.Presenter {
+
     private val disposable = CompositeDisposable()
     private var coins: ArrayList<TopCoinData> = ArrayList()
     private var isRefreshing = false
@@ -100,7 +101,7 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
         disposable.add(networkRequests.getTopCoins()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onTopCoinsReceived(it) },
-                        { Log.e("updateTopCoins", it.toString()) }))
+                        { logger.logError("updateTopCoins $it") }))
     }
 
     private fun onTopCoinsReceived(coins: List<TopCoinData>) {
@@ -117,7 +118,7 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
         if (coinsController.allInfoCoinsIsEmpty()) {
             disposable.add(networkRequests.getAllCoins()
                     .subscribe({ onAllCoinsReceived(it) },
-                            { Log.e("getAllCoinsInfo", it.toString()) }))
+                            { logger.logError("getAllCoinsInfo $it") }))
         } else {
             updateTopCoins()
         }
@@ -138,6 +139,7 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
         updateTopCoins()
     }
 
+    //todo get rid of View
     override fun onAddCoinClicked(coin: TopCoinData, itemView: View) {
         itemView.top_coin_add_loading.visibility = View.VISIBLE
         itemView.top_coin_add_icon.visibility = View.GONE
@@ -151,16 +153,16 @@ class TopCoinsPresenter @Inject constructor(private val context: Context,
         if (list.isNotEmpty()) {
             coinsController.saveCoinsList(list)
             itemView.top_coin_add_icon.setImageDrawable(resProvider.getDrawable(R.drawable.ic_done))
-            context.toastShort(resProvider.getString(R.string.coin_added))
+            toaster.toastShort(resProvider.getString(R.string.coin_added))
         } else {
-            context.toastShort(resProvider.getString(R.string.error))
+            toaster.toastShort(resProvider.getString(R.string.error))
         }
         afterAdded(itemView)
     }
 
     private fun onError(itemView: View) {
         afterAdded(itemView)
-        context.toastShort(resProvider.getString(R.string.error))
+        toaster.toastShort(resProvider.getString(R.string.error))
     }
 
     private fun afterAdded(itemView: View) {
