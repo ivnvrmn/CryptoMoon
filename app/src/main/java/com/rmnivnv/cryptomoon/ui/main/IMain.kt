@@ -22,6 +22,6 @@ interface IMain {
         fun onDeleteClicked()
         fun onPageSelected(position: Int)
         fun onSortClicked()
-        fun onStop()
+        fun onDestroy()
     }
 }

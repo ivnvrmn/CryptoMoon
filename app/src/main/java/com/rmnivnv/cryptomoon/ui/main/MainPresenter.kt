@@ -48,7 +48,7 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
         view.setSortVisible(position == COINS_FRAGMENT_PAGE_POSITION)
     }
 
-    override fun onStop() {
+    override fun onDestroy() {
         disposable.clear()
     }
 

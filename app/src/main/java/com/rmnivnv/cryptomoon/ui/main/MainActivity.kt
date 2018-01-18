@@ -145,9 +145,9 @@ class MainActivity : BaseActivity(), IMain.View {
         else coinsLoading.visibility = View.INVISIBLE
     }
 
-    override fun onStop() {
-        super.onStop()
-        presenter.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 
     override fun startAddCoinActivity() {
