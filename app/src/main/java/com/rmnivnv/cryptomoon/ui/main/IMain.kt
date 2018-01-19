@@ -16,12 +16,12 @@ interface IMain {
     }
 
     interface Presenter {
-        fun onCreate()
+        fun onStart()
+        fun onStop()
         fun onAddCoinClicked()
         fun onSettingsClicked()
         fun onDeleteClicked()
         fun onPageSelected(position: Int)
         fun onSortClicked()
-        fun onDestroy()
     }
 }

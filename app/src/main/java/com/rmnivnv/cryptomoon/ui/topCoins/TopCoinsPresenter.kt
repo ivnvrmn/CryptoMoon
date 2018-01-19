@@ -36,7 +36,12 @@ class TopCoinsPresenter @Inject constructor(private val view: ITopCoins.View,
 
     override fun onCreate(coins: ArrayList<TopCoinData>) {
         this.coins = coins
+    }
+
+    override fun onStart() {
         subscribeToObservables()
+        updateTopCoins()
+        updateAllCoins()
     }
 
     private fun subscribeToObservables() {
@@ -86,11 +91,6 @@ class TopCoinsPresenter @Inject constructor(private val view: ITopCoins.View,
             view.updateRecyclerView()
             needToUpdate = false
         }
-    }
-
-    override fun onStart() {
-        updateTopCoins()
-        updateAllCoins()
     }
 
     override fun onStop() {

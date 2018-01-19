@@ -19,9 +19,10 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
                                         private val multiSelector: MultiSelector,
                                         private val pageController: PageController,
                                         private val preferences: Preferences) : IMain.Presenter {
+
     private val disposable = CompositeDisposable()
 
-    override fun onCreate() {
+    override fun onStart() {
         setObservers()
     }
 
@@ -48,7 +49,7 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
         view.setSortVisible(position == COINS_FRAGMENT_PAGE_POSITION)
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
         disposable.clear()
     }
 

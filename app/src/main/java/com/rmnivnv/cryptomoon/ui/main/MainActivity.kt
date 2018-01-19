@@ -46,7 +46,6 @@ class MainActivity : BaseActivity(), IMain.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Fabric.with(this, Crashlytics())
-        presenter.onCreate()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         setupViewPager()
@@ -145,9 +144,14 @@ class MainActivity : BaseActivity(), IMain.View {
         else coinsLoading.visibility = View.INVISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
     override fun startAddCoinActivity() {
