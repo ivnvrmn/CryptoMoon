@@ -21,7 +21,7 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
                                             private val logger: Logger) : ICoinInfo.Presenter {
 
     private val disposable = CompositeDisposable()
-    private var coin: Coin? = null
+    private var coin: Coin = Coin(from = "", to = "")
     private lateinit var from: String
     private lateinit var to: String
 
@@ -29,6 +29,12 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
         from = fromArg
         to = toArg
         getCoinByName(from, to)
+    }
+
+    override fun onStart() {
+        if (coin.from.isNotEmpty() && coin.to.isNotEmpty()) {
+            setupHoldings()
+        }
     }
 
     private fun getCoinByName(from: String?, to: String?) {
@@ -49,7 +55,7 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
     }
 
     private fun requestHisto(period: String) {
-        disposable.add(networkRequests.getHistoPeriod(period, coin?.from, coin?.to)
+        disposable.add(networkRequests.getHistoPeriod(period, coin.from, coin.to)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onHistoReceived(it, period) }, { view.disableGraphLoading() }))
     }
@@ -60,17 +66,17 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
     }
 
     private fun setCoinInfo() {
-        view.setOpen(coin!!.open24h)
-        view.setHigh(coin!!.high24h)
-        view.setLow(coin!!.low24h)
-        view.setChange(coin!!.change24h)
-        view.setChangePct(coin!!.changePct24h)
-        view.setSupply(coin!!.supply)
-        view.setMarketCap(coin!!.mktCap)
+        view.setOpen(coin.open24h)
+        view.setHigh(coin.high24h)
+        view.setLow(coin.low24h)
+        view.setChange(coin.change24h)
+        view.setChangePct(coin.changePct24h)
+        view.setSupply(coin.supply)
+        view.setMarketCap(coin.mktCap)
     }
 
     private fun setupHoldings() {
-        val holdingData = holdingsHandler.isThereSuchHolding(coin?.from, coin?.to)
+        val holdingData = holdingsHandler.isThereSuchHolding(coin.from, coin.to)
         if (holdingData != null) {
             view.setHoldingQuantity(holdingData.quantity.toString())
             view.setHoldingValue("$${getStringWithTwoDecimalsFromDouble(holdingsHandler.getTotalValueWithCurrentPriceByHoldingData(holdingData))}")
@@ -112,21 +118,19 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
     }
 
     override fun onSpinnerItemClicked(position: Int) {
-        if (coin != null) {
-            view.enableGraphLoading()
-            requestHisto(when (position) {
-                0 -> HOUR
-                1 -> HOURS12
-                2 -> HOURS24
-                3 -> DAYS3
-                4 -> WEEK
-                5 -> MONTH
-                6 -> MONTHS3
-                7 -> MONTHS6
-                8 -> YEAR
-                else -> MONTH
-            })
-        }
+        view.enableGraphLoading()
+        requestHisto(when (position) {
+            0 -> HOUR
+            1 -> HOURS12
+            2 -> HOURS24
+            3 -> DAYS3
+            4 -> WEEK
+            5 -> MONTH
+            6 -> MONTHS3
+            7 -> MONTHS6
+            8 -> YEAR
+            else -> MONTH
+        })
     }
 
     override fun onStop() {
@@ -134,6 +138,6 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
     }
 
     override fun onAddTransactionClicked() {
-        view.startAddTransactionActivity(coin?.from, coin?.to, coin?.price)
+        view.startAddTransactionActivity(coin.from, coin.to, coin.price)
     }
 }

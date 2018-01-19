@@ -72,6 +72,11 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
         coin_info_main_price.text = price
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
+    }
+
     override fun onStop() {
         super.onStop()
         presenter.onStop()

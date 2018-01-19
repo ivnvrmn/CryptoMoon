@@ -5,29 +5,33 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import com.rmnivnv.cryptomoon.R
-import javax.inject.Inject
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.crashlytics.android.BuildConfig
 import com.crashlytics.android.Crashlytics
+import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.ui.addCoin.AddCoinActivity
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
 import com.rmnivnv.cryptomoon.ui.news.NewsFragment
 import com.rmnivnv.cryptomoon.ui.settings.SettingsActivity
 import com.rmnivnv.cryptomoon.ui.topCoins.TopCoinsFragment
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.toastShort
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
+import com.crashlytics.android.core.CrashlyticsCore
+
+
 
 
 class MainActivity : BaseActivity(), IMain.View {
@@ -45,11 +49,19 @@ class MainActivity : BaseActivity(), IMain.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Fabric.with(this, Crashlytics())
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setupCrashlytics()
+        setupToolbar()
         setupViewPager()
         presenter.onCreate()
+    }
+
+    private fun setupCrashlytics() {
+        Fabric.with(this, Crashlytics.Builder().core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build()).build())
+    }
+
+    private fun setupToolbar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
     }
 
     private fun setupViewPager() {

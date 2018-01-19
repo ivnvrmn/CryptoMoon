@@ -40,5 +40,6 @@ interface ICoinInfo {
         fun onSpinnerItemClicked(position: Int)
         fun onAddTransactionClicked()
         fun onStop()
+        fun onStart()
     }
 }
