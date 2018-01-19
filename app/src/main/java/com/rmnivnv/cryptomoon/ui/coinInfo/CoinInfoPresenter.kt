@@ -114,19 +114,18 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
     override fun onSpinnerItemClicked(position: Int) {
         if (coin != null) {
             view.enableGraphLoading()
-            var period = ""
-            when (position) {
-                0 -> period = "1 hour"
-                1 -> period = "12 hours"
-                2 -> period = "24 hours"
-                3 -> period = "3 days"
-                4 -> period = "1 week"
-                5 -> period = "1 month"
-                6 -> period = "3 months"
-                7 -> period = "6 months"
-                8 -> period = "1 year"
-            }
-            requestHisto(period)
+            requestHisto(when (position) {
+                0 -> HOUR
+                1 -> HOURS12
+                2 -> HOURS24
+                3 -> DAYS3
+                4 -> WEEK
+                5 -> MONTH
+                6 -> MONTHS3
+                7 -> MONTHS6
+                8 -> YEAR
+                else -> MONTH
+            })
         }
     }
 
