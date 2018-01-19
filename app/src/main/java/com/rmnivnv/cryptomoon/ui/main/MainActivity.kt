@@ -49,6 +49,7 @@ class MainActivity : BaseActivity(), IMain.View {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         setupViewPager()
+        presenter.onCreate()
     }
 
     private fun setupViewPager() {
@@ -144,14 +145,9 @@ class MainActivity : BaseActivity(), IMain.View {
         else coinsLoading.visibility = View.INVISIBLE
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 
     override fun startAddCoinActivity() {

@@ -60,8 +60,12 @@ class CoinsPresenter @Inject constructor(private val view: ICoins.View,
 
     private fun onCoinsFromDbUpdates(list: List<Coin>) {
         if (list.isNotEmpty()) {
+            val selectedCoins = alreadySelectedCoins()
             coins.clear()
             coins.addAll(list)
+            if (selectedCoins.isNotEmpty()) {
+                setSelectedCoins(selectedCoins)
+            }
             sortCoinsBySelectedSortMethod()
             view.disableEmptyText()
             view.updateRecyclerView()
@@ -74,6 +78,20 @@ class CoinsPresenter @Inject constructor(private val view: ICoins.View,
             coins.clear()
             view.enableEmptyText()
             view.updateRecyclerView()
+        }
+    }
+
+    private fun alreadySelectedCoins(): ArrayList<Coin> {
+        val selectedCoins: ArrayList<Coin> = ArrayList()
+        if (coins.isNotEmpty() && multiSelector.atLeastOneIsSelected) {
+            coins.filter { it.selected }.forEach { selectedCoins.add(it) }
+        }
+        return selectedCoins
+    }
+
+    private fun setSelectedCoins(selectedCoins: ArrayList<Coin>) {
+        selectedCoins.forEach { selectedCoin ->
+            coins.find { it.from == selectedCoin.from }?.selected = true
         }
     }
 
@@ -182,7 +200,11 @@ class CoinsPresenter @Inject constructor(private val view: ICoins.View,
 
     private fun disableSelected() {
         if (multiSelector.atLeastOneIsSelected) {
-            coins.forEach { if (it.selected) it.selected = false }
+            coins.forEach {
+                if (it.selected) {
+                    it.selected = false
+                }
+            }
             view.updateRecyclerView()
             multiSelector.atLeastOneIsSelected = false
         }

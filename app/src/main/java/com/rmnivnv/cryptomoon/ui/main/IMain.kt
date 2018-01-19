@@ -16,8 +16,8 @@ interface IMain {
     }
 
     interface Presenter {
-        fun onStart()
-        fun onStop()
+        fun onCreate()
+        fun onDestroy()
         fun onAddCoinClicked()
         fun onSettingsClicked()
         fun onDeleteClicked()

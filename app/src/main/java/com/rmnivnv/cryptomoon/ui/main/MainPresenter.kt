@@ -22,7 +22,7 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
 
     private val disposable = CompositeDisposable()
 
-    override fun onStart() {
+    override fun onCreate() {
         setObservers()
     }
 
@@ -49,7 +49,7 @@ class MainPresenter @Inject constructor(private val view: IMain.View,
         view.setSortVisible(position == COINS_FRAGMENT_PAGE_POSITION)
     }
 
-    override fun onStop() {
+    override fun onDestroy() {
         disposable.clear()
     }
 
