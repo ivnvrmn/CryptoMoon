@@ -76,6 +76,15 @@
                     style="@style/SpinKitView.Wave"
                     app:SpinKit_Color="@color/yellow"/>
 
+                <TextView
+                    android:id="@+id/coin_info_empty_graph"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    android:text="@string/empty_graph_text"
+                    tools:visibility="visible"/>
+
             </RelativeLayout>
 
             <Spinner

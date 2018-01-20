@@ -4,6 +4,8 @@ import android.os.Bundle
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.DBController
+import com.rmnivnv.cryptomoon.model.rxbus.RxBus
+import com.rmnivnv.cryptomoon.model.rxbus.TransactionAdded
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.Toaster
 import com.rmnivnv.cryptomoon.utils.formatLongDateToString
@@ -134,6 +136,7 @@ class AddTransactionPresenter @Inject constructor(private val view: IAddTransact
     private fun saveHoldings() {
         dbController.saveHoldingData(HoldingData(from, to, quantity, tradingPrice, transactionDate!!.time))
         toaster.toastShort(resourceProvider.getString(R.string.transaction_added))
+        RxBus.publish(TransactionAdded())
         view.closeActivity()
     }
 

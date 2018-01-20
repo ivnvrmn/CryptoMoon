@@ -15,3 +15,5 @@ class SearchHashTagUpdated(val hashTag: String)
 class CoinsSortMethodUpdated(val sort: String?)
 
 class LanguageChanged(val language: String)
+
+class TransactionAdded

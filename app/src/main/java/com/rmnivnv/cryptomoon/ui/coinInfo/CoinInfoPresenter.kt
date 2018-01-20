@@ -2,6 +2,8 @@ package com.rmnivnv.cryptomoon.ui.coinInfo
 
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.rxbus.RxBus
+import com.rmnivnv.cryptomoon.model.rxbus.TransactionAdded
 import com.rmnivnv.cryptomoon.utils.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,13 +30,15 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
     override fun onCreate(fromArg: String, toArg: String) {
         from = fromArg
         to = toArg
+        setObservables()
         getCoinByName(from, to)
     }
 
-    override fun onStart() {
-        if (coin.from.isNotEmpty() && coin.to.isNotEmpty()) {
-            setupHoldings()
-        }
+    private fun setObservables() {
+        disposable.add(RxBus.listen(TransactionAdded::class.java)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { setupHoldings() })
     }
 
     private fun getCoinByName(from: String?, to: String?) {
@@ -49,20 +53,9 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
         view.setTitle(coin.fullName)
         view.setLogo(coin.imgUrl)
         view.setMainPrice(coin.price)
-        requestHisto(MONTH)
         setCoinInfo()
         setupHoldings()
-    }
-
-    private fun requestHisto(period: String) {
-        disposable.add(networkRequests.getHistoPeriod(period, coin.from, coin.to)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onHistoReceived(it, period) }, { view.disableGraphLoading() }))
-    }
-
-    private fun onHistoReceived(histoList: ArrayList<HistoData>, period: String) {
-        view.disableGraphLoading()
-        view.drawChart(graphMaker.makeChart(histoList, period))
+        view.setupSpinner()
     }
 
     private fun setCoinInfo() {
@@ -133,7 +126,23 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
         })
     }
 
-    override fun onStop() {
+    private fun requestHisto(period: String) {
+        disposable.add(networkRequests.getHistoPeriod(period, coin.from, coin.to)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ onHistoReceived(it, period) }, { view.disableGraphLoading() }))
+    }
+
+    private fun onHistoReceived(histoList: ArrayList<HistoData>, period: String) {
+        view.disableGraphLoading()
+        if (histoList.isNotEmpty()) {
+            view.drawChart(graphMaker.makeChart(histoList, period))
+            view.disableEmptyGraphText()
+        } else {
+            view.enableEmptyGraphText()
+        }
+    }
+
+    override fun onDestroy() {
         disposable.clear()
     }
 

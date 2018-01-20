@@ -74,6 +74,7 @@
     <string name="language">Language</string>
     <string name="english" translatable="false">English</string>
     <string name="russian" translatable="false">Русский</string>
+    <string name="empty_graph_text">Something went wrong with chart loading</string>
 
     <string-array name="histo_periods">
         <item>1 hour</item>

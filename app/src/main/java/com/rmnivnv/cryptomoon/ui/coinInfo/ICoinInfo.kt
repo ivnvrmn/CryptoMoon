@@ -33,13 +33,15 @@ interface ICoinInfo {
         fun setHoldingTradeDate(date: String)
         fun enableHoldings()
         fun disableHoldings()
+        fun enableEmptyGraphText()
+        fun disableEmptyGraphText()
+        fun setupSpinner()
     }
 
     interface Presenter {
         fun onCreate(fromArg: String, toArg: String)
         fun onSpinnerItemClicked(position: Int)
         fun onAddTransactionClicked()
-        fun onStop()
-        fun onStart()
+        fun onDestroy()
     }
 }

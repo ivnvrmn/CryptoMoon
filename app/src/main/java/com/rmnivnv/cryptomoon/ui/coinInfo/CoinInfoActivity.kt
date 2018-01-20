@@ -31,7 +31,6 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coin_info)
         setupToolbar()
-        setupSpinner()
         presenter.onCreate(intent.extras.getString(NAME), intent.extras.getString(TO))
     }
 
@@ -43,7 +42,7 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
         toolbar.setNavigationOnClickListener { finish() }
     }
 
-    private fun setupSpinner() {
+    override fun setupSpinner() {
         coin_info_graph_periods.adapter = ArrayAdapter<String>(this, R.layout.period_item, R.id.period,
                 resProvider.getStringArray(R.array.histo_periods))
         coin_info_graph_periods.setSelection(5)
@@ -72,14 +71,9 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
         coin_info_main_price.text = price
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -194,5 +188,13 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
 
     override fun setHoldingProfitValueColor(color: Int) {
         coin_info_holding_profit_value.setTextColor(resProvider.getColor(color))
+    }
+
+    override fun enableEmptyGraphText() {
+        coin_info_empty_graph.visibility = View.VISIBLE
+    }
+
+    override fun disableEmptyGraphText() {
+        coin_info_empty_graph.visibility = View.GONE
     }
 }
