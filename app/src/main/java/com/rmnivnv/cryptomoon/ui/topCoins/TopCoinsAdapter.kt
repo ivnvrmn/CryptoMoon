@@ -24,13 +24,13 @@ class TopCoinsAdapter @Inject constructor(private val coins: ArrayList<TopCoinDa
                                           private val clickListener: (TopCoinData) -> Unit) :
         RecyclerView.Adapter<TopCoinsAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.top_coin_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.top_coin_item, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItems(coins[position], clickListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bindItems(coins[position], clickListener)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,7 +48,7 @@ class TopCoinsAdapter @Inject constructor(private val coins: ArrayList<TopCoinDa
             top_coin_supply.text = addCommasToStringNumber(coin.total_supply)
             top_coin_volume_24h.text = addCommasToStringNumber(coin.vol24Usd)
             if (!coin.imgUrl.isNullOrEmpty()) {
-                Picasso.with(context)
+                Picasso.get()
                         .load(coin.imgUrl)
                         .into(top_coin_logo)
             }

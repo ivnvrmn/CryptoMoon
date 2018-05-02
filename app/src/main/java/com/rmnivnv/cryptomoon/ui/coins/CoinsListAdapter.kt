@@ -23,11 +23,11 @@ class CoinsListAdapter(private val coins: ArrayList<Coin>,
                        private val multiSelector: MultiSelector,
                        private val holdingsHandler: HoldingsHandler,
                        val clickListener: (Coin) -> Unit) : RecyclerView.Adapter<CoinsListAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
-            ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.coins_list_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.coins_list_item, parent, false))
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItems(coins[position], clickListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bindItems(coins[position], clickListener)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -57,7 +57,7 @@ class CoinsListAdapter(private val coins: ArrayList<Coin>,
             main_item_change_in_24.setTextColor(resProvider.getColor(getChangeColor(coin.changePct24hRaw)))
             main_item_price_arrow.setImageDrawable(resProvider.getDrawable(getChangeArrowDrawable(coin.changePct24hRaw)))
             if (coin.imgUrl.isNotEmpty()) {
-                Picasso.with(context)
+                Picasso.get()
                         .load(coin.imgUrl)
                         .into(main_item_market_logo)
             }

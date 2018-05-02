@@ -16,19 +16,18 @@ import kotlinx.android.synthetic.main.news_item.view.*
 class NewsAdapter(private val tweets: ArrayList<Tweet>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        private val TYPE_ITEM = 0
-        private val TYPE_FOOTER = 1
+        private const val TYPE_ITEM = 0
+        private const val TYPE_FOOTER = 1
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             when (viewType) {
-                TYPE_ITEM -> ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.news_item, parent, false))
-                TYPE_FOOTER -> FooterViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.news_adapter_footer, parent, false))
-                else -> null
+                TYPE_FOOTER -> FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.news_adapter_footer, parent, false))
+                else -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false))
             }
 
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
             holder.bindItems(tweets[position])
         } else if (holder is FooterViewHolder) {

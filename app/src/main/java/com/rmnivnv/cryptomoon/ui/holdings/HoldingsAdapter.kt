@@ -20,11 +20,11 @@ class HoldingsAdapter(private val holdings: ArrayList<HoldingData>,
                       private val resProvider: ResourceProvider,
                       val clickListener: (HoldingData) -> Unit) : RecyclerView.Adapter<HoldingsAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
-            ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.holdings_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.holdings_item, parent, false))
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItems(holdings[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bindItems(holdings[position])
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -49,7 +49,7 @@ class HoldingsAdapter(private val holdings: ArrayList<HoldingData>,
             holdings_item_change_value.setTextColor(resProvider.getColor(getChangeColor(changeValue)))
 
             if (holdingsHandler.getImageUrlByHolding(holdingData).isNotEmpty()) {
-                Picasso.with(context)
+                Picasso.get()
                         .load(holdingsHandler.getImageUrlByHolding(holdingData))
                         .into(holdings_item_icon)
             }
