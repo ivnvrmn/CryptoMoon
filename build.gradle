@@ -3,7 +3,7 @@
 buildscript {
     ext.kotlin_version = '1.2.41'
     ext.dagger_version = '2.14.1'
-    ext.room_version = '1.0.0'
+    ext.room_version = '1.1.1'
     ext.support_version = '27.1.1'
     repositories {
         google()
