@@ -18,7 +18,7 @@ open class BaseRepository {
     ): Result<T> {
         return call.invoke().let { response ->
             if (response.isSuccessful) {
-                Result.Success(response.body()!!)
+                Result.Success(checkNotNull(response.body()))
             } else {
                 Result.Error(IOException(errorMessage))
             }

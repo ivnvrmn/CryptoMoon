@@ -10,6 +10,7 @@ import com.rmnivnv.cryptomoon.model.TopCoinData
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.addCommasToStringNumber
 import com.rmnivnv.cryptomoon.utils.getChangeColor
+import com.rmnivnv.cryptomoon.utils.to2DecimalPlaces
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.top_coin_item.view.top_coin_logo as logoView
 import kotlinx.android.synthetic.main.top_coin_item.view.top_coin_add_layout as addLayoutView
@@ -58,7 +59,10 @@ class TopCoinsAdapter @Inject constructor(
 
                 rankView.text = rank.toString()
                 nameView.text = name
-                priceView.text = price_usd
+                marketCapView.text = addCommasToStringNumber(market_cap_usd)
+                supplyView.text = addCommasToStringNumber(total_supply)
+                volume24hView.text = addCommasToStringNumber(vol24Usd)
+                price_usd?.also { priceView.text = it.to2DecimalPlaces() }
 
                 val pctCh24h = percent_change_24h ?: ""
                 if (pctCh24h.isNotEmpty()) {
@@ -68,10 +72,6 @@ class TopCoinsAdapter @Inject constructor(
                         resProvider.getColor(getChangeColor(pctCh24h.replace(",", "").toFloat()))
                     )
                 }
-
-                marketCapView.text = addCommasToStringNumber(market_cap_usd)
-                supplyView.text = addCommasToStringNumber(total_supply)
-                volume24hView.text = addCommasToStringNumber(vol24Usd)
 
                 if (!imgUrl.isNullOrEmpty()) {
                     Picasso.get().load(imgUrl).into(logoView)

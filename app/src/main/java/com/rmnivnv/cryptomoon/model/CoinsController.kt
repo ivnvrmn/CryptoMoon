@@ -61,9 +61,8 @@ class CoinsController(private val dbController: DBController, db: CMDatabase) {
     fun getCoin(from: String, to: String) = dbController.getCoin(from, to)
 
     fun saveTopCoinsList(list: List<TopCoinData>) {
-        list.forEach {
-            val coin = it
-            it.imgUrl = allInfoCoins.find { it.name == coin.symbol }?.imageUrl ?: ""
+        list.forEach { coin ->
+            coin.imgUrl = allInfoCoins.find { it.name == coin.symbol }?.imageUrl ?: ""
         }
         dbController.saveTopCoinsList(list)
     }

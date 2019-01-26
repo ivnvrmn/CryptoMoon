@@ -32,7 +32,7 @@ class TopCoinsPresenter @Inject constructor(
 ) : TopCoinsContract.Presenter {
 
     private val disposable = CompositeDisposable()
-    private var coins: ArrayList<TopCoinData> = ArrayList()
+    private var coins: ArrayList<TopCoinData> = arrayListOf()
     private var isRefreshing = false
     private var needToUpdate = false
 
@@ -53,27 +53,32 @@ class TopCoinsPresenter @Inject constructor(
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { onTopCoinsUpdated(it) })
+
             add(db.allCoinsDao().getAllCoins()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { onAllCoinsUpdated(it) })
+
+            add(pageController.getPageObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { onPageChanged(it) })
+
             add(RxBus.listen(MainCoinsListUpdatedEvent::class.java)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { onMainCoinsUpdated() })
-            add(pageController.getPageObservable()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { onPageChanged(it) })
         }
     }
 
     private fun onTopCoinsUpdated(list: List<TopCoinData>) {
         if (list.isNotEmpty()) {
-            coins.clear()
-            coins.addAll(list)
-            coins.sortBy { it.rank }
-            view.updateList(coins)
+            with(coins) {
+                clear()
+                addAll(list)
+                sortBy { it.rank }
+                view.updateList(this)
+            }
         }
     }
 
@@ -109,8 +114,8 @@ class TopCoinsPresenter @Inject constructor(
         if (coins.isNotEmpty()) {
             coinsController.saveTopCoinsList(coins)
             if (isRefreshing) {
-                view.hideRefreshing()
                 isRefreshing = false
+                view.hideRefreshing()
             }
         }
     }
