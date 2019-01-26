@@ -5,8 +5,8 @@ import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
 import com.rmnivnv.cryptomoon.ui.coins.CoinsModule
 import com.rmnivnv.cryptomoon.ui.news.NewsFragment
 import com.rmnivnv.cryptomoon.ui.news.NewsModule
-import com.rmnivnv.cryptomoon.ui.topCoins.TopCoinsFragment
-import com.rmnivnv.cryptomoon.ui.topCoins.TopCoinsModule
+import com.rmnivnv.cryptomoon.ui.topcoins.TopCoinsFragment
+import com.rmnivnv.cryptomoon.ui.topcoins.TopCoinsModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

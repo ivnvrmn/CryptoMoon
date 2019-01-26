@@ -17,8 +17,10 @@ class SettingsModule {
     fun provideView(settingsActivity: SettingsActivity): Settings.View = settingsActivity
 
     @Provides @PerActivity
-    fun providePresenter(view: Settings.View,
-                         context: Context,
-                         resourceProvider: ResourceProvider,
-                         preferences: Preferences): Settings.Presenter = SettingsPresenter(view, context, resourceProvider, preferences)
+    fun providePresenter(
+        view: Settings.View,
+        context: Context,
+        resourceProvider: ResourceProvider,
+        preferences: Preferences
+    ): Settings.Presenter = SettingsPresenter(view, context, resourceProvider, preferences)
 }

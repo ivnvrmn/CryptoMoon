@@ -8,8 +8,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by rmnivnv on 12/07/2017.
  */
-class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
-                      private val coinMarketCapApi: CoinMarketCapApi) {
+class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI) {
 
     fun getAllCoins(): Single<ArrayList<InfoCoin>>  {
         return cryptoCompareAPI.getCoinsList(COINS_LIST_URL)
@@ -85,10 +84,4 @@ class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI,
                 .subscribeOn(Schedulers.io())
                 .map { getHistoListFromJson(it) }
     }
-
-    fun getTopCoins(): Single<List<TopCoinData>> {
-        return coinMarketCapApi.getTopCoins(COIN_MARKET_CAP_URL_TICKER, 100)
-                .subscribeOn(Schedulers.io())
-    }
-
 }

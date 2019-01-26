@@ -14,12 +14,17 @@ import dagger.Provides
 class AddTransactionModule {
 
     @Provides @PerActivity
-    fun provideView(addTransactionActivity: AddTransactionActivity): IAddTransaction.View = addTransactionActivity
+    fun provideView(addTransactionActivity: AddTransactionActivity): IAddTransaction.View {
+        return addTransactionActivity
+    }
 
     @Provides @PerActivity
-    fun providePresenter(view: IAddTransaction.View,
-                         resourceProvider: ResourceProvider,
-                         dbController: DBController,
-                         toaster: Toaster): IAddTransaction.Presenter =
-            AddTransactionPresenter(view, resourceProvider, dbController, toaster)
+    fun providePresenter(
+        view: IAddTransaction.View,
+        resourceProvider: ResourceProvider,
+        dbController: DBController,
+        toaster: Toaster
+    ): IAddTransaction.Presenter {
+        return AddTransactionPresenter(view, resourceProvider, dbController, toaster)
+    }
 }

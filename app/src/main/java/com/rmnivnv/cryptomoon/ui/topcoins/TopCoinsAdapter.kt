@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.ui.topCoins
+package com.rmnivnv.cryptomoon.ui.topcoins
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import javax.inject.Inject
  */
 class TopCoinsAdapter @Inject constructor(private val coins: ArrayList<TopCoinData>,
                                           private val resProvider: ResourceProvider,
-                                          private val presenter: ITopCoins.Presenter,
+                                          private val presenter: TopCoinsContract.Presenter,
                                           private val coinsController: CoinsController,
                                           private val clickListener: (TopCoinData) -> Unit) :
         RecyclerView.Adapter<TopCoinsAdapter.ViewHolder>() {

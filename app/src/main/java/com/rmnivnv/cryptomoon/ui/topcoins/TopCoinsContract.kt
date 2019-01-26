@@ -1,14 +1,14 @@
-package com.rmnivnv.cryptomoon.ui.topCoins
+package com.rmnivnv.cryptomoon.ui.topcoins
 
 import com.rmnivnv.cryptomoon.model.TopCoinData
 
 /**
  * Created by rmnivnv on 02/09/2017.
  */
-interface ITopCoins {
+interface TopCoinsContract {
 
     interface View {
-        fun updateRecyclerView()
+        fun updateList()
         fun hideRefreshing()
         fun startCoinInfoActivity(name: String?)
     }

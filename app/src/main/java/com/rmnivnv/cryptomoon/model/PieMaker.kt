@@ -2,13 +2,14 @@ package com.rmnivnv.cryptomoon.model
 
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.github.mikephil.charting.utils.ColorTemplate.*
 import com.rmnivnv.cryptomoon.R
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
 
-
-class PieMaker(val resProvider: ResourceProvider,
-               val holdingsHandler: HoldingsHandler) {
+class PieMaker(
+    val resProvider: ResourceProvider,
+    val holdingsHandler: HoldingsHandler
+) {
 
     companion object {
         private val TEXT_SIZE_DP: Float = 17f

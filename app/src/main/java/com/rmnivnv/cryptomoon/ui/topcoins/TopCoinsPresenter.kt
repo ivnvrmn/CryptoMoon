@@ -1,4 +1,4 @@
-package com.rmnivnv.cryptomoon.ui.topCoins
+package com.rmnivnv.cryptomoon.ui.topcoins
 
 import android.view.View
 import com.rmnivnv.cryptomoon.R
@@ -7,32 +7,39 @@ import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
-import com.rmnivnv.cryptomoon.utils.Logger
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import com.rmnivnv.cryptomoon.utils.Toaster
-import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
+import com.rmnivnv.cryptomoon.utils.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.top_coin_item.view.*
+import kotlinx.coroutines.*
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Created by rmnivnv on 02/09/2017.
  */
-class TopCoinsPresenter @Inject constructor(private val view: ITopCoins.View,
-                                            private val db: CMDatabase,
-                                            private val networkRequests: NetworkRequests,
-                                            private val coinsController: CoinsController,
-                                            private val resProvider: ResourceProvider,
-                                            private val pageController: PageController,
-                                            private val toaster: Toaster,
-                                            private val logger: Logger) : ITopCoins.Presenter {
+class TopCoinsPresenter @Inject constructor(
+        private val view: TopCoinsContract.View,
+        private val db: CMDatabase,
+        private val networkRequests: NetworkRequests,
+        private val repository: TopCoinsRepository,
+        private val coinsController: CoinsController,
+        private val resProvider: ResourceProvider,
+        private val pageController: PageController,
+        private val toaster: Toaster,
+        private val logger: Logger
+) : TopCoinsContract.Presenter {
 
     private val disposable = CompositeDisposable()
     private var coins: ArrayList<TopCoinData> = ArrayList()
     private var isRefreshing = false
     private var needToUpdate = false
+
+    private val parentJob = Job()
+    private val coroutineContext: CoroutineContext
+        get() = parentJob + Dispatchers.Default
+    private val scope = CoroutineScope(coroutineContext)
 
     override fun onCreate(coins: ArrayList<TopCoinData>) {
         this.coins = coins
@@ -45,19 +52,24 @@ class TopCoinsPresenter @Inject constructor(private val view: ITopCoins.View,
     }
 
     private fun subscribeToObservables() {
-        disposable.add(db.topCoinsDao().getAllTopCoins()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onCoinsUpdated(it) }))
-        disposable.add(db.allCoinsDao().getAllCoins()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onAllCoinsUpdated(it) }))
-        disposable.add(RxBus.listen(MainCoinsListUpdatedEvent::class.java)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { onMainCoinsUpdated() })
-        addOnPageChangedObservable()
+        disposable.apply {
+            add(db.topCoinsDao().getAllTopCoins()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { onCoinsUpdated(it) })
+            add(db.allCoinsDao().getAllCoins()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { onAllCoinsUpdated(it) })
+            add(RxBus.listen(MainCoinsListUpdatedEvent::class.java)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { onMainCoinsUpdated() })
+            add(pageController.getPageObservable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { onPageChanged(it) })
+        }
     }
 
     private fun onCoinsUpdated(list: List<TopCoinData>) {
@@ -65,7 +77,7 @@ class TopCoinsPresenter @Inject constructor(private val view: ITopCoins.View,
             coins.clear()
             coins.addAll(list)
             coins.sortBy { it.rank }
-            view.updateRecyclerView()
+            view.updateList()
         }
     }
 
@@ -79,29 +91,27 @@ class TopCoinsPresenter @Inject constructor(private val view: ITopCoins.View,
         needToUpdate = true
     }
 
-    private fun addOnPageChangedObservable() {
-        disposable.add(pageController.getPageObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { onPageChanged(it) })
-    }
-
     private fun onPageChanged(position: Int) {
         if (position == TOP_COINS_FRAGMENT_PAGE_POSITION && needToUpdate) {
-            view.updateRecyclerView()
+            view.updateList()
             needToUpdate = false
         }
     }
 
     override fun onStop() {
         disposable.clear()
+        coroutineContext.cancel()
     }
 
     private fun updateTopCoins() {
-        disposable.add(networkRequests.getTopCoins()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onTopCoinsReceived(it) },
-                        { logger.logError("updateTopCoins $it") }))
+//        disposable.add(networkRequests.getTopCoins()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({ onTopCoinsReceived(it) },
+//                        { logger.logError("updateTopCoins $it") }))
+
+        scope.launch {
+            repository.getTopCoins()?.also { onTopCoinsReceived(it) }
+        }
     }
 
     private fun onTopCoinsReceived(coins: List<TopCoinData>) {

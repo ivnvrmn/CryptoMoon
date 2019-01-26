@@ -21,7 +21,7 @@ import com.rmnivnv.cryptomoon.ui.addCoin.AddCoinActivity
 import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
 import com.rmnivnv.cryptomoon.ui.news.NewsFragment
 import com.rmnivnv.cryptomoon.ui.settings.SettingsActivity
-import com.rmnivnv.cryptomoon.ui.topCoins.TopCoinsFragment
+import com.rmnivnv.cryptomoon.ui.topcoins.TopCoinsFragment
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.toastShort
 import kotlinx.android.synthetic.main.activity_main.*

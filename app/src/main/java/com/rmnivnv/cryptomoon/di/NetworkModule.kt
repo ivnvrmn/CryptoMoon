@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.di
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.rmnivnv.cryptomoon.model.BASE_CRYPTOCOMPARE_URL
 import com.rmnivnv.cryptomoon.model.network.CoinMarketCapApi
 import com.rmnivnv.cryptomoon.model.network.CryptoCompareAPI
@@ -26,12 +27,20 @@ class NetworkModule {
                     .build()
 
     @Provides @Singleton
-    fun provideCrComApi(retrofit: Retrofit): CryptoCompareAPI = retrofit.create(CryptoCompareAPI::class.java)
+    fun provideCrComApi(retrofit: Retrofit): CryptoCompareAPI {
+        return retrofit.create(CryptoCompareAPI::class.java)
+    }
 
     @Provides @Singleton
-    fun provideCoinMarketCapApi(retrofit: Retrofit): CoinMarketCapApi = retrofit.create(CoinMarketCapApi::class.java)
+    fun provideCoinMarketCapCoroutineApi(): CoinMarketCapApi {
+        val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_CRYPTOCOMPARE_URL)
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        return retrofit.create(CoinMarketCapApi::class.java)
+    }
 
     @Provides @Singleton
-    fun provideNetworkRequests(cryptoCompareAPI: CryptoCompareAPI, coinMarketCapApi: CoinMarketCapApi) =
-            NetworkRequests(cryptoCompareAPI, coinMarketCapApi)
+    fun provideNetworkRequests(api: CryptoCompareAPI) = NetworkRequests(api)
 }
