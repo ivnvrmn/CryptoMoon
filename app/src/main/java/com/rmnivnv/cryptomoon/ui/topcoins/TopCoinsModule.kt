@@ -22,6 +22,15 @@ class TopCoinsModule {
     fun provideView(topCoinsFragment: TopCoinsFragment): TopCoinsContract.View = topCoinsFragment
 
     @Provides @PerFragment
+    fun provideAdapter(
+        presenter: TopCoinsContract.Presenter,
+        resProvider: ResourceProvider,
+        coinsController: CoinsController
+    ) : TopCoinsAdapter {
+        return TopCoinsAdapter(presenter, resProvider, coinsController)
+    }
+
+    @Provides @PerFragment
     fun provideRepository(api: CoinMarketCapApi): TopCoinsRepository {
         return TopCoinsRepositoryImpl(api)
     }

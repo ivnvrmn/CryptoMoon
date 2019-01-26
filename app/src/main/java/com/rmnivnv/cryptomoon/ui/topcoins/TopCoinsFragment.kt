@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.top_coins_fragment.top_coins_fragment_swipe_refresh as swipe
 import kotlinx.android.synthetic.main.top_coins_fragment.top_coins_fragment_rec_view as recView
@@ -21,16 +20,7 @@ import javax.inject.Inject
 class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
 
     @Inject lateinit var presenter: TopCoinsContract.Presenter
-    @Inject lateinit var resProvider: ResourceProvider
-    @Inject lateinit var coinsController: CoinsController
-
-    private lateinit var adapter: TopCoinsAdapter
-    private var coins: ArrayList<TopCoinData> = ArrayList()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter.onCreate(coins)
-    }
+    @Inject lateinit var topCoinsAdapter: TopCoinsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,31 +32,27 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecView()
+        setupRecyclerView()
         setupSwipeRefresh()
     }
 
-    private fun setupRecView() {
-        adapter = TopCoinsAdapter(
-            coins,
-            resProvider,
-            presenter,
-            coinsController,
-            clickListener = { presenter.onCoinClicked(it) }
-        ).also {
-            with(recView) {
-                layoutManager = LinearLayoutManager(activity)
-                adapter = it
-            }
+    private fun setupRecyclerView() {
+        with(recView) {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = topCoinsAdapter
         }
+        topCoinsAdapter.clickListener = { presenter.onCoinClicked(it) }
     }
 
     private fun setupSwipeRefresh() {
-        swipe.setOnRefreshListener { presenter.onSwipeUpdate() }
+        swipe.setOnRefreshListener { presenter.onSwiped() }
     }
 
-    override fun updateList() {
-        adapter.notifyDataSetChanged()
+    override fun updateList(topCoins: List<TopCoinData>) {
+        with(topCoinsAdapter) {
+            coins = topCoins
+            notifyDataSetChanged()
+        }
     }
 
     override fun onStart() {
@@ -75,8 +61,8 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
     }
 
     override fun onStop() {
-        super.onStop()
         presenter.onStop()
+        super.onStop()
     }
 
     override fun hideRefreshing() {
@@ -84,9 +70,10 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
     }
 
     override fun startCoinInfoActivity(name: String?) {
-        val intent = Intent(context, CoinInfoActivity::class.java)
-        intent.putExtra(NAME, name)
-        intent.putExtra(TO, USD)
-        activity?.startActivity(intent)
+        activity?.startActivity(
+            Intent(context, CoinInfoActivity::class.java)
+                .putExtra(NAME, name)
+                .putExtra(TO, USD)
+        )
     }
 }

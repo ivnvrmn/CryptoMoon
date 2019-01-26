@@ -20,15 +20,15 @@ import kotlin.coroutines.CoroutineContext
  * Created by rmnivnv on 02/09/2017.
  */
 class TopCoinsPresenter @Inject constructor(
-        private val view: TopCoinsContract.View,
-        private val db: CMDatabase,
-        private val networkRequests: NetworkRequests,
-        private val repository: TopCoinsRepository,
-        private val coinsController: CoinsController,
-        private val resProvider: ResourceProvider,
-        private val pageController: PageController,
-        private val toaster: Toaster,
-        private val logger: Logger
+    private val view: TopCoinsContract.View,
+    private val db: CMDatabase,
+    private val networkRequests: NetworkRequests,
+    private val repository: TopCoinsRepository,
+    private val coinsController: CoinsController,
+    private val resProvider: ResourceProvider,
+    private val pageController: PageController,
+    private val toaster: Toaster,
+    private val logger: Logger
 ) : TopCoinsContract.Presenter {
 
     private val disposable = CompositeDisposable()
@@ -41,10 +41,6 @@ class TopCoinsPresenter @Inject constructor(
         get() = parentJob + Dispatchers.Default
     private val scope = CoroutineScope(coroutineContext)
 
-    override fun onCreate(coins: ArrayList<TopCoinData>) {
-        this.coins = coins
-    }
-
     override fun onStart() {
         subscribeToObservables()
         updateTopCoins()
@@ -56,7 +52,7 @@ class TopCoinsPresenter @Inject constructor(
             add(db.topCoinsDao().getAllTopCoins()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { onCoinsUpdated(it) })
+                    .subscribe { onTopCoinsUpdated(it) })
             add(db.allCoinsDao().getAllCoins()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -72,12 +68,12 @@ class TopCoinsPresenter @Inject constructor(
         }
     }
 
-    private fun onCoinsUpdated(list: List<TopCoinData>) {
+    private fun onTopCoinsUpdated(list: List<TopCoinData>) {
         if (list.isNotEmpty()) {
             coins.clear()
             coins.addAll(list)
             coins.sortBy { it.rank }
-            view.updateList()
+            view.updateList(coins)
         }
     }
 
@@ -93,7 +89,7 @@ class TopCoinsPresenter @Inject constructor(
 
     private fun onPageChanged(position: Int) {
         if (position == TOP_COINS_FRAGMENT_PAGE_POSITION && needToUpdate) {
-            view.updateList()
+            view.updateList(coins)
             needToUpdate = false
         }
     }
@@ -104,11 +100,6 @@ class TopCoinsPresenter @Inject constructor(
     }
 
     private fun updateTopCoins() {
-//        disposable.add(networkRequests.getTopCoins()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({ onTopCoinsReceived(it) },
-//                        { logger.logError("updateTopCoins $it") }))
-
         scope.launch {
             repository.getTopCoins()?.also { onTopCoinsReceived(it) }
         }
@@ -144,7 +135,7 @@ class TopCoinsPresenter @Inject constructor(
         view.startCoinInfoActivity(coin.symbol)
     }
 
-    override fun onSwipeUpdate() {
+    override fun onSwiped() {
         isRefreshing = true
         updateTopCoins()
     }

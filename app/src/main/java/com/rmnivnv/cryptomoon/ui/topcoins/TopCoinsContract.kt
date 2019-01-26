@@ -8,17 +8,16 @@ import com.rmnivnv.cryptomoon.model.TopCoinData
 interface TopCoinsContract {
 
     interface View {
-        fun updateList()
+        fun updateList(topCoins: List<TopCoinData>)
         fun hideRefreshing()
         fun startCoinInfoActivity(name: String?)
     }
 
     interface Presenter {
-        fun onCreate(coins: ArrayList<TopCoinData>)
-        fun onCoinClicked(coin: TopCoinData)
-        fun onSwipeUpdate()
         fun onStart()
-        fun onAddCoinClicked(coin: TopCoinData, itemView: android.view.View)
         fun onStop()
+        fun onCoinClicked(coin: TopCoinData)
+        fun onAddCoinClicked(coin: TopCoinData, itemView: android.view.View)
+        fun onSwiped()
     }
 }
