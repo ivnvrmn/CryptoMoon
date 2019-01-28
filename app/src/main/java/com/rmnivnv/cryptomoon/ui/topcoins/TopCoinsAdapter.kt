@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.TopCoinData
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import com.rmnivnv.cryptomoon.utils.addCommasToStringNumber
-import com.rmnivnv.cryptomoon.utils.getChangeColor
-import com.rmnivnv.cryptomoon.utils.to2DecimalPlaces
+import com.rmnivnv.cryptomoon.utils.*
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.top_coin_item.view.top_coin_add_loading as loadingView
+import kotlinx.android.synthetic.main.top_coin_item.view.top_coin_add_icon as addIconView
 import kotlinx.android.synthetic.main.top_coin_item.view.top_coin_logo as logoView
 import kotlinx.android.synthetic.main.top_coin_item.view.top_coin_add_layout as addLayoutView
 import kotlinx.android.synthetic.main.top_coin_item.view.top_coin_add_icon as addIconView
@@ -62,7 +61,7 @@ class TopCoinsAdapter @Inject constructor(
                 marketCapView.text = addCommasToStringNumber(market_cap_usd)
                 supplyView.text = addCommasToStringNumber(total_supply)
                 volume24hView.text = addCommasToStringNumber(vol24Usd)
-                price_usd?.also { priceView.text = it.to2DecimalPlaces() }
+                price_usd?.also { priceView.text = it.to4DecimalPlaces() }
 
                 val pctCh24h = percent_change_24h ?: ""
                 if (pctCh24h.isNotEmpty()) {
@@ -81,7 +80,11 @@ class TopCoinsAdapter @Inject constructor(
                     addIconView.setImageDrawable(resProvider.getDrawable(R.drawable.ic_done))
                 } else {
                     addIconView.setImageDrawable(resProvider.getDrawable(R.drawable.ic_add_circle))
-                    addLayoutView.setOnClickListener { presenter.onAddCoinClicked(this, itemView) }
+                    addLayoutView.setOnClickListener {
+                        loadingView.show()
+                        addIconView.hide()
+                        presenter.onAddCoinClicked(this)
+                    }
                 }
             }
         }

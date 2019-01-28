@@ -9,6 +9,7 @@ interface TopCoinsContract {
 
     interface View {
         fun updateList(topCoins: List<TopCoinData>)
+        fun updateItem(position: Int)
         fun hideRefreshing()
         fun startCoinInfoActivity(name: String?)
     }
@@ -17,7 +18,7 @@ interface TopCoinsContract {
         fun onStart()
         fun onStop()
         fun onCoinClicked(coin: TopCoinData)
-        fun onAddCoinClicked(coin: TopCoinData, itemView: android.view.View)
+        fun onAddCoinClicked(coin: TopCoinData)
         fun onSwiped()
     }
 }

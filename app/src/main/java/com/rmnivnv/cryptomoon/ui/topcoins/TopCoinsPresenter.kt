@@ -1,17 +1,18 @@
 package com.rmnivnv.cryptomoon.ui.topcoins
 
-import android.view.View
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
+import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
-import com.rmnivnv.cryptomoon.model.network.NetworkRequests
-import com.rmnivnv.cryptomoon.utils.*
+import com.rmnivnv.cryptomoon.utils.Logger
+import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.Toaster
+import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.top_coin_item.view.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -145,34 +146,37 @@ class TopCoinsPresenter @Inject constructor(
         updateTopCoins()
     }
 
-    //todo get rid of View
-    override fun onAddCoinClicked(coin: TopCoinData, itemView: View) {
-        itemView.top_coin_add_loading.visibility = View.VISIBLE
-        itemView.top_coin_add_icon.visibility = View.GONE
-        val coinFrom = Coin(from = coin.symbol!!, to = USD)
-        disposable.add(networkRequests.getPrice(createCoinsMapWithCurrencies(listOf(coinFrom)))
+    override fun onAddCoinClicked(coin: TopCoinData) {
+        coin.symbol?.also { symbol ->
+            disposable.add(
+                networkRequests.getPrice(
+                    createCoinsMapWithCurrencies(listOf(Coin(from = symbol, to = USD)))
+                )
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onCoinAdded(it, itemView) }, { onError(itemView) }))
+                .subscribe(
+                    { onCoinAdded(it, symbol) },
+                    { onError(symbol) }
+                )
+            )
+        }
     }
 
-    private fun onCoinAdded(list: ArrayList<Coin>, itemView: View) {
+    private fun onCoinAdded(list: ArrayList<Coin>, symbol: String) {
         if (list.isNotEmpty()) {
             coinsController.saveCoinsList(list)
-            itemView.top_coin_add_icon.setImageDrawable(resProvider.getDrawable(R.drawable.ic_done))
             toaster.toastShort(resProvider.getString(R.string.coin_added))
         } else {
             toaster.toastShort(resProvider.getString(R.string.error))
         }
-        afterAdded(itemView)
+        view.updateItem(getCoinPosition(symbol))
     }
 
-    private fun onError(itemView: View) {
-        afterAdded(itemView)
+    private fun getCoinPosition(symbol: String): Int {
+        return coins.indexOf(coins.find { symbol == it.symbol })
+    }
+
+    private fun onError(symbol: String) {
+        view.updateItem(getCoinPosition(symbol))
         toaster.toastShort(resProvider.getString(R.string.error))
-    }
-
-    private fun afterAdded(itemView: View) {
-        itemView.top_coin_add_loading.visibility = View.GONE
-        itemView.top_coin_add_icon.visibility = View.VISIBLE
     }
 }

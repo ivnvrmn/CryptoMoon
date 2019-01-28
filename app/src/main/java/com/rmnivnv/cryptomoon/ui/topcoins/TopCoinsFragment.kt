@@ -20,7 +20,7 @@ import javax.inject.Inject
 class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
 
     @Inject lateinit var presenter: TopCoinsContract.Presenter
-    @Inject lateinit var topCoinsAdapter: TopCoinsAdapter
+    @Inject lateinit var adapter: TopCoinsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +39,10 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
     private fun setupRecyclerView() {
         with(recView) {
             layoutManager = LinearLayoutManager(activity)
-            adapter = topCoinsAdapter
+            adapter = this@TopCoinsFragment.adapter.apply {
+                clickListener = { presenter.onCoinClicked(it) }
+            }
         }
-        topCoinsAdapter.clickListener = { presenter.onCoinClicked(it) }
     }
 
     private fun setupSwipeRefresh() {
@@ -49,10 +50,14 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
     }
 
     override fun updateList(topCoins: List<TopCoinData>) {
-        with(topCoinsAdapter) {
+        with(adapter) {
             coins = topCoins
             notifyDataSetChanged()
         }
+    }
+
+    override fun updateItem(position: Int) {
+        adapter.notifyItemChanged(position)
     }
 
     override fun onStart() {
