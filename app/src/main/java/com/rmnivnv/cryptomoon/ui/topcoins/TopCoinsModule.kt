@@ -26,26 +26,22 @@ class TopCoinsModule {
         presenter: TopCoinsContract.Presenter,
         resProvider: ResourceProvider,
         coinsController: CoinsController
-    ) : TopCoinsAdapter {
-        return TopCoinsAdapter(presenter, resProvider, coinsController)
-    }
+    ) : TopCoinsAdapter = TopCoinsAdapter(presenter, resProvider, coinsController)
 
     @Provides @PerFragment
-    fun provideRepository(api: CoinMarketCapApi): TopCoinsRepository {
-        return TopCoinsRepositoryImpl(api)
-    }
+    fun provideRepository(api: CoinMarketCapApi): TopCoinsRepository = TopCoinsRepositoryImpl(api)
 
     @Provides @PerFragment
     fun providePresenter(
-            view: TopCoinsContract.View,
-            db: CMDatabase,
-            networkRequests: NetworkRequests,
-            repository: TopCoinsRepository,
-            coinsController: CoinsController,
-            resProvider: ResourceProvider,
-            pageController: PageController,
-            toaster: Toaster,
-            logger: Logger
+        view: TopCoinsContract.View,
+        db: CMDatabase,
+        networkRequests: NetworkRequests,
+        repository: TopCoinsRepository,
+        coinsController: CoinsController,
+        resProvider: ResourceProvider,
+        pageController: PageController,
+        toaster: Toaster,
+        logger: Logger
     ): TopCoinsContract.Presenter {
         return TopCoinsPresenter(
             view,
@@ -59,5 +55,4 @@ class TopCoinsModule {
             logger
         )
     }
-
 }
