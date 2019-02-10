@@ -10,13 +10,20 @@ import com.google.gson.annotations.SerializedName
  * Created by rmnivnv on 02/07/2017.
  */
 
-data class AllCoinsResponse(
-        @SerializedName("Response") val response: String,
-        @SerializedName("Message") val message: String,
-        @SerializedName("BaseImageUrl") val baseImageUrl: String,
-        @SerializedName("BaseLinkUrl") val baseLinkUrl: String,
-        @SerializedName("Data") val data: JsonObject,
-        @SerializedName("Type") val type: Int)
+data class AllCoinsData(
+    @SerializedName("Response")
+    val response: String,
+    @SerializedName("Message")
+    val message: String,
+    @SerializedName("BaseImageUrl")
+    val baseImageUrl: String,
+    @SerializedName("BaseLinkUrl")
+    val baseLinkUrl: String,
+    @SerializedName("Data")
+    val data: JsonObject,
+    @SerializedName("Type")
+    val type: Int
+)
 
 @Entity(tableName = "all_coins")
 data class InfoCoin(

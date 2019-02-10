@@ -4,12 +4,10 @@ import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.network.Result
 import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
-import com.rmnivnv.cryptomoon.utils.Logger
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import com.rmnivnv.cryptomoon.utils.Toaster
-import com.rmnivnv.cryptomoon.utils.createCoinsMapWithCurrencies
+import com.rmnivnv.cryptomoon.utils.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -107,7 +105,11 @@ class TopCoinsPresenter @Inject constructor(
 
     private fun updateTopCoins() {
         scope.launch {
-            repository.getTopCoins()?.also { onTopCoinsReceived(it) }
+            val result = repository.getTopCoins()
+            when (result) {
+                is Result.Success -> onTopCoinsReceived(result.data)
+                is Result.Error -> logger.logError("updateTopCoins ${result.exception}")
+            }
         }
     }
 
@@ -123,9 +125,13 @@ class TopCoinsPresenter @Inject constructor(
 
     private fun updateAllCoins() {
         if (coinsController.allInfoCoinsIsEmpty()) {
-            disposable.add(networkRequests.getAllCoins()
-                    .subscribe({ onAllCoinsReceived(it) },
-                            { logger.logError("getAllCoinsInfo $it") }))
+            scope.launch {
+                val result = repository.getCoinList()
+                when (result) {
+                    is Result.Success -> onAllCoinsReceived(getAllCoinsFromJson(result.data))
+                    is Result.Error -> logger.logError("updateAllCoins ${result.exception}")
+                }
+            }
         } else {
             updateTopCoins()
         }

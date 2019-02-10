@@ -5,6 +5,7 @@ import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.PageController
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.network.CoinMarketCapApi
+import com.rmnivnv.cryptomoon.model.network.CryptoCompareAPI
 import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.utils.Logger
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
@@ -29,7 +30,11 @@ class TopCoinsModule {
     ) : TopCoinsAdapter = TopCoinsAdapter(presenter, resProvider, coinsController)
 
     @Provides @PerFragment
-    fun provideRepository(api: CoinMarketCapApi): TopCoinsRepository = TopCoinsRepositoryImpl(api)
+    fun provideRepository(
+        coinMarketCapApi: CoinMarketCapApi,
+        cryptoCompareAPI: CryptoCompareAPI,
+        resProvider: ResourceProvider
+    ): TopCoinsRepository = TopCoinsRepositoryImpl(coinMarketCapApi, cryptoCompareAPI, resProvider)
 
     @Provides @PerFragment
     fun providePresenter(

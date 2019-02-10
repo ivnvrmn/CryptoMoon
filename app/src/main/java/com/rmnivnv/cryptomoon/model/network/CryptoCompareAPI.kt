@@ -1,8 +1,10 @@
 package com.rmnivnv.cryptomoon.model.network
 
 import com.google.gson.JsonObject
-import com.rmnivnv.cryptomoon.model.AllCoinsResponse
+import com.rmnivnv.cryptomoon.model.AllCoinsData
 import io.reactivex.Single
+import kotlinx.coroutines.Deferred
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -14,7 +16,10 @@ import retrofit2.http.Url
 interface CryptoCompareAPI {
 
     @GET
-    fun getCoinsList(@Url url: String): Single<AllCoinsResponse>
+    fun getCoinsList(@Url url: String): Single<AllCoinsData>
+
+    @GET
+    fun getCoinListAsync(@Url url: String): Deferred<Response<AllCoinsData>>
 
     @GET("pricemultifull")
     fun getPrice(@Query("fsyms") from: String, @Query("tsyms") to: String): Single<JsonObject>
