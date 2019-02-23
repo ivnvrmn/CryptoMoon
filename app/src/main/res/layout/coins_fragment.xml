@@ -10,103 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/coins_fragment_holding_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:visibility="gone"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible">
-
-            <TextView
-                android:id="@+id/total_holdings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/total_holdings"
-                android:textColor="@color/grey_light"
-                app:layout_constraintBottom_toTopOf="@+id/coins_fragment_total_holdings"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/coins_fragment_total_holdings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey_light"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/total_holdings"
-                tools:text="$ 123213" />
-
-            <TextView
-                android:id="@+id/coins_fragment_allocations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/allocations"
-                android:textColor="@color/grey_light"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/all_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="3dp"
-                android:text="@string/all_time"
-                android:textColor="@color/grey_light"
-                app:layout_constraintRight_toLeftOf="@id/coins_fragment_all_time_profit_loss"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coins_fragment_all_time_profit_loss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey_light"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="profit" />
-
-            <TextView
-                android:id="@+id/coins_fragment_holdings_change_percent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey_light"
-                android:textSize="16sp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/all_time"
-                tools:text="+123%" />
-
-            <TextView
-                android:id="@+id/coins_fragment_holdings_change_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey_light"
-                android:textSize="16sp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/coins_fragment_holdings_change_percent"
-                tools:text="$1544" />
-
-        </android.support.constraint.ConstraintLayout>
-
-        <View
-            android:id="@+id/coins_fragment_holdings_line"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:background="@color/colorAccent"
-            android:visibility="gone"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coins_fragment_holding_layout"
-            tools:visibility="visible" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/coins_fragment_rec_view"
             android:layout_width="0dp"
@@ -114,7 +17,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/coins_fragment_holdings_line" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/coins_fragment_empty_text"

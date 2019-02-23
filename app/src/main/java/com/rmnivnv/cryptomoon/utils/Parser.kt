@@ -5,7 +5,6 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -105,25 +104,20 @@ fun getPairsListFromJson(jsonObject: JsonObject): ArrayList<PairData> {
 }
 
 fun createCoinsMapWithCurrencies(coinsList: List<Coin>): HashMap<String, ArrayList<String?>> {
-    val map: HashMap<String, ArrayList<String?>> = HashMap()
-    val fromList: ArrayList<String?> = ArrayList()
-    coinsList.forEach { fromList.add(it.from) }
-    map.put(FSYMS, fromList)
-    val toList: ArrayList<String?> = ArrayList()
-    coinsList.forEach { toList.add(it.to) }
-    map.put(TSYMS, toList)
-    return map
+    return hashMapOf<String, ArrayList<String?>>().also { map ->
+        map[FSYMS] = arrayListOf<String?>().apply {
+            coinsList.forEach { add(it.from) }
+        }
+        map[TSYMS] = arrayListOf<String?>().apply {
+            coinsList.forEach { add(it.to) }
+        }
+    }
 }
 
 fun getChangeColor(change: Float) = when {
     change > 0 -> R.color.green
     change == 0f -> R.color.orange_dark
     else -> R.color.red
-}
-
-fun addCommasToStringNumber(number: String?): String {
-    val formatter = DecimalFormat("#,###.00")
-    return formatter.format(number?.toDouble())
 }
 
 fun getStringWithTwoDecimalsFromDouble(value: Float) = (Math.round(value * 100.0) / 100.0).toString()

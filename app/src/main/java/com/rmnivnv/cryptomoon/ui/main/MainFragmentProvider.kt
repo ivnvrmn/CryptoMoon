@@ -1,8 +1,8 @@
 package com.rmnivnv.cryptomoon.ui.main
 
 import com.rmnivnv.cryptomoon.di.PerFragment
-import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
-import com.rmnivnv.cryptomoon.ui.coins.CoinsModule
+import com.rmnivnv.cryptomoon.ui.mycoins.MyCoinsFragment
+import com.rmnivnv.cryptomoon.ui.mycoins.MyCoinsModule
 import com.rmnivnv.cryptomoon.ui.news.NewsFragment
 import com.rmnivnv.cryptomoon.ui.news.NewsModule
 import com.rmnivnv.cryptomoon.ui.topcoins.TopCoinsFragment
@@ -17,8 +17,8 @@ import dagger.android.ContributesAndroidInjector
 abstract class MainFragmentProvider {
 
     @PerFragment
-    @ContributesAndroidInjector(modules = arrayOf(CoinsModule::class))
-    abstract fun provideCoinFragmentFactory(): CoinsFragment
+    @ContributesAndroidInjector(modules = arrayOf(MyCoinsModule::class))
+    abstract fun provideCoinFragmentFactory(): MyCoinsFragment
 
     @PerFragment
     @ContributesAndroidInjector(modules = arrayOf(TopCoinsModule::class))

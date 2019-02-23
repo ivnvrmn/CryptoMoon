@@ -18,7 +18,7 @@ import android.widget.TextView
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.ui.addCoin.AddCoinActivity
-import com.rmnivnv.cryptomoon.ui.coins.CoinsFragment
+import com.rmnivnv.cryptomoon.ui.mycoins.MyCoinsFragment
 import com.rmnivnv.cryptomoon.ui.news.NewsFragment
 import com.rmnivnv.cryptomoon.ui.settings.SettingsActivity
 import com.rmnivnv.cryptomoon.ui.topcoins.TopCoinsFragment
@@ -55,7 +55,7 @@ class MainActivity : BaseActivity(), IMain.View {
 
     private fun setupViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(CoinsFragment(), resProvider.getString(R.string.coins))
+        adapter.addFragment(MyCoinsFragment(), resProvider.getString(R.string.coins))
         adapter.addFragment(TopCoinsFragment(), resProvider.getString(R.string.top100))
         newsFragment = NewsFragment()
         adapter.addFragment(newsFragment, resProvider.getString(R.string.news))

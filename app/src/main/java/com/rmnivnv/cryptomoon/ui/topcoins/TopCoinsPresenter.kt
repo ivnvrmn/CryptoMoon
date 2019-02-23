@@ -1,16 +1,12 @@
 package com.rmnivnv.cryptomoon.ui.topcoins
 
-import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.*
-import com.rmnivnv.cryptomoon.model.db.CMDatabase
-import com.rmnivnv.cryptomoon.model.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.data.CoinEntity
+import com.rmnivnv.cryptomoon.model.data.TopCoinEntity
 import com.rmnivnv.cryptomoon.model.network.Result
-import com.rmnivnv.cryptomoon.model.rxbus.MainCoinsListUpdatedEvent
-import com.rmnivnv.cryptomoon.model.rxbus.RxBus
-import com.rmnivnv.cryptomoon.utils.*
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.rmnivnv.cryptomoon.model.network.data.TopCoinsResponse
+import com.rmnivnv.cryptomoon.utils.Logger
+import com.rmnivnv.cryptomoon.utils.Toaster
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -18,72 +14,47 @@ import kotlin.coroutines.CoroutineContext
 /**
  * Created by rmnivnv on 02/09/2017.
  */
+
+private const val TOP_COINS_FRAGMENT_PAGE_POSITION = 1
+
 class TopCoinsPresenter @Inject constructor(
     private val view: TopCoinsContract.View,
-    private val db: CMDatabase,
-    private val networkRequests: NetworkRequests,
-    private val repository: TopCoinsRepository,
-    private val coinsController: CoinsController,
-    private val resProvider: ResourceProvider,
-    private val pageController: PageController,
+    private val observables: TopCoinsContract.Observables,
+    private val apiRepository: TopCoinsContract.ApiRepository,
+    private val dbRepository: TopCoinsContract.DatabaseRepository,
+    private val resProvider: TopCoinsContract.ResourceProvider,
     private val toaster: Toaster,
     private val logger: Logger
 ) : TopCoinsContract.Presenter {
 
     private val disposable = CompositeDisposable()
-    private var coins: ArrayList<TopCoinData> = arrayListOf()
-    private var isRefreshing = false
-    private var needToUpdate = false
-
     private val parentJob = Job()
     private val coroutineContext: CoroutineContext
         get() = parentJob + Dispatchers.Default
     private val scope = CoroutineScope(coroutineContext)
 
-    override fun onStart() {
+    private var coins: ArrayList<TopCoinEntity> = arrayListOf()
+    private var isRefreshing = false
+    private var needToUpdate = false
+
+    override fun onViewCreated() {
         subscribeToObservables()
         updateTopCoins()
-        updateAllCoins()
     }
 
-    private fun subscribeToObservables() {
-        disposable.apply {
-            add(db.topCoinsDao().getAllTopCoins()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { onTopCoinsUpdated(it) })
-
-            add(db.allCoinsDao().getAllCoins()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { onAllCoinsUpdated(it) })
-
-            add(pageController.getPageObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { onPageChanged(it) })
-
-            add(RxBus.listen(MainCoinsListUpdatedEvent::class.java)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { onMainCoinsUpdated() })
-        }
+    private fun subscribeToObservables() = with(disposable) {
+        add(observables.observeTopCoins { onTopCoinsUpdated(it) })
+        add(observables.observePageChanging { onPageChanged(it) })
+        add(observables.observeMainCoinsUpdating { onMainCoinsUpdated() })
     }
 
-    private fun onTopCoinsUpdated(list: List<TopCoinData>) {
+    private fun onTopCoinsUpdated(list: List<TopCoinEntity>) {
         if (list.isNotEmpty()) {
             with(coins) {
                 clear()
                 addAll(list)
-                sortBy { it.rank }
                 view.updateList(this)
             }
-        }
-    }
-
-    private fun onAllCoinsUpdated(list: List<InfoCoin>) {
-        if (list.isNotEmpty()) {
-            updateTopCoins()
         }
     }
 
@@ -98,14 +69,14 @@ class TopCoinsPresenter @Inject constructor(
         }
     }
 
-    override fun onStop() {
+    override fun onDestroy() {
         disposable.clear()
         coroutineContext.cancel()
     }
 
     private fun updateTopCoins() {
         scope.launch {
-            val result = repository.getTopCoins()
+            val result = apiRepository.getTopCoins()
             when (result) {
                 is Result.Success -> onTopCoinsReceived(result.data)
                 is Result.Error -> logger.logError("updateTopCoins ${result.exception}")
@@ -113,38 +84,19 @@ class TopCoinsPresenter @Inject constructor(
         }
     }
 
-    private fun onTopCoinsReceived(coins: List<TopCoinData>) {
-        if (coins.isNotEmpty()) {
-            coinsController.saveTopCoinsList(coins)
-            if (isRefreshing) {
-                isRefreshing = false
-                view.hideRefreshing()
-            }
+    private fun onTopCoinsReceived(response: TopCoinsResponse) {
+        if (response.data.isNotEmpty()) {
+            scope.launch { dbRepository.updateTopCoins(response.data) }
+        }
+
+        if (isRefreshing) {
+            isRefreshing = false
+            view.hideRefreshing()
         }
     }
 
-    private fun updateAllCoins() {
-        if (coinsController.allInfoCoinsIsEmpty()) {
-            scope.launch {
-                val result = repository.getCoinList()
-                when (result) {
-                    is Result.Success -> onAllCoinsReceived(getAllCoinsFromJson(result.data))
-                    is Result.Error -> logger.logError("updateAllCoins ${result.exception}")
-                }
-            }
-        } else {
-            updateTopCoins()
-        }
-    }
-
-    private fun onAllCoinsReceived(list: ArrayList<InfoCoin>) {
-        if (list.isNotEmpty()) {
-            coinsController.saveAllCoinsInfo(list)
-        }
-    }
-
-    override fun onCoinClicked(coin: TopCoinData) {
-        view.startCoinInfoActivity(coin.symbol)
+    override fun onCoinClicked(coin: TopCoinEntity) {
+        view.startCoinInfoActivity(coin.raw.usd.fromSymbol)
     }
 
     override fun onSwiped() {
@@ -152,37 +104,20 @@ class TopCoinsPresenter @Inject constructor(
         updateTopCoins()
     }
 
-    override fun onAddCoinClicked(coin: TopCoinData) {
-        coin.symbol?.also { symbol ->
-            disposable.add(
-                networkRequests.getPrice(
-                    createCoinsMapWithCurrencies(listOf(Coin(from = symbol, to = USD)))
-                )
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { onCoinAdded(it, symbol) },
-                    { onError(symbol) }
-                )
-            )
+    override fun onAddCoinClicked(coin: TopCoinEntity) {
+        scope.launch { dbRepository.saveCoin(CoinEntity(coin.raw, coin.display)) }
+        toaster.toastShort(resProvider.getCoinAddedText())
+        view.updateItem(getCoinPosition(coin.raw.usd.fromSymbol))
+    }
+
+    private fun getCoinPosition(symbol: String): Int =
+        coins.indexOf(coins.find { symbol == it.raw.usd.fromSymbol })
+
+    override fun checkCoinIsAdded(coin: TopCoinEntity, result: (Boolean) -> Unit) {
+        scope.launch {
+            dbRepository.coinIsAdded(coin).also {
+                scope.launch(Dispatchers.Main) { result(it) }
+            }
         }
-    }
-
-    private fun onCoinAdded(list: ArrayList<Coin>, symbol: String) {
-        if (list.isNotEmpty()) {
-            coinsController.saveCoinsList(list)
-            toaster.toastShort(resProvider.getString(R.string.coin_added))
-        } else {
-            toaster.toastShort(resProvider.getString(R.string.error))
-        }
-        view.updateItem(getCoinPosition(symbol))
-    }
-
-    private fun getCoinPosition(symbol: String): Int {
-        return coins.indexOf(coins.find { symbol == it.symbol })
-    }
-
-    private fun onError(symbol: String) {
-        view.updateItem(getCoinPosition(symbol))
-        toaster.toastShort(resProvider.getString(R.string.error))
     }
 }

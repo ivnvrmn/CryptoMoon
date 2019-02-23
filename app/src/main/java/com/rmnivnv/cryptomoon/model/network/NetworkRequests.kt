@@ -1,6 +1,7 @@
 package com.rmnivnv.cryptomoon.model.network
 
 import com.rmnivnv.cryptomoon.model.*
+import com.rmnivnv.cryptomoon.model.network.api.CryptoCompareAPI
 import com.rmnivnv.cryptomoon.utils.*
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -9,12 +10,6 @@ import io.reactivex.schedulers.Schedulers
  * Created by rmnivnv on 12/07/2017.
  */
 class NetworkRequests(private val cryptoCompareAPI: CryptoCompareAPI) {
-
-    fun getAllCoins(): Single<ArrayList<InfoCoin>>  {
-        return cryptoCompareAPI.getCoinsList(COINS_LIST_URL)
-                .subscribeOn(Schedulers.io())
-                .map { getAllCoinsFromJson(it) }
-    }
 
     fun getPrice(map: Map<String, ArrayList<String?>>): Single<ArrayList<Coin>> {
         return cryptoCompareAPI.getPrice(getQuery(map, FSYMS), getQuery(map, TSYMS))

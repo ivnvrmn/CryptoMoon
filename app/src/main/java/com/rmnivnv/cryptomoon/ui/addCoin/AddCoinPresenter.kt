@@ -45,10 +45,10 @@ class AddCoinPresenter @Inject constructor(private val view: IAddCoin.View,
     }
 
     private fun addCoinsChangesObservable() {
-        disposable.add(db.coinsDao().getAllCoins()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onCoinsFromDbUpdates(it) }))
+//        disposable.add(db.myCoinsDao().getAllCoins()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({ onCoinsFromDbUpdates(it) }))
     }
 
     private fun onCoinsFromDbUpdates(list: List<Coin>) {
@@ -94,12 +94,12 @@ class AddCoinPresenter @Inject constructor(private val view: IAddCoin.View,
 
     private fun checkAndRemoveAlreadyAddedCoins(list: List<InfoCoin>): List<InfoCoin> {
         val result: ArrayList<InfoCoin> = arrayListOf()
-        result.addAll(list)
-        list.forEach {
-            if (coinsController.coinAlreadyAdded(it.name)) {
-                result.remove(it)
-            }
-        }
+//        result.addAll(list)
+//        list.forEach {
+//            if (coinsController.coinAlreadyAdded(it.name)) {
+//                result.remove(it)
+//            }
+//        }
         return result
     }
 
@@ -121,7 +121,7 @@ class AddCoinPresenter @Inject constructor(private val view: IAddCoin.View,
 
     private fun onPriceUpdated(list: ArrayList<Coin>) {
         if (list.isNotEmpty()) {
-            coinsController.saveCoinsList(list)
+//            coinsController.saveCoinsList(list)
             coinSuccessfullyAdded()
         } else {
             coinNotFound()

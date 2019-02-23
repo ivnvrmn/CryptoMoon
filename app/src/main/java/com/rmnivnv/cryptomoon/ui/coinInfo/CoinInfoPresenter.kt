@@ -5,7 +5,6 @@ import com.rmnivnv.cryptomoon.model.network.NetworkRequests
 import com.rmnivnv.cryptomoon.model.rxbus.RxBus
 import com.rmnivnv.cryptomoon.model.rxbus.TransactionAdded
 import com.rmnivnv.cryptomoon.utils.*
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -42,10 +41,10 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
     }
 
     private fun getCoinByName(from: String?, to: String?) {
-        disposable.add(Single.fromCallable { coinsController.getCoin(from!!, to!!) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onCoinArrived(it) }, { onFindCoinError(it) }))
+//        disposable.add(Single.fromCallable { coinsController.getCoin(from!!, to!!) }
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({ onCoinArrived(it) }, { onFindCoinError(it) }))
     }
 
     private fun onCoinArrived(coin: Coin) {
@@ -105,7 +104,7 @@ class CoinInfoPresenter @Inject constructor(private val view: ICoinInfo.View,
     private fun onPriceUpdated(list: ArrayList<Coin>) {
         if (list.isNotEmpty()) {
             val arrivedCoin = list[0]
-            coinsController.addAdditionalInfoToCoin(arrivedCoin)
+//            coinsController.addAdditionalInfoToCoin(arrivedCoin)
             onCoinArrived(arrivedCoin)
         }
     }

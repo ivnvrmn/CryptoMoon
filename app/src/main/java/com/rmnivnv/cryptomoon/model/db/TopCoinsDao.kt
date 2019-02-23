@@ -4,7 +4,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import com.rmnivnv.cryptomoon.model.TopCoinData
+import com.rmnivnv.cryptomoon.model.data.TopCoinEntity
 import io.reactivex.Flowable
 
 /**
@@ -14,8 +14,11 @@ import io.reactivex.Flowable
 interface TopCoinsDao {
 
     @Query("SELECT * FROM top_coins")
-    fun getAllTopCoins(): Flowable<List<TopCoinData>>
+    fun getAll(): Flowable<List<TopCoinEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTopCoinsList(list: List<TopCoinData>)
+    fun insert(list: List<TopCoinEntity>)
+
+    @Query("DELETE FROM top_coins")
+    fun clear()
 }

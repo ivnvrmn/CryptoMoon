@@ -61,17 +61,6 @@
         tools:text="4639" />
 
     <TextView
-        android:id="@+id/top_coin_currency_sign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dollar_sign"
-        android:textColor="@color/grey_light"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/top_coin_price"
-        app:layout_constraintEnd_toStartOf="@+id/top_coin_price"
-        app:layout_constraintTop_toBottomOf="@+id/top_coin_price" />
-
-    <TextView
         android:id="@+id/market_cap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,22 +71,13 @@
         app:layout_constraintTop_toBottomOf="@+id/top_coin_name" />
 
     <TextView
-        android:id="@+id/top_coin_cap_currency_sign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="@string/dollar_sign"
-        android:textColor="@color/grey_light"
-        app:layout_constraintBottom_toBottomOf="@+id/market_cap"
-        app:layout_constraintStart_toEndOf="@+id/market_cap" />
-
-    <TextView
         android:id="@+id/top_coin_market_cap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:textColor="@color/grey_light"
-        app:layout_constraintBottom_toBottomOf="@+id/top_coin_cap_currency_sign"
-        app:layout_constraintStart_toEndOf="@+id/top_coin_cap_currency_sign"
+        app:layout_constraintBottom_toBottomOf="@+id/market_cap"
+        app:layout_constraintStart_toEndOf="@+id/market_cap"
         tools:text="23112312" />
 
     <TextView
@@ -110,22 +90,13 @@
         app:layout_constraintTop_toBottomOf="@+id/market_cap" />
 
     <TextView
-        android:id="@+id/top_coin_circ_supply_currency_sign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="@string/dollar_sign"
-        android:textColor="@color/grey_light"
-        app:layout_constraintBottom_toBottomOf="@+id/circulating_supply"
-        app:layout_constraintStart_toEndOf="@+id/circulating_supply" />
-
-    <TextView
         android:id="@+id/top_coin_supply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:textColor="@color/grey_light"
-        app:layout_constraintBottom_toBottomOf="@+id/top_coin_circ_supply_currency_sign"
-        app:layout_constraintStart_toEndOf="@+id/top_coin_circ_supply_currency_sign"
+        app:layout_constraintBottom_toBottomOf="@+id/circulating_supply"
+        app:layout_constraintStart_toEndOf="@+id/circulating_supply"
         tools:text="23112312" />
 
     <TextView
@@ -138,22 +109,13 @@
         app:layout_constraintTop_toBottomOf="@+id/circulating_supply" />
 
     <TextView
-        android:id="@+id/top_coin_volume_currency_sign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="@string/dollar_sign"
-        android:textColor="@color/grey_light"
-        app:layout_constraintBottom_toBottomOf="@+id/volume24"
-        app:layout_constraintStart_toEndOf="@+id/volume24" />
-
-    <TextView
         android:id="@+id/top_coin_volume_24h"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:textColor="@color/grey_light"
-        app:layout_constraintBottom_toBottomOf="@+id/top_coin_volume_currency_sign"
-        app:layout_constraintStart_toEndOf="@+id/top_coin_volume_currency_sign"
+        app:layout_constraintBottom_toBottomOf="@+id/volume24"
+        app:layout_constraintStart_toEndOf="@+id/volume24"
         tools:text="23112312" />
 
     <RelativeLayout

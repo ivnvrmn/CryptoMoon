@@ -1,12 +1,10 @@
 package com.rmnivnv.cryptomoon.ui.topcoins
 
+import android.content.Context
 import com.rmnivnv.cryptomoon.di.PerFragment
-import com.rmnivnv.cryptomoon.model.CoinsController
 import com.rmnivnv.cryptomoon.model.PageController
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
-import com.rmnivnv.cryptomoon.model.network.CoinMarketCapApi
-import com.rmnivnv.cryptomoon.model.network.CryptoCompareAPI
-import com.rmnivnv.cryptomoon.model.network.NetworkRequests
+import com.rmnivnv.cryptomoon.model.network.api.CryptoCompareAPI
 import com.rmnivnv.cryptomoon.utils.Logger
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.Toaster
@@ -19,43 +17,61 @@ import dagger.Provides
 @Module
 class TopCoinsModule {
 
-    @Provides @PerFragment
-    fun provideView(topCoinsFragment: TopCoinsFragment): TopCoinsContract.View = topCoinsFragment
+    @Provides
+    @PerFragment
+    fun provideView(
+        topCoinsFragment: TopCoinsFragment
+    ): TopCoinsContract.View = topCoinsFragment
 
-    @Provides @PerFragment
+    @Provides
+    @PerFragment
     fun provideAdapter(
-        presenter: TopCoinsContract.Presenter,
-        resProvider: ResourceProvider,
-        coinsController: CoinsController
-    ) : TopCoinsAdapter = TopCoinsAdapter(presenter, resProvider, coinsController)
+        presenter: TopCoinsContract.Presenter
+    ) : TopCoinsAdapter = TopCoinsAdapter(presenter)
 
-    @Provides @PerFragment
-    fun provideRepository(
-        coinMarketCapApi: CoinMarketCapApi,
+    @Provides
+    @PerFragment
+    fun provideApiRepository(
         cryptoCompareAPI: CryptoCompareAPI,
         resProvider: ResourceProvider
-    ): TopCoinsRepository = TopCoinsRepositoryImpl(coinMarketCapApi, cryptoCompareAPI, resProvider)
+    ): TopCoinsContract.ApiRepository = TopCoinsApiRepository(cryptoCompareAPI, resProvider)
 
-    @Provides @PerFragment
+    @Provides
+    @PerFragment
+    fun provideTopCoinsDbRepository(
+        db: CMDatabase
+    ): TopCoinsContract.DatabaseRepository = TopCoinsDatabaseRepository(db)
+
+    @Provides
+    @PerFragment
+    fun provideTopCoinsObservables(
+        db: CMDatabase,
+        pageController: PageController
+    ): TopCoinsContract.Observables = TopCoinsObservables(db, pageController)
+
+    @Provides
+    @PerFragment
+    fun provideTopCoinsResourceProvider(
+        context: Context
+    ): TopCoinsContract.ResourceProvider = TopCoinsResourceProvider(context)
+
+    @Provides
+    @PerFragment
     fun providePresenter(
         view: TopCoinsContract.View,
-        db: CMDatabase,
-        networkRequests: NetworkRequests,
-        repository: TopCoinsRepository,
-        coinsController: CoinsController,
-        resProvider: ResourceProvider,
-        pageController: PageController,
+        observables: TopCoinsContract.Observables,
+        repository: TopCoinsContract.ApiRepository,
+        dbRepository: TopCoinsContract.DatabaseRepository,
+        resProvider: TopCoinsContract.ResourceProvider,
         toaster: Toaster,
         logger: Logger
     ): TopCoinsContract.Presenter {
         return TopCoinsPresenter(
             view,
-            db,
-            networkRequests,
+            observables,
             repository,
-            coinsController,
+            dbRepository,
             resProvider,
-            pageController,
             toaster,
             logger
         )

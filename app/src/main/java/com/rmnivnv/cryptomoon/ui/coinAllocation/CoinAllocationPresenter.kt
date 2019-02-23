@@ -21,10 +21,10 @@ class CoinAllocationPresenter @Inject constructor(private val view: ICoinAllocat
     }
 
     private fun addCoinsChangesObservable() {
-        disposable.add(db.coinsDao().getAllCoins()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onCoinsFromDbUpdates(it) }))
+//        disposable.add(db.myCoinsDao().getAllCoins()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({ onCoinsFromDbUpdates(it) }))
     }
 
     private fun onCoinsFromDbUpdates(list: List<Coin>) {

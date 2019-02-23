@@ -4,7 +4,6 @@ package com.rmnivnv.cryptomoon.model
  * Created by rmnivnv on 11/07/2017.
  */
 
-val BASE_CRYPTOCOMPARE_URL = "https://min-api.cryptocompare.com/data/"
 val COINS_LIST_URL = "https://www.cryptocompare.com/api/data/coinlist/"
 
 val CRYPTOMOON_PREFS = "cryptoMoonPrefs"
@@ -21,7 +20,6 @@ val ETH = "ETH"
 val SNT = "SNT"
 
 val COINS_FRAGMENT_PAGE_POSITION = 0
-val TOP_COINS_FRAGMENT_PAGE_POSITION = 1
 val NAME = "name"
 val FROM = "from"
 val TO = "to"

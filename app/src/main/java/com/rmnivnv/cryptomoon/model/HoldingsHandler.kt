@@ -9,14 +9,14 @@ import io.reactivex.schedulers.Schedulers
  */
 class HoldingsHandler(private val db: CMDatabase) {
 
-    init {
-        db.coinsDao().getAllCoins()
-                .subscribeOn(Schedulers.io())
-                .subscribe({ coins = it })
-        db.holdingsDao().getAllHoldings()
-                .subscribeOn(Schedulers.io())
-                .subscribe({ holdings = it })
-    }
+//    init {
+//        db.myCoinsDao().getAllCoins()
+//                .subscribeOn(Schedulers.io())
+//                .subscribe({ coins = it })
+//        db.holdingsDao().getAllHoldings()
+//                .subscribeOn(Schedulers.io())
+//                .subscribe({ holdings = it })
+//    }
 
     private var coins: List<Coin> = arrayListOf()
     private var holdings: List<HoldingData> = arrayListOf()

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.*
+import com.rmnivnv.cryptomoon.model.data.TopCoinEntity
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.top_coins_fragment.top_coins_fragment_swipe_refresh as swipe
@@ -26,14 +27,13 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.top_coins_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.top_coins_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         setupSwipeRefresh()
+        presenter.onViewCreated()
     }
 
     private fun setupRecyclerView() {
@@ -49,9 +49,14 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
         swipe.setOnRefreshListener { presenter.onSwiped() }
     }
 
-    override fun updateList(topCoins: List<TopCoinData>) {
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun updateList(coins: List<TopCoinEntity>) {
         with(adapter) {
-            coins = topCoins
+            this.coins = coins
             notifyDataSetChanged()
         }
     }
@@ -60,21 +65,11 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
         adapter.notifyItemChanged(position)
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        presenter.onStop()
-        super.onStop()
-    }
-
     override fun hideRefreshing() {
         swipe.isRefreshing = false
     }
 
-    override fun startCoinInfoActivity(name: String?) {
+    override fun startCoinInfoActivity(name: String) {
         activity?.startActivity(
             Intent(context, CoinInfoActivity::class.java)
                 .putExtra(NAME, name)

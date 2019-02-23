@@ -6,10 +6,7 @@ import android.content.Context
 import com.rmnivnv.cryptomoon.model.*
 import com.rmnivnv.cryptomoon.model.db.CMDatabase
 import com.rmnivnv.cryptomoon.model.db.DBController
-import com.rmnivnv.cryptomoon.utils.Logger
-import com.rmnivnv.cryptomoon.utils.ResourceProvider
-import com.rmnivnv.cryptomoon.utils.ResourceProviderImpl
-import com.rmnivnv.cryptomoon.utils.Toaster
+import com.rmnivnv.cryptomoon.utils.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -20,37 +17,46 @@ import javax.inject.Singleton
 @Module
 class AppModule {
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideAppContext(application: Application): Context = application
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideDatabase(application: Application): CMDatabase {
         return Room.databaseBuilder(application, CMDatabase::class.java, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideDBController(db: CMDatabase) = DBController(db)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideResourceProvider(application: Application): ResourceProvider {
         return ResourceProviderImpl(application)
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideCoinsController(dbController: DBController, db: CMDatabase) = CoinsController(dbController, db)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideMultiSelector(resourceProvider: ResourceProvider) = MultiSelector(resourceProvider)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun providePageController() = PageController()
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideGraphMaker(resourceProvider: ResourceProvider) = GraphMaker(resourceProvider)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun providePieMaker(
         resourceProvider: ResourceProvider,
         holdingsHandler: HoldingsHandler
@@ -58,15 +64,19 @@ class AppModule {
         return PieMaker(resourceProvider, holdingsHandler)
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideHoldingsHandler(db: CMDatabase) = HoldingsHandler(db)
 
-    @Provides @Singleton
-    fun provideLogger(context: Context) = Logger(context)
+    @Provides
+    @Singleton
+    fun provideLogger(context: Context): Logger = LoggerImpl(context)
 
-    @Provides @Singleton
-    fun provideToaster(context: Context) = Toaster(context)
+    @Provides
+    @Singleton
+    fun provideToaster(context: Context): Toaster = ToasterImpl(context)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun providePreferences(context: Context) = Preferences(context)
 }
