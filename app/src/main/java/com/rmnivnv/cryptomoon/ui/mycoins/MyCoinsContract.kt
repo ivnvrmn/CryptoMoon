@@ -16,7 +16,7 @@ interface MyCoinsContract {
         fun hideRefreshing()
         fun showSwipeToRefresh()
         fun hideSwipeToRefresh()
-        fun showCoinInfoActivity(name: String)
+        fun showCoinInfoActivity(coin: CoinEntity)
         fun showEmptyText()
         fun hideEmptyText()
     }

@@ -53,10 +53,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGraphMaker(resourceProvider: ResourceProvider) = GraphMaker(resourceProvider)
-
-    @Provides
-    @Singleton
     fun providePieMaker(
         resourceProvider: ResourceProvider,
         holdingsHandler: HoldingsHandler

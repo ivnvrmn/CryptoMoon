@@ -1,5 +1,6 @@
 package com.rmnivnv.cryptomoon.ui.coinInfo
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
@@ -13,25 +14,47 @@ import com.github.mikephil.charting.data.CandleData
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.base.BaseActivity
 import com.rmnivnv.cryptomoon.model.FROM
-import com.rmnivnv.cryptomoon.model.NAME
 import com.rmnivnv.cryptomoon.model.PRICE
 import com.rmnivnv.cryptomoon.model.TO
+import com.rmnivnv.cryptomoon.model.data.CoinEntity
 import com.rmnivnv.cryptomoon.ui.addTransaction.AddTransactionActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
+import com.rmnivnv.cryptomoon.utils.hide
+import com.rmnivnv.cryptomoon.utils.show
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_coin_info.*
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_empty_graph as emptyGraph
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_holdings_layout as holdingLayout
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_holding_trade_date as holdingTradeDate
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_holding_trade_price as holdingTradePrice
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_holding_profit_value as holdingProfitValue
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_profit_loss as holdingProfitLoss
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_holding_ch_pct as holdingChangePct
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_value as valueView
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_quantity as quantityView
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_loading as graphLoading
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_market_cap as marketCap
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_supply as supplyView
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_change_pct as changePct24
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_change as change24
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_low as low24
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_high as high24
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_open as open24
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_graph as coinGraph
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_main_price as mainPrice
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_logo as coinLogo
+import kotlinx.android.synthetic.main.activity_coin_info.coin_info_graph_periods as graphPeriods
 import javax.inject.Inject
 
-class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
+class CoinInfoActivity : BaseActivity(), CoinInfoContract.View {
 
-    @Inject lateinit var presenter: ICoinInfo.Presenter
+    @Inject lateinit var presenter: CoinInfoContract.Presenter
     @Inject lateinit var resProvider: ResourceProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coin_info)
         setupToolbar()
-        presenter.onCreate(intent.extras.getString(NAME), intent.extras.getString(TO))
+        presenter.onCreate(intent.extras.getParcelable(KEY_COIN))
     }
 
     private fun setupToolbar() {
@@ -43,10 +66,10 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
     }
 
     override fun setupSpinner() {
-        coin_info_graph_periods.adapter = ArrayAdapter<String>(this, R.layout.period_item, R.id.period,
+        graphPeriods.adapter = ArrayAdapter<String>(this, R.layout.period_item, R.id.period,
                 resProvider.getStringArray(R.array.histo_periods))
-        coin_info_graph_periods.setSelection(5)
-        coin_info_graph_periods.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        graphPeriods.setSelection(5)
+        graphPeriods.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -55,25 +78,23 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
         }
     }
 
-    override fun setTitle(title: String) {
+    override fun showTitle(title: String) {
         supportActionBar?.title = title
     }
 
-    override fun setLogo(url: String) {
+    override fun showLogo(url: String) {
         if (url.isNotEmpty()) {
-            Picasso.get()
-                    .load(url)
-                    .into(coin_info_logo)
+            Picasso.get().load(url).into(coinLogo)
         }
     }
 
-    override fun setMainPrice(price: String) {
-        coin_info_main_price.text = price
+    override fun showMainPrice(price: String) {
+        mainPrice.text = price
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         presenter.onDestroy()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -89,53 +110,53 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
     }
 
     override fun drawChart(line: CandleData) {
-        val xAxis = coin_info_graph.xAxis
+        val xAxis = coinGraph.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         //TODO set date
 //        val format = SimpleDateFormat("dd MMM", Locale.getDefault())
 //        xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
 //            format.format(Date(value.toLong() * 1000))
 //        }
-        coin_info_graph.data = line
-        coin_info_graph.invalidate()
+        coinGraph.data = line
+        coinGraph.invalidate()
     }
 
-    override fun setOpen(open: String) {
-        coin_info_open.text = open
+    override fun showOpen24Hour(open: String) {
+        open24.text = open
     }
 
-    override fun setHigh(high: String) {
-        coin_info_high.text = high
+    override fun showHigh24Hour(high: String) {
+        high24.text = high
     }
 
-    override fun setLow(low: String) {
-        coin_info_low.text = low
+    override fun showLow24Hour(low: String) {
+        low24.text = low
     }
 
-    override fun setChange(change: String) {
-        coin_info_change.text = change
+    override fun showChange24Hour(change: String) {
+        change24.text = change
     }
 
-    override fun setChangePct(pct: String) {
-        coin_info_change_pct.text = pct
+    override fun showChangePct24Hour(pct: String) {
+        changePct24.text = pct
     }
 
-    override fun setSupply(supply: String) {
-        coin_info_supply.text = supply
+    override fun showSupply(supply: String) {
+        supplyView.text = supply
     }
 
-    override fun setMarketCap(cap: String) {
-        coin_info_market_cap.text = cap
+    override fun showMarketCap(cap: String) {
+        marketCap.text = cap
     }
 
     override fun enableGraphLoading() {
-        coin_info_loading.visibility = View.VISIBLE
-        coin_info_graph.visibility = View.GONE
+        graphLoading.show()
+        coinGraph.hide()
     }
 
     override fun disableGraphLoading() {
-        coin_info_loading.visibility = View.GONE
-        coin_info_graph.visibility = View.VISIBLE
+        graphLoading.hide()
+        coinGraph.show()
     }
 
     override fun startAddTransactionActivity(from: String?, to: String?, price: String?) {
@@ -147,54 +168,63 @@ class CoinInfoActivity : BaseActivity(), ICoinInfo.View {
     }
 
     override fun setHoldingQuantity(quantity: String) {
-        coin_info_quantity.text = quantity
+        quantityView.text = quantity
     }
 
     override fun setHoldingValue(value: String) {
-        coin_info_value.text = value
+        valueView.text = value
     }
 
     override fun setHoldingChangePercent(pct: String) {
-        coin_info_holding_ch_pct.text = pct
+        holdingChangePct.text = pct
     }
 
     override fun setHoldingProfitLoss(profitLoss: String) {
-        coin_info_profit_loss.text = profitLoss
+        holdingProfitLoss.text = profitLoss
     }
 
     override fun setHoldingProfitValue(value: String) {
-        coin_info_holding_profit_value.text = value
+        holdingProfitValue.text = value
     }
 
     override fun setHoldingTradePrice(price: String) {
-        coin_info_holding_trade_price.text = price
+        holdingTradePrice.text = price
     }
 
     override fun setHoldingTradeDate(date: String) {
-        coin_info_holding_trade_date.text = date
+        holdingTradeDate.text = date
     }
 
     override fun enableHoldings() {
-        coin_info_holdings_layout.visibility = View.VISIBLE
+        holdingLayout.show()
     }
 
     override fun disableHoldings() {
-        coin_info_holdings_layout.visibility = View.GONE
+        holdingLayout.hide()
     }
 
     override fun setHoldingChangePercentColor(color: Int) {
-        coin_info_holding_ch_pct.setTextColor(resProvider.getColor(color))
+        holdingChangePct.setTextColor(resProvider.getColor(color))
     }
 
     override fun setHoldingProfitValueColor(color: Int) {
-        coin_info_holding_profit_value.setTextColor(resProvider.getColor(color))
+        holdingProfitValue.setTextColor(resProvider.getColor(color))
     }
 
     override fun enableEmptyGraphText() {
-        coin_info_empty_graph.visibility = View.VISIBLE
+        emptyGraph.show()
     }
 
     override fun disableEmptyGraphText() {
-        coin_info_empty_graph.visibility = View.GONE
+        emptyGraph.hide()
+    }
+
+    companion object {
+        private const val KEY_COIN = "coin"
+
+        fun createIntent(context: Context, coin: CoinEntity): Intent {
+            return Intent(context, CoinInfoActivity::class.java)
+                .putExtra(KEY_COIN, coin)
+        }
     }
 }

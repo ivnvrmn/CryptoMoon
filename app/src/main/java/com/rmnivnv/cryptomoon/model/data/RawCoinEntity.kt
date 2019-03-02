@@ -1,8 +1,11 @@
 package com.rmnivnv.cryptomoon.model.data
 
 import android.arch.persistence.room.ColumnInfo
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class RawCoinEntity(
     @SerializedName("TYPE")
     val type: String,
@@ -76,4 +79,4 @@ data class RawCoinEntity(
     val totalVolume24HourTo: Float,
     @SerializedName("IMAGEURL")
     val imageUrl: String
-)
+) : Parcelable

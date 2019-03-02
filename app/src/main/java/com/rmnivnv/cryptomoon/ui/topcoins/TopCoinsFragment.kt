@@ -1,19 +1,18 @@
 package com.rmnivnv.cryptomoon.ui.topcoins
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.model.*
+import com.rmnivnv.cryptomoon.model.data.CoinEntity
 import com.rmnivnv.cryptomoon.model.data.TopCoinEntity
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.top_coins_fragment.top_coins_fragment_swipe_refresh as swipe
-import kotlinx.android.synthetic.main.top_coins_fragment.top_coins_fragment_rec_view as recView
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.top_coins_fragment.top_coins_fragment_rec_view as recView
+import kotlinx.android.synthetic.main.top_coins_fragment.top_coins_fragment_swipe_refresh as swipe
 
 /**
  * Created by rmnivnv on 11/07/2017.
@@ -69,11 +68,9 @@ class TopCoinsFragment : DaggerFragment(), TopCoinsContract.View {
         swipe.isRefreshing = false
     }
 
-    override fun startCoinInfoActivity(name: String) {
-        activity?.startActivity(
-            Intent(context, CoinInfoActivity::class.java)
-                .putExtra(NAME, name)
-                .putExtra(TO, USD)
-        )
+    override fun startCoinInfoActivity(coin: CoinEntity) {
+        context?.also {
+            startActivity(CoinInfoActivity.createIntent(it, coin))
+        }
     }
 }

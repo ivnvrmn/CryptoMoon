@@ -3,7 +3,9 @@ package com.rmnivnv.cryptomoon.model.data
 import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 sealed class Coin{
     abstract val raw: RawEntity
@@ -24,6 +26,7 @@ data class TopCoinEntity(
     val coinInfo: CoinInfo
 ) : Coin()
 
+@Parcelize
 @Entity(tableName = "my_coins")
 data class CoinEntity(
     @PrimaryKey
@@ -33,5 +36,5 @@ data class CoinEntity(
     @Embedded(prefix = "display")
     @SerializedName("DISPLAY")
     override val display: DisplayEntity
-) : Coin()
+) : Coin(), Parcelable
 

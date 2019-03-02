@@ -2,6 +2,7 @@ package com.rmnivnv.cryptomoon.model.network.api
 
 import com.google.gson.JsonObject
 import com.rmnivnv.cryptomoon.model.AllCoinsData
+import com.rmnivnv.cryptomoon.model.network.data.HistoricalDataResponse
 import com.rmnivnv.cryptomoon.model.network.data.PricesResponse
 import com.rmnivnv.cryptomoon.model.network.data.TopCoinsResponse
 import io.reactivex.Single
@@ -39,11 +40,13 @@ interface CryptoCompareAPI {
     ): Deferred<Response<PricesResponse>>
 
     @GET("{period}")
-    fun getHistoPeriod(@Path("period") period: String,
-                       @Query("fsym") from: String?,
-                       @Query("tsym") to: String?,
-                       @Query("limit") limit: Int,
-                       @Query("aggregate") aggregate: Int): Single<JsonObject>
+    fun getHistoricalData(
+        @Path("period") period: String,
+        @Query("fsym") from: String,
+        @Query("tsym") to: String,
+        @Query("limit") limit: Int,
+        @Query("aggregate") aggregate: Int
+    ): Deferred<Response<HistoricalDataResponse>>
 
     @GET("top/pairs")
     fun getPairs(@Query("fsym") from: String): Single<JsonObject>

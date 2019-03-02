@@ -15,7 +15,7 @@ interface TopCoinsContract {
         fun updateList(coins: List<TopCoinEntity>)
         fun updateItem(position: Int)
         fun hideRefreshing()
-        fun startCoinInfoActivity(name: String)
+        fun startCoinInfoActivity(coin: CoinEntity)
     }
 
     interface Presenter {

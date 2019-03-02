@@ -1,6 +1,5 @@
 package com.rmnivnv.cryptomoon.ui.mycoins
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -9,19 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
 import com.rmnivnv.cryptomoon.model.HoldingsHandler
-import com.rmnivnv.cryptomoon.model.NAME
-import com.rmnivnv.cryptomoon.model.TO
-import com.rmnivnv.cryptomoon.model.USD
 import com.rmnivnv.cryptomoon.model.data.CoinEntity
 import com.rmnivnv.cryptomoon.ui.coinInfo.CoinInfoActivity
 import com.rmnivnv.cryptomoon.utils.ResourceProvider
 import com.rmnivnv.cryptomoon.utils.hide
 import com.rmnivnv.cryptomoon.utils.show
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.coins_fragment.coins_fragment_empty_text as emptyText
 import kotlinx.android.synthetic.main.coins_fragment.coins_fragment_rec_view as recyclerView
 import kotlinx.android.synthetic.main.coins_fragment.swipe_refresh as swipeRefresh
-import javax.inject.Inject
 
 /**
  * Created by rmnivnv on 11/07/2017.
@@ -88,12 +84,10 @@ class MyCoinsFragment : DaggerFragment(), MyCoinsContract.View {
         swipeRefresh.isEnabled = false
     }
 
-    override fun showCoinInfoActivity(name: String) {
-        activity?.startActivity(
-            Intent(context, CoinInfoActivity::class.java)
-                .putExtra(NAME, name)
-                .putExtra(TO, USD)
-        )
+    override fun showCoinInfoActivity(coin: CoinEntity) {
+        context?.also {
+            startActivity(CoinInfoActivity.createIntent(it, coin))
+        }
     }
 
     override fun showEmptyText() {

@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.di.CRYPTO_COMPARE_IMAGE_URL
 import com.rmnivnv.cryptomoon.model.data.CoinEntity
 import com.rmnivnv.cryptomoon.utils.addPercentSign
 import com.rmnivnv.cryptomoon.utils.toChangeArrowDrawable
 import com.rmnivnv.cryptomoon.utils.toChangeColor
+import com.rmnivnv.cryptomoon.utils.toCryptoCompareImageUrl
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.coins_list_item.view.main_item_change_in_24 as changePercent24h
 import kotlinx.android.synthetic.main.coins_list_item.view.main_item_from as fromSymbol
@@ -58,7 +58,7 @@ class MyCoinsAdapter : RecyclerView.Adapter<MyCoinsAdapter.ViewHolder>() {
                 )
 
                 Picasso.get()
-                    .load("$CRYPTO_COMPARE_IMAGE_URL${display.usd.imageUrl}")
+                    .load(display.usd.imageUrl.toCryptoCompareImageUrl())
                     .into(logo)
             }
         }

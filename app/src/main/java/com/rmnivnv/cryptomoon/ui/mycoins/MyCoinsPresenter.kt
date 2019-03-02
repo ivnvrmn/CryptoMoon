@@ -124,6 +124,6 @@ class MyCoinsPresenter @Inject constructor(
     }
 
     override fun onCoinClicked(coin: CoinEntity) {
-        view.showCoinInfoActivity(coin.raw.usd.fromSymbol)
+        view.showCoinInfoActivity(coin  )
     }
 }

@@ -96,7 +96,7 @@ class TopCoinsPresenter @Inject constructor(
     }
 
     override fun onCoinClicked(coin: TopCoinEntity) {
-        view.startCoinInfoActivity(coin.raw.usd.fromSymbol)
+        view.startCoinInfoActivity(CoinEntity(coin.raw, coin.display))
     }
 
     override fun onSwiped() {

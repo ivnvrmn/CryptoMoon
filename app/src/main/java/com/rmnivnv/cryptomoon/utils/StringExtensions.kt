@@ -1,5 +1,7 @@
 package com.rmnivnv.cryptomoon.utils
 
+import com.rmnivnv.cryptomoon.di.CRYPTO_COMPARE_IMAGE_URL
+
 private const val SIGN_PERCENT = "%"
 private const val SIGN_PLUS = "+"
 private const val BLANK = ""
@@ -13,3 +15,5 @@ private fun getChangePercentSign(changePct: Float): String {
         else -> BLANK
     }
 }
+
+fun String.toCryptoCompareImageUrl(): String = "$CRYPTO_COMPARE_IMAGE_URL$this"

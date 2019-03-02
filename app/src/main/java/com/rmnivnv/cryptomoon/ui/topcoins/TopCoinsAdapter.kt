@@ -6,12 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rmnivnv.cryptomoon.R
-import com.rmnivnv.cryptomoon.di.CRYPTO_COMPARE_IMAGE_URL
 import com.rmnivnv.cryptomoon.model.data.TopCoinEntity
-import com.rmnivnv.cryptomoon.utils.addPercentSign
-import com.rmnivnv.cryptomoon.utils.hide
-import com.rmnivnv.cryptomoon.utils.show
-import com.rmnivnv.cryptomoon.utils.toChangeColor
+import com.rmnivnv.cryptomoon.utils.*
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.top_coin_item.view.top_coin_24h_pct as pct24hView
@@ -71,7 +67,7 @@ class TopCoinsAdapter @Inject constructor(
                 pct24hView.setTextColor(raw.usd.changePct24Hour.toChangeColor(context))
 
                 Picasso.get()
-                    .load("$CRYPTO_COMPARE_IMAGE_URL${display.usd.imageUrl}")
+                    .load(display.usd.imageUrl.toCryptoCompareImageUrl())
                     .into(logoView)
 
                 presenter.checkCoinIsAdded(coin) { isAdded ->

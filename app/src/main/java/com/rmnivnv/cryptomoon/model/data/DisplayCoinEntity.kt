@@ -1,7 +1,10 @@
 package com.rmnivnv.cryptomoon.model.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class DisplayCoinEntity(
     @SerializedName("FROMSYMBOL")
     val fromSymbol: String,
@@ -69,4 +72,4 @@ data class DisplayCoinEntity(
     val totalVolume24HourTo: String,
     @SerializedName("IMAGEURL")
     val imageUrl: String
-)
+) : Parcelable
