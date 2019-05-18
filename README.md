@@ -1,7 +1,5 @@
 # CryptoMoon
 
-[![CircleCI](https://circleci.com/gh/ivnvrmn/CryptoMoon.svg?style=svg)](https://circleci.com/gh/ivnvrmn/CryptoMoon)
-
 - tracking prices for crypto currencies, top 100 coins, twitter news by tag
 - 100% code on Kotlin
 - CryptoCompare and CoinMarket API
